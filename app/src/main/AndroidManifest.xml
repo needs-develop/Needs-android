@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.project_basic">
+
+    <uses-permission android:name="android.permission.INTERNET " />
+
+    <application
+        android:name="androidx.multidex.MultiDexApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SubActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".BoardActivity" />
+        <activity android:name=".BoardWrite" />
+        <activity android:name=".ReplyListAdapter" />
+        <activity android:name=".ReplyList" />
+        <activity android:name=".BoardContent" />
+        <activity android:name=".FavoritesFunc" />
+        <activity android:name=".FavoritesWrite" />
+        <activity android:name=".Favorites_Adapter" />
+        <activity android:name=".FavoritesList" />
+        <activity android:name=".FavoritesFragment" />
+        <activity android:name=".SubListAdapter" />
+        <activity android:name=".SubExpAdapter" />
+        <activity android:name=".SubList" />
+        <activity android:name=".FreeContent"></activity>
+        <activity android:name=".HomeFreeContent" />
+        <activity android:name=".HomeContent" />
+        <activity android:name=".MywriteActivity"></activity>
+        <activity android:name=".MylikeActivity" />
+        <activity android:name=".MyreplyActivity" />
+        <activity android:name=".PointConversionActivity" />
+        <activity android:name=".PointHistoryActivity" />
+        <activity android:name=".SignedInActivity" />
+    </application>
+
+</manifest>

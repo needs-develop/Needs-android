@@ -1,0 +1,605 @@
+package com.example.project_basic;
+
+//로그인 되고 메인화면//
+
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.example.project_basic.MainActivity.id_nickName;
+import static com.example.project_basic.MainActivity.id_uid;
+import static com.example.project_basic.MainActivity.id_value;
+
+
+@RequiresApi(api = Build.VERSION_CODES.O)
+public class SubActivity extends AppCompatActivity {
+
+    private TextView sub_id;
+    private DrawerLayout drawerLayout;
+    private View drawerView;
+
+    final List<String> firstGroups = new ArrayList<>();
+    final HashMap<String,List<SubList>>firstItemGroup = new HashMap<>();
+    List<SubList>gangone = new ArrayList<>();
+    List<SubList>gangtwo = new ArrayList<>();
+    List<SubList>gangthree = new ArrayList<>();
+    List<SubList>gangfour = new ArrayList<>();
+
+    final List<String> goodGroups = new ArrayList<>();
+    final HashMap<String,List<SubList>>goodItemGroup = new HashMap<>();
+    List<SubList>goodone = new ArrayList<>();
+
+    String strict; //parent value
+
+    static String address;//living value?!
+
+    String first;//parent_value
+    String second;//child_value
+    String third;//added value to goot_list
+    String fourth;//deleted value by good_list
+
+    SubExpAdapter subExpAdapter1 = new SubExpAdapter(SubActivity.this,goodGroups,goodItemGroup);
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private TextView mTextMessage;
+
+
+    ListView home_listView;
+    Favorites_Adapter favorites_adapter;
+    ArrayList<FavoritesList> list_itemArrayList = null;
+
+    ListView homefree_listView;
+    Favorites_Adapter favorites_adapter1;
+    ArrayList<FavoritesList> list_itemArrayList1 = null;
+
+    Instant nowUtc = Instant.now();
+    ZoneId asiaSeoul = ZoneId.of("Asia/Seoul");
+    ZonedDateTime nowAsiaSeoul = ZonedDateTime.ofInstant(nowUtc, asiaSeoul);
+
+    String year = String.valueOf(nowAsiaSeoul.getYear());
+    String  month = String.valueOf(nowAsiaSeoul.getMonthValue());
+    String day1  = String.valueOf(nowAsiaSeoul.getDayOfMonth()) ;
+    String hour = String.valueOf(nowAsiaSeoul.getHour());
+    String minute = String.valueOf(nowAsiaSeoul.getMinute());
+
+    String pointDay = null ;
+
+    FragmentTransaction transaction;
+
+    static int fragmentNumber = 0;
+
+    static String pointLimit = null;
+    static String point = null;
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if(fragmentNumber == 0) {
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, new HomeFragment()).commitAllowingStateLoss();
+        }
+        else if (fragmentNumber ==1)
+        {
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, new FavoritesFragment()).commitAllowingStateLoss();
+        }
+
+
+        setContentView(R.layout.activity_sub);
+        BottomNavigationView navView = findViewById(R.id.bottom_navigation);
+        navView.setOnNavigationItemSelectedListener(navListner);
+
+        mAuth = FirebaseAuth.getInstance();
+        mTextMessage = findViewById(R.id.sub_id);
+
+        final ExpandableListView expandableListView = findViewById(R.id.draw_listView);
+        final ExpandableListView expandableListView1 = findViewById(R.id.good_listView);
+        //ListView listView = findViewById(R.id.draw_listView);
+        this.InitializeDrawList();
+
+
+        final SubExpAdapter subExpAdapter = new SubExpAdapter(SubActivity.this,firstGroups,firstItemGroup);
+        expandableListView.setAdapter(subExpAdapter);
+
+        subExpAdapter1.notifyDataSetChanged();
+
+        String uid = mAuth.getUid();
+
+        id_uid = uid;
+
+        DocumentReference doc = db.collection("user").document(id_uid);
+        doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    id_nickName = document.getData().get("id_nickName").toString();
+                }
+                else {
+                }
+            }
+        });
+
+        //////////////////////포인트 가져오기/////////////////////////////////////////
+
+        db.collection("user").document(id_uid).collection("pointDay")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                               pointDay = document.getData().get("pointDay").toString();
+                               pointLimit = document.getData().get("pointLimit").toString();
+
+                               int pointDay1 = Integer.parseInt(pointDay);
+                               int pointDay2 = Integer.parseInt(day1);
+
+                               Log.d("point확인",pointDay+pointLimit);
+
+                                if (pointDay1 == pointDay2) {
+                                    Log.d("update","update를 하지 않습니다");
+                                } else
+                                {
+                                    Log.d("update","update를 합니다");
+                                    db.collection("user").document(id_uid).collection("pointDay")
+                                            .document(id_value+"pointDay")
+                                            .update(
+                                                    "pointDay",day1,
+                                                    "pointLimit","5"
+                                            );
+                                }
+
+                            }
+                        } else {
+
+                        }
+                    }
+                });
+
+        db.collection("user")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if(id_uid .equals(document.getData().get("id_uid").toString()))
+                                {
+                                    point = document.getData().get("id_point").toString();
+                                    break;
+                                }
+                            }
+                        } else {
+                        }
+                    }
+                });
+
+
+
+
+
+        ///////////////////포인트 가져오기////////////////////////////////////////////////
+
+        //sub_id = findViewById(R.id.sub_id);
+        final Intent intent = getIntent();//어디선가 날라오는 intent있으면 받아온다
+        // String str = intent.getStringExtra("str");//str은 쏘는곳과 받는곳 동일해야함
+
+        //mTextMessage.setText(str);
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawerView = (View)findViewById(R.id.drawer);
+
+        ImageView btn = (ImageView) findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(drawerView);
+            }
+        });
+
+        db.collection("user").document(id_uid).collection("favorites")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                goodone.add(new SubList(document.getData().get("goodPlace").toString()));
+                            }
+                            goodItemGroup.put(goodGroups.get(0),goodone);
+                            expandableListView1.setAdapter(subExpAdapter1);
+                            subExpAdapter1.notifyDataSetChanged();
+                        } else {
+                            Log.d("태그", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                Toast.makeText(getApplicationContext(),firstGroups.get(groupPosition)+"지역으로이동합니다",Toast.LENGTH_SHORT).show();
+                strict = firstGroups.get(groupPosition);
+                Log.d("strict",strict);
+                return false;
+            }
+        });
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                String childname = firstItemGroup.get(firstGroups.get(groupPosition)).get(childPosition).getCountry();
+                Log.d("아이들 지역",childname);
+                address = strict+childname;
+                Toast.makeText(getApplicationContext(),address+"게시판으로이동합니다",Toast.LENGTH_SHORT).show();
+
+
+                Intent intent1 = new Intent(SubActivity.this,BoardActivity.class);
+                startActivity(intent1);
+                return false;
+            }
+        });
+        expandableListView1.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                return false;
+            }
+        });
+        expandableListView1.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                fourth = goodone.get(childPosition).getCountry();
+                Toast.makeText(getApplicationContext(),fourth+"게시판으로이동합니다",Toast.LENGTH_SHORT).show();
+
+                address = fourth;
+
+                Intent intent1 = new Intent(SubActivity.this,BoardActivity.class);
+                startActivity(intent1);
+
+                return false;
+            }
+        });
+
+
+        expandableListView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                int itemType = ExpandableListView.getPackedPositionType(id);
+                boolean retVal = true;
+
+                if ( itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    final int childPosition = ExpandableListView.getPackedPositionChild(id);
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SubActivity.this);
+
+                    fourth = goodone.get(childPosition).getCountry();
+
+                    builder.setTitle("즐겨찾기목록 삭제").setMessage("즐겨찾기목록에서 삭제하시겠습니까?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            Toast.makeText(getApplicationContext(), fourth+"가즐겨찾기에서 삭제되었습니다", Toast.LENGTH_SHORT).show();
+                            db.collection("user").document(id_uid).collection("favorites")
+                                    .document(id_value+address)
+                                    .delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                                            subExpAdapter1.notifyDataSetChanged();
+                                            Intent intent2 = new Intent(SubActivity.this,SubActivity.class);
+                                            SubActivity.this.finish();
+                                            startActivity(intent2);
+                                        }
+                                    })
+
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                        }
+                                    });
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                        }
+                    });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                    return retVal;
+
+                } else if(itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    return retVal;
+                } else {
+
+                    return false;
+                }
+            }
+        });
+
+        expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                int itemType = ExpandableListView.getPackedPositionType(id);
+                boolean retVal = true;
+
+                if ( itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    int childPosition = ExpandableListView.getPackedPositionChild(id);
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SubActivity.this);
+                    first = firstGroups.get(groupPosition);
+                    String childname = firstItemGroup.get(firstGroups.get(groupPosition)).get(childPosition).getCountry();
+                    Log.d("아이들 지역",childname);
+
+                    second =  first+childname;
+                    third = second;
+
+                    builder.setTitle("즐겨찾기추가").setMessage("즐겨찾기 추가하시겠습니까?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            Toast.makeText(getApplicationContext(), "즐겨찾기에 추가되었습니다", Toast.LENGTH_SHORT).show();
+                            Log.d("즐겨찾기목록",third);
+
+
+                            CollectionReference title_content = db.collection("user").document(id_uid).collection("favorites");
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("goodPlace",third);
+                            user.put("strict",first);
+                            user.put("region",second);
+
+                            title_content.document(id_value+third).set(user);
+
+                            db.collection("user").document(id_uid).collection("favorites")
+                                    .document(id_value+third)
+                                    .set(user)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            subExpAdapter1.notifyDataSetChanged();
+                                            Intent intent3 = new Intent(SubActivity.this,SubActivity.class);
+                                            SubActivity.this.finish();
+                                            startActivity(intent3);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                        }
+                                    });
+                        }
+                    });
+
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                        }
+                    });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                    return retVal;
+
+                } else if(itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+
+                    return retVal;
+
+                } else {
+                    return false;
+                }
+            }
+        });
+
+
+
+        ImageView draw_cancel = (ImageView) findViewById(R.id.draw_cancel);
+        draw_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        drawerLayout.setDrawerListener(listener);
+        drawerView.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        currentUser = mAuth.getCurrentUser();
+        if(currentUser == null){
+            startActivity(new Intent(SubActivity.this, MainActivity.class));
+            finish();
+        }
+    }
+
+
+
+    public void InitializeDrawList()
+    {
+        firstGroups.add("강남구");
+        firstGroups.add("강동구");
+        firstGroups.add("강북구");
+        firstGroups.add("강서구");
+
+        gangone.add(new SubList("xx동"));
+        gangone.add(new SubList("yy동"));
+        gangone.add(new SubList("zz동"));
+
+        gangtwo.add(new SubList("11동"));
+        gangtwo.add(new SubList("22동"));
+        gangtwo.add(new SubList("33동"));
+
+        gangthree.add(new SubList("ㅋㅋ동"));
+        gangthree.add(new SubList("ㅌㅌ동"));
+        gangthree.add(new SubList("ㅊㅊ동"));
+
+        gangfour.add(new SubList("aa동"));
+        gangfour.add(new SubList("bb동"));
+        gangfour.add(new SubList("cc동"));
+
+        firstItemGroup.put(firstGroups.get(0),gangone);
+        firstItemGroup.put(firstGroups.get(1),gangtwo);
+        firstItemGroup.put(firstGroups.get(2),gangthree);
+        firstItemGroup.put(firstGroups.get(3),gangfour);
+
+        goodGroups.add("즐겨찾기 목록");
+    }
+
+    //팝업창
+    public void OnClickHandler(View view)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("종료").setMessage("로그아웃하시겠습니까?");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+                Toast.makeText(getApplicationContext(), "로그아웃되었습니다", Toast.LENGTH_SHORT).show();
+                signOut();
+                Intent intent = new Intent(SubActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListner =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    Fragment selectedFragment = null;
+                    TextView textView= (TextView)findViewById(R.id.text_test);
+                    switch(menuItem.getItemId())
+                    {
+                        case R.id.navigation_home:
+                            selectedFragment = new HomeFragment();
+                            break;
+                        case R.id.navigation_dashboard:
+                            selectedFragment = new FavoritesFragment();
+                            break;
+                        case R.id.navigation_notifications:
+                            selectedFragment = new SearchFragment();
+                            break;
+                    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                    return  true;
+                }
+            };
+
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        mAuth.getInstance().signOut();
+    }
+
+
+    private void revokeAccess() {
+        mAuth.getCurrentUser().delete();
+    }
+
+    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+        }
+
+        @Override
+        public void onDrawerOpened(@NonNull View drawerView) {
+
+        }
+
+        @Override
+        public void onDrawerClosed(@NonNull View drawerView) {
+
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+
+        }
+    };
+}

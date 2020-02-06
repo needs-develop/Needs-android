@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:fontFamily="@font/content"
+        android:textSize="20dp"
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="게시판" />
+    <LinearLayout
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <Spinner
+            android:id="@+id/top_spinner"
+            android:entries="@array/arrayNameTwo"
+            android:layout_width="83dp"
+            android:layout_height="26dp"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/top_spinner_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="항목선택" />
+
+        <ImageView
+            android:id="@+id/btn_write"
+            android:layout_width="83dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:weightSum="7">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:text="번호"
+                android:fontFamily="@font/librarystyle"/>
+
+            <TextView
+                android:gravity="start"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.8"
+                android:text="제목"
+                android:fontFamily="@font/librarystyle"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="작성자"
+                android:fontFamily="@font/librarystyle"/>
+            <TextView
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.6"
+                android:text="날짜"
+                android:fontFamily="@font/librarystyle"/>
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:text="조회수"
+                android:fontFamily="@font/librarystyle"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"/>
+        <ListView
+            android:id="@+id/_listView"
+            android:layout_width="match_parent"
+            android:textFilterEnabled="true"
+            android:layout_height="500dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <Spinner
+            android:id="@+id/spinner"
+            android:entries="@array/arrayName"
+            android:layout_width="83dp"
+            android:layout_height="26dp"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+            <TextView
+                android:id="@+id/spinner_text"
+                android:hint="항목선택"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+            </TextView>
+            <!--android:entries="@array/test"-->
+            <EditText
+                android:id="@+id/edit_board"
+                android:layout_width="96dp"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
+                android:hint="입력하세요" />
+            <Button
+                android:id="@+id/button"
+                android:layout_width="70dp"
+                android:layout_height="37dp"
+                android:text="검색" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
