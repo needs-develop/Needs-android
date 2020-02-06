@@ -14,10 +14,6 @@ public class ReplyListAdapter extends BaseAdapter {
     Context context;
     ArrayList<ReplyList> list_replyArrayList;
 
-    TextView comment_reply;
-    TextView writer_reply;
-    TextView time_reply;
-
     public ReplyListAdapter(Context context, ArrayList<ReplyList>list_replyArrayList){
         this.context = context;
         this.list_replyArrayList = list_replyArrayList;
@@ -40,20 +36,32 @@ public class ReplyListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
         if(convertView==null)
         {
+            holder = new ViewHolder();
             convertView =
                     LayoutInflater.from(context).inflate(R.layout.activity_itemreply,null);
-             comment_reply = (TextView) convertView.findViewById(R.id.comment_reply);
-             writer_reply = (TextView)convertView.findViewById(R.id.writer_reply);
-             time_reply = (TextView)convertView.findViewById(R.id.time_reply);
-
+            holder.comment_reply = (TextView) convertView.findViewById(R.id.comment_reply);
+            holder.writer_reply = (TextView)convertView.findViewById(R.id.writer_reply);
+            holder.time_reply = (TextView)convertView.findViewById(R.id.time_reply);
+            convertView.setTag(holder);
+        }
+        else{
+            holder = (ViewHolder)convertView.getTag();
         }
 
-        comment_reply.setText(list_replyArrayList.get(position).getComment_reply());
-        writer_reply.setText(list_replyArrayList.get(position).getWriter_reply());
-        time_reply.setText(list_replyArrayList.get(position).getTime_reply());
+        holder.comment_reply.setText(list_replyArrayList.get(position).getComment_reply());
+        holder.writer_reply.setText(list_replyArrayList.get(position).getWriter_reply());
+        holder.time_reply.setText(list_replyArrayList.get(position).getTime_reply());
 
         return convertView;
+    }
+
+    public class ViewHolder{
+        TextView comment_reply;
+        TextView writer_reply;
+        TextView time_reply;
+
     }
 }
