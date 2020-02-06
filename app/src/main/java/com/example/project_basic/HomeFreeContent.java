@@ -46,6 +46,7 @@ import java.util.Map;
 import static com.example.project_basic.MainActivity.id_nickName;
 import static com.example.project_basic.MainActivity.id_uid;
 import static com.example.project_basic.MainActivity.id_value;
+import static com.example.project_basic.SubActivity.fragmentNumber;
 import static com.example.project_basic.SubActivity.point;
 import static com.example.project_basic.SubActivity.pointLimit;
 
@@ -484,11 +485,6 @@ public class HomeFreeContent extends AppCompatActivity {
         btn_reply = findViewById(R.id.btn_free_reply);
         edit_reply = findViewById(R.id.edit_free_reply);
 
-        list_reply = (ListView)findViewById(R.id.list_free_reply);
-        list_replyArrayList = new ArrayList<ReplyList>();
-
-
-
         /*
         수정하기 버튼도 만들기 update 기능 만들기
         */
@@ -649,6 +645,7 @@ public class HomeFreeContent extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                    fragmentNumber = 1;
                                     Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(HomeFreeContent.this, SubActivity.class);
                                     startActivity(intent);
@@ -752,7 +749,7 @@ public class HomeFreeContent extends AppCompatActivity {
         {
             while (running){
                 try{
-                    sleep(300);
+                    sleep(150);
                     if(cnt--==0){
                         running = false;
                     }
@@ -782,7 +779,7 @@ public class HomeFreeContent extends AppCompatActivity {
             }
             Toast.makeText(getApplicationContext(), "댓글이 등록되었습니다", Toast.LENGTH_SHORT).show();
             HomeFreeContent.this.finish();
-            Intent intent2 = new Intent(HomeFreeContent.this, HomeContent.class);
+            Intent intent2 = new Intent(HomeFreeContent.this, HomeFreeContent.class);
             intent2.putExtra("title",title);
             intent2.putExtra("content",content);
             intent2.putExtra("day",day);

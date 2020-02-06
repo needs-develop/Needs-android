@@ -52,6 +52,7 @@ public class FavoritesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable

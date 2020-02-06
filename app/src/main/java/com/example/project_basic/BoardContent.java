@@ -472,11 +472,6 @@ public class BoardContent extends AppCompatActivity {
         btn_reply = findViewById(R.id.btn_reply);
         edit_reply = findViewById(R.id.edit_reply);
 
-        list_reply = (ListView)findViewById(R.id.list_reply);
-        list_replyArrayList = new ArrayList<ReplyList>();
-
-
-
         /*
         수정하기 버튼도 만들기 update 기능 만들기
         */
@@ -752,7 +747,7 @@ public class BoardContent extends AppCompatActivity {
         {
             while (running){
                 try{
-                    sleep(300);
+                    sleep(150);
                     if(cnt--==0){
                         running = false;
                     }

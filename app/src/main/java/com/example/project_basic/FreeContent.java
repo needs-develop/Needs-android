@@ -458,21 +458,6 @@ public class FreeContent extends AppCompatActivity {
                             }
                             replyListAdapter = new ReplyListAdapter(FreeContent.this,list_replyArrayList);
                             list_reply.setAdapter(replyListAdapter);
-                            /*
-                            list_reply.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Intent intent2 = new Intent(BoardContent.this,BoardContent.class);
-
-                                    String comment = list_replyArrayList.get(position).getComment_reply();
-                                    String writer = list_replyArrayList.get(position).getWriter_reply();
-
-                                    intent2.putExtra("r_content",comment);
-                                    intent2.putExtra("r_writer",writer);
-
-                                    startActivity(intent2);
-                                }
-                            });*/
                         } else {
                             Log.d("태그", "Error getting documents: ", task.getException());
                         }
@@ -481,9 +466,6 @@ public class FreeContent extends AppCompatActivity {
 
         btn_reply = findViewById(R.id.btn_free_reply);
         edit_reply = findViewById(R.id.edit_free_reply);
-
-        list_reply = (ListView)findViewById(R.id.list_free_reply);
-        list_replyArrayList = new ArrayList<ReplyList>();
 
 
 
@@ -652,6 +634,7 @@ public class FreeContent extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                    fragmentNumber = 1;
                                     Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(FreeContent.this, SubActivity.class);
                                     startActivity(intent);
@@ -758,7 +741,7 @@ public class FreeContent extends AppCompatActivity {
         {
             while (running){
                 try{
-                    sleep(300);
+                    sleep(150);
                     if(cnt--==0){
                         running = false;
                     }

@@ -488,8 +488,6 @@ public class HomeContent extends AppCompatActivity {
         btn_reply = findViewById(R.id.btn_reply);
         edit_reply = findViewById(R.id.edit_reply);
 
-        list_reply = (ListView)findViewById(R.id.list_reply);
-        list_replyArrayList = new ArrayList<ReplyList>();
 
 
 
@@ -761,7 +759,7 @@ public class HomeContent extends AppCompatActivity {
         {
             while (running){
                 try{
-                    sleep(300);
+                    sleep(150);
                     if(cnt--==0){
                         running = false;
                     }
