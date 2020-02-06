@@ -248,7 +248,7 @@ public class BoardWrite extends AppCompatActivity {
         {
             while (running){
                 try{
-                    sleep(500);
+                    sleep(300);
                     if(cnt--==0){
                         running = false;
                     }

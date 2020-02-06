@@ -1,10 +1,13 @@
 package com.example.project_basic;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +31,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -86,6 +90,10 @@ public class FreeContent extends AppCompatActivity {
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
 
     String fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
+
+    private ProgressDialog mProgressDialog;
+    private BackgroundThread mBackThread;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -435,7 +443,7 @@ public class FreeContent extends AppCompatActivity {
 
 
         db.collection("freeData").document(documentName)
-                .collection("reply")
+                .collection("reply").orderBy("timeReply", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -500,7 +508,7 @@ public class FreeContent extends AppCompatActivity {
                         user.put("timeReply",fullDay);
                         user.put("data_doc",documentName);
 
-                        try {
+                        //try {
                             db.collection("freeData").document(documentName)
                                     .collection("reply")
                                     .add(user)
@@ -511,26 +519,23 @@ public class FreeContent extends AppCompatActivity {
                                             execute();
                                         }
                                     });
+                        mProgressDialog = ProgressDialog.show(FreeContent.this,"Loading"
+                                ,"댓글작성중입니다..");
+
+                        mBackThread = new BackgroundThread();
+                        mBackThread.setRunning(true);
+                        mBackThread.start();
+
+                            /*
                             Thread.sleep(2000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
-                        }
+                        }*/
 
 
                         ////////////////////////////////////////////////////////////////////////////////////
                         /////////////////////////////user로 전송////////////////////////////////////////////////
 
-                        Toast.makeText(getApplicationContext(), "댓글이 등록되었습니다", Toast.LENGTH_SHORT).show();
-                        FreeContent.this.finish();
-                        Intent intent2 = new Intent(FreeContent.this, FreeContent.class);
-                        intent2.putExtra("title",title);
-                        intent2.putExtra("content",content);
-                        intent2.putExtra("id",conId);
-                        intent2.putExtra("day",day);
-                        intent2.putExtra("visitnum",visitNum);
-                        intent2.putExtra("good",goodNum);
-                        intent2.putExtra("documentName",documentName);
-                        startActivity(intent2);
                     }
                 });
 
@@ -660,4 +665,61 @@ public class FreeContent extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public class BackgroundThread extends Thread{
+        volatile  boolean running = false;
+        int cnt;
+
+        void setRunning(boolean b)
+        {
+            running = b;
+            cnt = 7;
+        }
+
+        @Override
+        public void run()
+        {
+            while (running){
+                try{
+                    sleep(150);
+                    if(cnt--==0){
+                        running = false;
+                    }
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            handler.sendMessage(handler.obtainMessage());
+        }
+
+    }
+
+    Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg){
+            mProgressDialog.dismiss();
+
+            boolean retry = true;
+            while(retry){
+                try{
+                    mBackThread.join();
+                    retry = false;
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            Toast.makeText(getApplicationContext(), "댓글이 등록되었습니다", Toast.LENGTH_SHORT).show();
+            FreeContent.this.finish();
+            Intent intent2 = new Intent(FreeContent.this, FreeContent.class);
+            intent2.putExtra("title",title);
+            intent2.putExtra("content",content);
+            intent2.putExtra("id",conId);
+            intent2.putExtra("day",day);
+            intent2.putExtra("visitnum",visitNum);
+            intent2.putExtra("good",goodNum);
+            intent2.putExtra("documentName",documentName);
+            startActivity(intent2);
+        }
+
+    };
 }
