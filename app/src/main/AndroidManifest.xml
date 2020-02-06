@@ -46,9 +46,9 @@
         <activity android:name=".FreeContent"></activity>
         <activity android:name=".HomeFreeContent" />
         <activity android:name=".HomeContent" />
-        <activity android:name=".MywriteActivity"></activity>
-        <activity android:name=".MylikeActivity" />
-        <activity android:name=".MyreplyActivity" />
+        <activity android:name=".MyWriteActivity"></activity>
+        <activity android:name=".MyLikeActivity" />
+        <activity android:name=".MyReplyActivity" />
         <activity android:name=".PointConversionActivity" />
         <activity android:name=".PointHistoryActivity" />
         <activity android:name=".SignedInActivity" />

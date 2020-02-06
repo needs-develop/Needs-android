@@ -20,7 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class MywriteActivity extends ListActivity {
+public class MyWriteActivity extends ListActivity {
     ListView listViewWrite;
     BoardListAdapter boardListAdapter;
     ArrayList<BoardList> list_itemArrayList = null;
@@ -53,7 +53,7 @@ public class MywriteActivity extends ListActivity {
                                         document.getData().get("good").toString(),document.getData().get("document_name").toString()));
                                 i++;
                             }
-                            boardListAdapter = new BoardListAdapter(MywriteActivity.this, list_itemArrayList);
+                            boardListAdapter = new BoardListAdapter(MyWriteActivity.this, list_itemArrayList);
                             listViewWrite.setAdapter(boardListAdapter);
                         } else {
                             Log.d("태그", "Error getting documents: ", task.getException());

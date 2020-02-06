@@ -209,7 +209,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), MywriteActivity.class);
+                Intent i = new Intent(getActivity(), MyWriteActivity.class);
                 startActivity(i);
             }
         });
@@ -219,7 +219,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), MyreplyActivity.class);
+                Intent i = new Intent(getActivity(), MyReplyActivity.class);
                 startActivity(i);
             }
         });
@@ -229,7 +229,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), MylikeActivity.class);
+                Intent i = new Intent(getActivity(), MyLikeActivity.class);
                 startActivity(i);
             }
         });

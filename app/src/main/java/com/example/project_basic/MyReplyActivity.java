@@ -21,8 +21,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 
-public class MylikeActivity extends ListActivity {
-    ListView listViewlike;
+public class MyReplyActivity extends ListActivity {
+    ListView listViewReply;
     BoardListAdapter boardListAdapter;
     ArrayList<BoardList> list_itemArrayList = null;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -32,14 +32,14 @@ public class MylikeActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mylike);
+        setContentView(R.layout.activity_myreply);
 
-        listViewlike = getListView();
+        listViewReply = getListView();
         list_itemArrayList = new ArrayList<BoardList>();
         String uid = user.getUid();
 
-        CollectionReference colRef = db.collection("user").document(uid).collection("like");
-                 colRef
+        CollectionReference colRef = db.collection("user").document(uid).collection("reply");
+                colRef
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -54,8 +54,8 @@ public class MylikeActivity extends ListActivity {
                                         document.getData().get("good").toString(),document.getData().get("document_name").toString()));
                                 i++;
                             }
-                            boardListAdapter = new BoardListAdapter(MylikeActivity.this, list_itemArrayList);
-                            listViewlike.setAdapter(boardListAdapter);
+                            boardListAdapter = new BoardListAdapter(MyReplyActivity.this, list_itemArrayList);
+                            listViewReply.setAdapter(boardListAdapter);
                         } else {
                             Log.d("태그", "Error getting documents: ", task.getException());
                         }
