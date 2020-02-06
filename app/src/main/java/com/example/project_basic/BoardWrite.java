@@ -1,13 +1,17 @@
 package com.example.project_basic;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -59,6 +63,12 @@ public class BoardWrite extends AppCompatActivity {
     String pointNum = point;
     String docName = "name";
     int data = 0;
+
+
+    private ProgressDialog mProgressDialog;
+    private BackgroundThread mBackThread;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +122,9 @@ public class BoardWrite extends AppCompatActivity {
                     user.put("write",id_nickName);
 
 
-                    try {
+
+
+                    //try {
                         Log.d("docName출력 1번테스트","docName출력 1번테스트");
                         db.collection("data").document("allData").collection(address)
                                 .add(user)
@@ -125,16 +137,20 @@ public class BoardWrite extends AppCompatActivity {
                                         execute();
                                     }
                                 });
-                        Thread.sleep(1000);
+                        mProgressDialog = ProgressDialog.show(BoardWrite.this,"Loading"
+                                ,"글작성중입니다..");
+
+                        mBackThread = new BackgroundThread();
+                        mBackThread.setRunning(true);
+                        mBackThread.start();
+                    /*
+                        Thread.sleep(1500);
                         Log.d("docName출력 3번테스트","docName출력 3번테스트");
-                        Thread.sleep(1000);
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
-                    Intent intent_write = new Intent(BoardWrite.this, BoardActivity.class);
-                    BoardWrite.this.finish();
-                    startActivity(intent_write);
+                    */
                 }
                 else
                 {
@@ -216,4 +232,57 @@ public class BoardWrite extends AppCompatActivity {
         BoardWrite.this.finish();
         super.onBackPressed();
     }
+
+    public class BackgroundThread extends Thread{
+        volatile  boolean running = false;
+        int cnt;
+
+        void setRunning(boolean b)
+        {
+            running = b;
+            cnt = 7;
+        }
+
+        @Override
+        public void run()
+        {
+            while (running){
+                try{
+                    sleep(500);
+                    if(cnt--==0){
+                        running = false;
+                    }
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            handler.sendMessage(handler.obtainMessage());
+        }
+
+    }
+
+    Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg){
+            mProgressDialog.dismiss();
+
+            boolean retry = true;
+            while(retry){
+                try{
+                    mBackThread.join();
+                    retry = false;
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            Toast.makeText(BoardWrite.this," 글이작성되었습니다",Toast.LENGTH_SHORT).show();
+
+            Intent intent_write = new Intent(BoardWrite.this, BoardActivity.class);
+            BoardWrite.this.finish();
+            startActivity(intent_write);
+        }
+
+    };
+
 }

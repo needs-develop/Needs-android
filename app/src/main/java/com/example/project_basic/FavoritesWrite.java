@@ -1,13 +1,17 @@
 package com.example.project_basic;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -60,6 +64,10 @@ public class FavoritesWrite extends AppCompatActivity {
 
     String fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
     String pointNum = point;
+
+
+    private ProgressDialog mProgressDialog;
+    private BackgroundThread mBackThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +124,7 @@ public class FavoritesWrite extends AppCompatActivity {
 
 
 
-                    try {
+                    //try {
                         Log.d("docName출력 1번테스트","docName출력 1번테스트");
                         db.collection("freeData")
                                 .add(user)
@@ -129,12 +137,18 @@ public class FavoritesWrite extends AppCompatActivity {
                                         execute();
                                     }
                                 });
-                        Thread.sleep(1000);
+                    mProgressDialog = ProgressDialog.show(FavoritesWrite.this,"Loading"
+                            ,"글작성중입니다..");
+
+                    mBackThread = new BackgroundThread();
+                    mBackThread.setRunning(true);
+                    mBackThread.start();
+                       /* Thread.sleep(1000);
                         Log.d("docName출력 3번테스트","docName출력 3번테스트");
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     //////////////////////////////touser///////////////////////////////////////////////
@@ -144,10 +158,6 @@ public class FavoritesWrite extends AppCompatActivity {
                     startActivity(intent_write);*/
 
 
-
-                        FavoritesWrite.this.finish();
-                        Intent intent = new Intent(FavoritesWrite.this,SubActivity.class);
-                        startActivity(intent);
                 }
 
                 else
@@ -226,6 +236,58 @@ public class FavoritesWrite extends AppCompatActivity {
         super.onBackPressed();
         FavoritesWrite.this.finish();
     }
+
+    public class BackgroundThread extends Thread{
+        volatile  boolean running = false;
+        int cnt;
+
+        void setRunning(boolean b)
+        {
+            running = b;
+            cnt = 7;
+        }
+
+        @Override
+        public void run()
+        {
+            while (running){
+                try{
+                    sleep(500);
+                    if(cnt--==0){
+                        running = false;
+                    }
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            handler.sendMessage(handler.obtainMessage());
+        }
+
+    }
+
+    Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg){
+            mProgressDialog.dismiss();
+
+            boolean retry = true;
+            while(retry){
+                try{
+                    mBackThread.join();
+                    retry = false;
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            Toast.makeText(FavoritesWrite.this," 글이작성되었습니다",Toast.LENGTH_SHORT).show();
+
+            FavoritesWrite.this.finish();
+            Intent intent = new Intent(FavoritesWrite.this,SubActivity.class);
+            startActivity(intent);
+        }
+
+    };
 }
 
 
