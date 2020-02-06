@@ -156,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             public void onClick(View v) {
                 String email = et_id.getText().toString().trim();
                 String pwd = pw_id.getText().toString().trim();
-
                 firebaseAuth.signInWithEmailAndPassword(email,pwd)
                         .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -176,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 }
                             }
                         });
-
             }
         });
         */
@@ -456,7 +454,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         }
                                     }
                                 });
-
                                 String point = "10";
                                 CollectionReference title_content = db.collection("user");
                                 Map<String, Object> user = new HashMap<>();
@@ -467,7 +464,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 user.put("id_nickName", id_nickName);
                                 user.put("id_point", point);
                                 user.put("photoUrl",photoUrl);
-
                                 title_content.document(id_uid).set(user);
                                 Log.d("유저정보 uid 확인", id_uid);
                                 db.collection("user").document(id_uid)
@@ -482,12 +478,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                             public void onFailure(@NonNull Exception e) {
                                             }
                                         });
-
                                 CollectionReference pointDay = db.collection("user");
                                 Map<String, Object> user1 = new HashMap<>();
                                 user1.put("pointDay", day);
                                 user1.put("pointLimit",pointLimit);
-
                                 pointDay.document(id_uid).collection("pointDay").document(id_value+"pointDay").set(user1);
                                 Log.d("유저정보 id로그인 uid 확인", id_uid);
                                 db.collection("user").document(id_uid).collection("pointDay").document(id_value+"pointDay")
@@ -506,13 +500,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 member.put("day", fullDay);
                                 member.put("point", "+10");
                                 member.put("type", "회원가입 지급 포인트");
-
                                 db.collection("user").document(id_uid).collection("pointHistory")
                                         .add(member)
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
-
                                             }
                                         });
                             }

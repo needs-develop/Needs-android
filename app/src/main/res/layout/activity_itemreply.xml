@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="2"
     android:padding="10dp">
@@ -37,22 +38,20 @@
             android:layout_weight="1.5"
             android:text="content"
             android:fontFamily="@font/for_reply"/>
-        <TextView
-            android:id="@+id/update_reply"
-            android:layout_width="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="수정"
-            android:fontFamily="@font/for_reply"/>
-        <TextView
+
+        <ImageView
+            android:id="@+id/modify_reply"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
+
+        <ImageView
             android:id="@+id/delete_reply"
-            android:layout_width="30dp"
-            android:layout_marginRight="20dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="삭제"
-            android:fontFamily="@font/for_reply"/>
+            android:layout_width="47dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
     </LinearLayout>
 
 </LinearLayout>

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -94,6 +95,9 @@ public class BoardContent extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
     private BackgroundThread mBackThread;
+
+    String r_writer;
+    String r_docName;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -454,7 +458,8 @@ public class BoardContent extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 list_replyArrayList.add(new ReplyList(document.getData().get("contentReply").toString(),
-                                        document.getData().get("writerReply").toString(),document.getData().get("timeReply").toString()));
+                                        document.getData().get("writerReply").toString(),document.getData().get("timeReply").toString()
+                                ,document.getData().get("data_doc").toString(),document.getData().get("reply_doc").toString()));
                             }
                             replyListAdapter = new ReplyListAdapter(BoardContent.this,list_replyArrayList);
                             list_reply.setAdapter(replyListAdapter);
@@ -540,6 +545,84 @@ public class BoardContent extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+
+
+
+      list_reply.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               r_writer = list_replyArrayList.get(position).getWriter_reply();
+               r_docName = list_replyArrayList.get(position).getR_doc_reply();
+
+              AlertDialog.Builder builder = new AlertDialog.Builder(BoardContent.this);
+
+              builder.setTitle("댓글 삭제").setMessage("삭제하시겠습니까?");
+
+              builder.setPositiveButton("삭제", new DialogInterface.OnClickListener(){
+                  @RequiresApi(api = Build.VERSION_CODES.O)
+                  @Override
+                  public void onClick(DialogInterface dialog, int id)
+                  {
+                      if(r_writer.equals(id_nickName)) {
+                          db.collection("data").document("allData").collection(address).document(documentName)
+                                  .collection("reply").document(r_docName)
+                                  .delete()
+                                  .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                      @Override
+                                      public void onComplete(@NonNull Task<Void> task) {
+                                          Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                                          Intent intent = new Intent(BoardContent.this, BoardContent.class);
+                                          BoardContent.this.finish();
+                                          intent.putExtra("title",title);
+                                          intent.putExtra("content",content);
+                                          intent.putExtra("day",day);
+                                          intent.putExtra("id",conId);
+                                          intent.putExtra("visitnum",visitNum);
+                                          intent.putExtra("good",goodNum);
+                                          intent.putExtra("documentName",documentName);
+                                          startActivity(intent);
+                                      }
+                                  })
+                                  .addOnFailureListener(new OnFailureListener() {
+                                      @Override
+                                      public void onFailure(@NonNull Exception e) {
+
+                                      }
+                                  });
+                          /////////////////////////////////////////////////////////////////////////////////////////////
+                          db.collection("user").document(id_uid).collection("reply").document(conId+title+content)
+                                  .delete()
+                                  .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                      @Override
+                                      public void onComplete(@NonNull Task<Void> task) {
+                                      }
+                                  })
+                                  .addOnFailureListener(new OnFailureListener() {
+                                      @Override
+                                      public void onFailure(@NonNull Exception e) {
+                                      }
+                                  });
+                          ///////////////////////////////////user쪽에서 reply삭제///////////////////////////////
+                      }
+                      else{
+                          Toast.makeText(getApplicationContext(), "권한이 없습니다", Toast.LENGTH_SHORT).show();
+                      }
+                  }
+              });
+
+              builder.setNegativeButton("취소", new DialogInterface.OnClickListener(){
+                  @Override
+                  public void onClick(DialogInterface dialog, int id)
+                  {
+                  }
+              });
+
+              AlertDialog alertDialog = builder.create();
+              alertDialog.show();
+
+          }
+      });
+
     }
 
 
@@ -669,7 +752,7 @@ public class BoardContent extends AppCompatActivity {
         {
             while (running){
                 try{
-                    sleep(150);
+                    sleep(300);
                     if(cnt--==0){
                         running = false;
                     }

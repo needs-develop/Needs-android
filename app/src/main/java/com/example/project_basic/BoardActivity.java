@@ -42,6 +42,7 @@ public class BoardActivity extends AppCompatActivity {
     int board_count;
 
     static int spinnerNumber = 0;
+    static int spinnerCmpNum = 0;
     FirebaseFirestore db = FirebaseFirestore.getInstance();//firestore객체
 
     String spinnerValue;
@@ -49,7 +50,7 @@ public class BoardActivity extends AppCompatActivity {
     TextView spinnerView;
 
     static String spinnerText="day";
-    static String spinnerContent="날짜순";
+    //static String spinnerContent="날짜순";
 
     int num = 0;
     static int checkNum = 0;
@@ -85,40 +86,42 @@ public class BoardActivity extends AppCompatActivity {
         top_spinner = findViewById(R.id.top_spinner);
         top_spinnerView = findViewById(R.id.top_spinner_text);
 
-        if(spinnerContent.equals("조회순"))
-        {
-            top_spinnerView.setText(spinnerContent);
-            num=1;
-            if(checkNum ==1)
-            {
-                checkNum = 0;
-                BoardActivity.this.finish();
-                Intent intent2 = new Intent(BoardActivity.this,BoardActivity.class);
-                startActivity(intent2);
-            }
-        }
 
         top_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 top_spinnerValue = parent.getItemAtPosition(position).toString();
-                if(position == 0&&spinnerText.equals("day"))
+                if(position == 0)
                 {
-                    top_spinnerView.setText(top_spinnerValue);
                     spinnerText = "day";
+                    if(spinnerCmpNum ==0)
+                    {
+                        top_spinnerView.setText("기본");
+                    }
+                    else if(spinnerCmpNum==1)
+                    {
+                        top_spinnerView.setText("날짜순");
+                    }
+                    else if(spinnerCmpNum==2)
+                    {
+                        top_spinnerView.setText("조회순");
+                    }
                 }
                 else if(position==1)
                 {
-                    top_spinnerView.setText(top_spinnerValue);
+                    spinnerText = "day";
+                    spinnerCmpNum = 1;
+                    BoardActivity.this.finish();
+                    Intent intent2 = new Intent(BoardActivity.this,BoardActivity.class);
+                    startActivity(intent2);
+                }
+                else if(position==2)
+                {
                     spinnerText = "visit_num";
-                    spinnerContent = "조회순";
+                    spinnerCmpNum = 2;
                     BoardActivity.this.finish();
                     Intent intent = new Intent(BoardActivity.this,BoardActivity.class);
                     startActivity(intent);
-                }
-                else if(num==1)
-                {
-                    checkNum = 1;
                 }
             }
             @Override
@@ -149,11 +152,8 @@ public class BoardActivity extends AppCompatActivity {
                                 board_count = Integer.parseInt(number);
                                 board_count++;
                             }
-                            if(spinnerContent.equals("조회순"))
-                            {
-                                spinnerText ="day";
-                                spinnerContent ="날짜순";
-                            }
+                            spinnerText = "day";
+                            spinnerCmpNum = 0;
                             boardListAdapter = new BoardListAdapter(BoardActivity.this,list_itemArrayList);
                             listView.setAdapter(boardListAdapter);
                             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
