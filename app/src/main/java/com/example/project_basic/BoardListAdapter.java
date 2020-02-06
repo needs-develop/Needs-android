@@ -21,18 +21,14 @@ public class BoardListAdapter extends BaseAdapter implements Filterable {
     Context context;
     Filter listFilter;
 
-    TextView btn_num;
-    TextView btn_title;
-    TextView btn_writer;
-    TextView btn_date;
-    TextView btn_visitnum;
+    LayoutInflater mInflater;
 
 
-
-    public BoardListAdapter(Context context, ArrayList<BoardList>data){
+    public BoardListAdapter(Context context,ArrayList<BoardList>data){
         this.data = data;
         this.context = context;
         this.list_itemArrayList = data;
+        this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //
     }
 
@@ -54,29 +50,33 @@ public class BoardListAdapter extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        final int pos = position;
+        ViewHolder holder;
 
         if(convertView==null)
         {
             convertView =
                     LayoutInflater.from(context).inflate(R.layout.activity_item,null);
-            btn_num =
+            holder = new ViewHolder();
+            holder.btn_num =
                     (TextView)convertView.findViewById(R.id.btn_num);
-            btn_title =
+            holder.btn_title =
                     (TextView)convertView.findViewById(R.id.btn_title);
-            btn_writer =
+            holder.btn_writer =
                     (TextView)convertView.findViewById(R.id.btn_writer);
-            btn_date =
+            holder.btn_date =
                     (TextView)convertView.findViewById(R.id.btn_date);
-            btn_visitnum =
+            holder.btn_visitnum =
                     (TextView)convertView.findViewById(R.id.btn_visitnum);
-
+            convertView.setTag(holder);
         }
-        btn_num.setText(data.get(position).getBtn_num());
-        btn_title.setText(data.get(position).getBtn_title());
-        btn_writer.setText(data.get(position).getBtn_writer());
-        btn_date.setText(data.get(position).getBtn_date());
-        btn_visitnum.setText(data.get(position).getBtn_visitnum());
+        else{
+            holder = (ViewHolder)convertView.getTag();
+        }
+        holder.btn_num.setText(data.get(position).getBtn_num());
+        holder.btn_title.setText(data.get(position).getBtn_title());
+        holder.btn_writer.setText(data.get(position).getBtn_writer());
+        holder.btn_date.setText(data.get(position).getBtn_date());
+        holder.btn_visitnum.setText(data.get(position).getBtn_visitnum());
 
         return convertView;
     }
@@ -131,5 +131,12 @@ public class BoardListAdapter extends BaseAdapter implements Filterable {
             }
         }
     }
-}
 
+    private class ViewHolder{
+        TextView btn_num;
+        TextView btn_title;
+        TextView btn_writer;
+        TextView btn_date;
+        TextView btn_visitnum;
+    }
+}
