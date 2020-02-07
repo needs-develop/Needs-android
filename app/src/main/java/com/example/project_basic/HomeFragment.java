@@ -97,12 +97,14 @@ public class HomeFragment extends Fragment {
                                                         int i = 1;
                                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                                             String number = Integer.toString(i);
+                                                            int num = Integer.parseInt(document.getData().get("good_num").toString());
                                                             Log.d("태그", document.getId() + " => " + document.getData().get("title")
                                                             );
                                                             list_itemArrayList.add(new FavoritesList(number, document.getData().get("title").toString(),
                                                                     document.getData().get("content").toString(), document.getData().get("write").toString(),
                                                                     document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
-                                                                    document.getData().get("good_num").toString(), document.getData().get("document_name").toString()));
+                                                                    document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
+                                                            ,document.getData().get("title").toString()+"      ["+num+"]"));
                                                             i = Integer.parseInt(number);
                                                             i++;
                                                         }
@@ -147,7 +149,7 @@ public class HomeFragment extends Fragment {
                                     positionName = null;
                                     Log.d("포지션 네임 null", "null");
                                     list_itemArrayList.add(new FavoritesList(" ", "상단의 내위치 정보를 등록한 후 목록이 갱신됩니다",
-                                            " ", " ", " ", " ", " ", ""));
+                                            " ", " ", " ", " ", " ", "",""));
                                     favorites_adapter = new Favorites_Adapter(getActivity(), list_itemArrayList);
                                     home_listView.setAdapter(favorites_adapter);
                                 }
@@ -277,10 +279,12 @@ public class HomeFragment extends Fragment {
                             int i = 1;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String number = Integer.toString(i);
+                                int num = Integer.parseInt(document.getData().get("good_num").toString());
                                 list_itemArrayList1.add(new FavoritesList(number, document.getData().get("title").toString(),
                                         document.getData().get("content").toString(), document.getData().get("write").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
-                                        document.getData().get("good_num").toString(), document.getData().get("document_name").toString()));
+                                        document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
+                                ,document.getData().get("title").toString()+"      ["+num+"]"));
                                 i = Integer.parseInt(number);
                                 i++;
                             }

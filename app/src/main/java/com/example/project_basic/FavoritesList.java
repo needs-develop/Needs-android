@@ -10,6 +10,15 @@ public class FavoritesList {
     private String btn_visit;
     private String content_good;
     private String document_name;
+    private  String sub_title;
+
+    public String getSub_title() {
+        return sub_title;
+    }
+
+    public void setSub_title(String sub_title) {
+        this.sub_title = sub_title;
+    }
 
     public String getDocument_name() {
         return document_name;
@@ -75,7 +84,8 @@ public class FavoritesList {
         this.content_good = content_good;
     }
 
-    public FavoritesList(String btn_num, String btn_title, String content, String btn_writer, String btn_date, String btn_visit, String content_good, String document_name) {
+    public FavoritesList(String btn_num, String btn_title, String content, String btn_writer, String btn_date,
+                         String btn_visit, String content_good, String document_name,String sub_title) {
         this.btn_num = btn_num;
         this.btn_title = btn_title;
         this.btn_writer = btn_writer;
@@ -84,5 +94,6 @@ public class FavoritesList {
         this.content = content;
         this.content_good = content_good;
         this.document_name = document_name;
+        this.sub_title = sub_title;
     }
 }

@@ -100,7 +100,10 @@ public class BoardActivity extends AppCompatActivity {
                         top_spinnerView.setText("날짜순");
                     } else if (spinnerCmpNum == 2) {
                         top_spinnerView.setText("조회순");
+                    }else if(spinnerCmpNum==3){
+                        top_spinnerView.setText("공감순");
                     }
+
                 } else if (position == 1) {
                     spinnerText = "day";
                     spinnerCmpNum = 1;
@@ -110,6 +113,14 @@ public class BoardActivity extends AppCompatActivity {
                 } else if (position == 2) {
                     spinnerText = "visit_num";
                     spinnerCmpNum = 2;
+                    BoardActivity.this.finish();
+                    Intent intent = new Intent(BoardActivity.this, BoardActivity.class);
+                    startActivity(intent);
+                }
+                else if(position == 3)
+                {
+                    spinnerText = "good_num";
+                    spinnerCmpNum = 3;
                     BoardActivity.this.finish();
                     Intent intent = new Intent(BoardActivity.this, BoardActivity.class);
                     startActivity(intent);
@@ -134,10 +145,12 @@ public class BoardActivity extends AppCompatActivity {
                             board_count = 1;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String number = Integer.toString(board_count);
+                                int num2 = Integer.parseInt(document.getData().get("good_num").toString());
                                 list_itemArrayList.add(new BoardList(number, document.getData().get("title").toString(),
                                         document.getData().get("content").toString(), document.getData().get("write").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
-                                        document.getData().get("good_num").toString(), document.getData().get("document_name").toString()));
+                                        document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
+                                ,document.getData().get("title").toString()+"     ["+num2+"]"));
                                 board_count = Integer.parseInt(number);
                                 board_count++;
                             }

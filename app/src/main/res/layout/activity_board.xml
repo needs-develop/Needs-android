@@ -36,9 +36,9 @@
         <ImageView
             android:id="@+id/btn_write"
             android:layout_width="83dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_gravity="end"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            android:src="@drawable/write"/>
     </LinearLayout>
 
 

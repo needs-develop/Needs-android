@@ -96,10 +96,12 @@ public class FavoritesFragment extends Fragment {
                             int i = 1;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String number = Integer.toString(i);
+                                int num = Integer.parseInt(document.getData().get("good_num").toString());
                                 list_itemArrayList.add(new FavoritesList(number, document.getData().get("title").toString(),
                                         document.getData().get("content").toString(), document.getData().get("write").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
-                                        document.getData().get("good_num").toString(), document.getData().get("document_name").toString()));
+                                        document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
+                                ,document.getData().get("title").toString()+"      ["+num+"]"));
                                 i = Integer.parseInt(number);
                                 i++;
                             }
