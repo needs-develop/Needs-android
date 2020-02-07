@@ -1,5 +1,7 @@
 package com.example.project_basic;
 
+import android.text.SpannableStringBuilder;
+
 public class FavoritesList {
 
     private String btn_num;
@@ -11,6 +13,16 @@ public class FavoritesList {
     private String content_good;
     private String document_name;
     private  String sub_title;
+    private SpannableStringBuilder spannableStringBuilder;
+
+    public SpannableStringBuilder getSpannableStringBuilder() {
+        return spannableStringBuilder;
+    }
+
+    public void setSpannableStringBuilder(SpannableStringBuilder spannableStringBuilder) {
+        this.spannableStringBuilder = spannableStringBuilder;
+    }
+
 
     public String getSub_title() {
         return sub_title;
@@ -85,7 +97,7 @@ public class FavoritesList {
     }
 
     public FavoritesList(String btn_num, String btn_title, String content, String btn_writer, String btn_date,
-                         String btn_visit, String content_good, String document_name,String sub_title) {
+                         String btn_visit, String content_good, String document_name,SpannableStringBuilder spannableStringBuilder) {
         this.btn_num = btn_num;
         this.btn_title = btn_title;
         this.btn_writer = btn_writer;
@@ -94,6 +106,7 @@ public class FavoritesList {
         this.content = content;
         this.content_good = content_good;
         this.document_name = document_name;
-        this.sub_title = sub_title;
+        this.spannableStringBuilder = spannableStringBuilder;
+        //this.sub_title = sub_title;
     }
 }

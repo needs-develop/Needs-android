@@ -1,10 +1,17 @@
 package com.example.project_basic;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -146,13 +153,29 @@ public class BoardActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String number = Integer.toString(board_count);
                                 int num2 = Integer.parseInt(document.getData().get("good_num").toString());
+                                String stringNum = Integer.toString(num2);
+                                int count = stringNum.length();
+
+                                String goodNum = document.getData().get("title").toString()+"     ["+num2+"]";
+                                int length =  goodNum.length();
+                                int start = 0;
+                                if(count==1) start = length-3;
+                                else if(count==2) start = length-4;
+                                else if(count==3) start = length-5;
+                                else if(count==4) start = length-6;
+
+                                SpannableStringBuilder builder = new SpannableStringBuilder(goodNum);
+                                builder.setSpan(new StyleSpan(Typeface.BOLD),start,length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")),start,length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
                                 list_itemArrayList.add(new BoardList(number, document.getData().get("title").toString(),
                                         document.getData().get("content").toString(), document.getData().get("write").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
                                         document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
-                                ,document.getData().get("title").toString()+"     ["+num2+"]"));
+                                ,builder));
                                 board_count = Integer.parseInt(number);
                                 board_count++;
+
                             }
                             spinnerText = "day";
                             spinnerCmpNum = 0;

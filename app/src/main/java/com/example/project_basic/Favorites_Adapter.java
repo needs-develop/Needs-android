@@ -66,7 +66,7 @@ public class Favorites_Adapter extends BaseAdapter implements Filterable {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.btn_num.setText(data.get(position).getBtn_num());
-        holder.btn_title.setText(data.get(position).getSub_title());
+        holder.btn_title.setText(data.get(position).getSpannableStringBuilder());
         holder.btn_writer.setText(data.get(position).getBtn_writer());
         holder.btn_date.setText(data.get(position).getBtn_date());
         holder.btn_visitnum.setText(data.get(position).getBtn_visitnum());

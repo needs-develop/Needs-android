@@ -1,8 +1,12 @@
 package com.example.project_basic;
 
 import android.app.ListActivity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.widget.ListView;
 
@@ -48,14 +52,17 @@ public class MyLikeActivity extends ListActivity {
                         if (task.isSuccessful()) {
                             int i = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                SpannableStringBuilder builder = new SpannableStringBuilder("");
+                                builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")),
+                                        0,0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 Log.d("태그", document.getId() + " => " + document.getData());
                                 list_itemArrayList.add(new BoardList(i + ".", document.getData().get("title").toString(),
                                         document.getData().get("content").toString(), document.getData().get("id").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visitnum").toString(),
                                         document.getData().get("good").toString(), document.getData().get("documentName").toString()
-                                ,document.getData().get("title").toString()+"["+document.getData().get("good_num").toString()+"]"));
+                                ,builder));
                                 i++;
-                            }
+                            }//document.getData().get("title").toString()+"["+document.getData().get("good_num").toString()+"]"
                             boardListAdapter = new BoardListAdapter(MyLikeActivity.this, list_itemArrayList);
                             listViewlike.setAdapter(boardListAdapter);
                         } else {
