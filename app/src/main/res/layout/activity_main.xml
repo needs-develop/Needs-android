@@ -22,13 +22,13 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="아이디를 입력하세요.." />
+            android:hint="email" />
 
         <EditText
             android:id="@+id/pw_id"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="비밀번호를 입력하세요.."
+            android:hint="password"
             android:password="true" />
 
         <LinearLayout

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,14 +45,6 @@ import static com.example.project_basic.MainActivity.id_value;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class RegisterActivity extends AppCompatActivity {
 
-
-    private EditText m_id;
-    private EditText m_pass;
-
-    private Button btn_register;
-
-    FirebaseAuth firebaseAuth; //이메일 로그인
-
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
@@ -80,6 +73,8 @@ public class RegisterActivity extends AppCompatActivity {
     int dupliNum = 0;
     int compnum = 1;
 
+    private EditText nameTxt, usernameTxt, emailTxt, passwordTxt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,20 +92,17 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        final EditText emailTxt = (EditText) findViewById(R.id.m_id); //이메일
-        final EditText nameTxt = (EditText) findViewById(R.id.btn_name);//닉네임
-        final EditText pwdTxt = (EditText) findViewById(R.id.m_pass);//비번
-        final EditText rnameTxt = (EditText) findViewById(R.id.btn_rname);
+        nameTxt = (EditText) findViewById(R.id.name);
+        usernameTxt = (EditText) findViewById(R.id.username);// 닉네임
+        emailTxt = (EditText) findViewById(R.id.email);
+        passwordTxt = (EditText) findViewById(R.id.password);// 비밀번호
 
-
-        final Button joinBtn = (Button) findViewById(R.id.btn_register);
         final Button btn_duplicate = findViewById(R.id.btn_duplicate);
-
         btn_duplicate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 compnum = 1;
-                dupName = nameTxt.getText().toString();
+                dupName = usernameTxt.getText().toString();
                 db.collection("user")
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -133,97 +125,97 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 if (compnum == 2) {
                                     Log.d("확인을 위한 num", "중복일시");
-                                    Toast.makeText(RegisterActivity.this, "중복된닉네임입니다", Toast.LENGTH_SHORT).show();
+                                    usernameTxt.setError("중복된 닉네임");
+                                    usernameTxt.requestFocus();
                                 } else if (compnum == 1) {
                                     Log.d("확인을 위한 num", "중복이 아닐시");
-                                    Toast.makeText(RegisterActivity.this, "사용가능한닉네임입니다", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                        });
-            }
-        });
-
-        joinBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                email = emailTxt.getText().toString();
-                //dupName = nameTxt.getText().toString();
-                pw = pwdTxt.getText().toString();
-                rname = rnameTxt.getText().toString();
-
-                if (compnum == 2)
-                    Toast.makeText(RegisterActivity.this, "닉네임중복확인을해주세요", Toast.LENGTH_SHORT).show();
-                else if (compnum == 1) {
-                    joinStart(email, dupName, pw, rname);
-                }
-            }
-        });
-
-
-
-        /*
-        m_id = (EditText) findViewById(R.id.m_id);
-        m_pass = (EditText) findViewById(R.id.m_pass);
-
-        btn_register = findViewById(R.id.btn_register);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        btn_register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String email = m_id.getText().toString().trim();
-                String pwd = m_pass.getText().toString().trim();
-
-                firebaseAuth.createUserWithEmailAndPassword(email,pwd)
-                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                if(task.isSuccessful())
-                                {
-                                    Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                    //intent.putExtra( "str", str);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                                else
-                                {
-                                    Toast.makeText(RegisterActivity.this,"등록실패",Toast.LENGTH_SHORT).show();
-                                    return;
+                                    usernameTxt.setError("사용가능한 닉네임");
+                                    usernameTxt.requestFocus();
                                 }
                             }
                         });
-
             }
         });
-         */
+
+
+        Button registerBtn = (Button) findViewById(R.id.btn_register);
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (compnum == 2) {
+                    usernameTxt.setError("닉네임 중복 확인을 해주세요");
+                    usernameTxt.requestFocus();
+                } else
+                    customerRegister();
+            }
+        });
     }
 
-    private void joinStart(final String email, final String name, String password, final String realname) {
+    private void customerRegister() {
+        String name = nameTxt.getText().toString();
+        String username = usernameTxt.getText().toString();
+        String email = emailTxt.getText().toString();
+        String password = passwordTxt.getText().toString();
+
+        if (name.isEmpty()) {
+            nameTxt.setError("Name is required");
+            nameTxt.requestFocus();
+            return;
+        }
+
+        if (name.length() < 3) {
+            nameTxt.setError("Name should be at least 3 character long");
+            nameTxt.requestFocus();
+            return;
+        }
+
+        if (!name.matches("^[가-힣]*$")) {
+            nameTxt.setError("한글만 허용합니다");
+            nameTxt.requestFocus();
+            return;
+        }
+
+        if (username.isEmpty()) {
+            usernameTxt.setError("Username is required");
+            usernameTxt.requestFocus();
+            return;
+        }
+
+        if (username.length() < 2) {
+            usernameTxt.setError("Username should be at least 2 character long");
+            usernameTxt.requestFocus();
+            return;
+        }
+
+        if (email.isEmpty()) {
+            emailTxt.setError("Email is required");
+            emailTxt.requestFocus();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailTxt.setError("Enter a valid email");
+            emailTxt.requestFocus();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            passwordTxt.setError("Password is required");
+            passwordTxt.requestFocus();
+            return;
+
+        }
+        registerStart(email, name, password, username);
+    }
+
+    private void registerStart(final String email, final String name, String password, final String realname) {
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-
-                        if (!task.isSuccessful()) {
-                            try {
-                                throw task.getException();
-                            } catch (FirebaseAuthWeakPasswordException e) {
-                                Toast.makeText(RegisterActivity.this, "비밀번호가 간단해요..", Toast.LENGTH_SHORT).show();
-                            } catch (FirebaseAuthInvalidCredentialsException e) {
-                                Toast.makeText(RegisterActivity.this, "email 형식에 맞지 않습니다.", Toast.LENGTH_SHORT).show();
-                            } catch (FirebaseAuthUserCollisionException e) {
-                                Toast.makeText(RegisterActivity.this, "이미존재하는 email 입니다.", Toast.LENGTH_SHORT).show();
-                            } catch (Exception e) {
-                                Toast.makeText(RegisterActivity.this, "다시 확인해주세요..", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
+                        if (task.isSuccessful()) {
                             currentUser = mAuth.getCurrentUser();
 
                             id_value = email;
@@ -295,6 +287,24 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                             finish();
+                        } else {
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthWeakPasswordException e) {
+                                passwordTxt.setError("비밀번호가 간단해요..");
+                                passwordTxt.requestFocus();
+                                // Toast.makeText(RegisterActivity.this, "비밀번호가 간단해요..", Toast.LENGTH_SHORT).show();
+                            } catch (FirebaseAuthInvalidCredentialsException e) {
+                                emailTxt.setError("Enter a valid email");
+                                emailTxt.requestFocus();
+                                // Toast.makeText(RegisterActivity.this, "email 형식에 맞지 않습니다.", Toast.LENGTH_SHORT).show();
+                            } catch (FirebaseAuthUserCollisionException e) {
+                                emailTxt.setError("사용할 수 없는 이메일입니다");
+                                emailTxt.requestFocus();
+                                // Toast.makeText(RegisterActivity.this, "이미 존재하는 email 입니다.", Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                Toast.makeText(RegisterActivity.this, "다시 확인해주세요..", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });

@@ -128,8 +128,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         et_id = findViewById(R.id.et_id);
         pw_id = findViewById(R.id.pw_id);
-        btn_name = findViewById(R.id.btn_name);
-        btn_rname = findViewById(R.id.btn_rname);
+        btn_name = findViewById(R.id.username);
+        btn_rname = findViewById(R.id.name);
 
         btn_test = findViewById(R.id.btn_test);
         btn2_test = findViewById(R.id.btn2_test);
@@ -147,35 +147,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 loginStart(email, password);
             }
         });
-
-        /*
-        btn_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = et_id.getText().toString().trim();
-                String pwd = pw_id.getText().toString().trim();
-                firebaseAuth.signInWithEmailAndPassword(email,pwd)
-                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful())
-                                {
-                                    str = et_id.getText().toString();//getText까지는 string 형태가 아님
-                                    Toast.makeText(getApplicationContext(), "로그인되었습니다", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(MainActivity.this, SubActivity.class);
-                                    intent.putExtra( "nickName", str);
-                                    //intent.putExtra( "str", str);
-                                    startActivity(intent);
-                                }
-                                else
-                                {
-                                    Toast.makeText(MainActivity.this,"로그인 오류",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-        });
-        */
 
         btn2_test.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -231,7 +202,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     //Toast.makeText(MainActivity.this, "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
                     Toast.makeText(MainActivity.this, "로그인 하였습니다", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
-
 
                     startActivity(new Intent(MainActivity.this, SubActivity.class));
 
@@ -419,78 +389,3 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Toast.makeText(MainActivity.this, "연결이 해제되었습니다", Toast.LENGTH_SHORT).show();
     }
 }
-
- /*
-                            if( compareNum != 0 &&changeNum==0)
-                            {
-                                DocumentReference doc = db.collection("user").document(id_uid);
-                                doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @RequiresApi(api = Build.VERSION_CODES.O)
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            DocumentSnapshot document = task.getResult();
-                                            Log.d("닉네임확인","닉네임확인");
-                                            if((String)document.getData().get("id_nickName")!=null)
-                                            id_nickName =  (String)document.getData().get("id_nickName");
-                                            else id_nickName = account.getDisplayName();
-                                        }
-                                        else {
-                                        }
-                                    }
-                                });
-                                String point = "10";
-                                CollectionReference title_content = db.collection("user");
-                                Map<String, Object> user = new HashMap<>();
-                                user.put("id_email", id_value);
-                                user.put("id_uid", id_uid);
-                                user.put("id_name", id_name);
-                                if(id_nickName == null)  id_nickName = account.getDisplayName();
-                                user.put("id_nickName", id_nickName);
-                                user.put("id_point", point);
-                                user.put("photoUrl",photoUrl);
-                                title_content.document(id_uid).set(user);
-                                Log.d("유저정보 uid 확인", id_uid);
-                                db.collection("user").document(id_uid)
-                                        .set(user)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                            }
-                                        });
-                                CollectionReference pointDay = db.collection("user");
-                                Map<String, Object> user1 = new HashMap<>();
-                                user1.put("pointDay", day);
-                                user1.put("pointLimit",pointLimit);
-                                pointDay.document(id_uid).collection("pointDay").document(id_value+"pointDay").set(user1);
-                                Log.d("유저정보 id로그인 uid 확인", id_uid);
-                                db.collection("user").document(id_uid).collection("pointDay").document(id_value+"pointDay")
-                                        .set(user1)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                            }
-                                        });
-                                Map<String, Object> member = new HashMap<>();
-                                member.put("day", fullDay);
-                                member.put("point", "+10");
-                                member.put("type", "회원가입 지급 포인트");
-                                db.collection("user").document(id_uid).collection("pointHistory")
-                                        .add(member)
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                            @Override
-                                            public void onSuccess(DocumentReference documentReference) {
-                                            }
-                                        });
-                            }
-                            */
