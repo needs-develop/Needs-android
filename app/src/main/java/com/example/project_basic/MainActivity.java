@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private EditText btn_name; //닉네임
     private EditText btn_rname;
 
+    EditText emailTxt, pwTxt;
 
     private Button btn_test; // 로그인
     private Button btn2_test; //회원가입
@@ -122,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
 
 
-        final EditText emailTxt = (EditText) findViewById(R.id.et_id);
-        final EditText pwTxt = (EditText) findViewById(R.id.pw_id);
+        emailTxt = (EditText) findViewById(R.id.et_id);
+        pwTxt = (EditText) findViewById(R.id.pw_id);
 
 
         et_id = findViewById(R.id.et_id);
@@ -139,12 +141,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         btn_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailTxt.getText().toString();
-                String password = pwTxt.getText().toString();
 
+                String email = emailTxt.getText().toString();
                 id_value = email;
 
-                loginStart(email, password);
+                CustomerLogin();
+
             }
         });
 
@@ -177,6 +179,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         });
     }
 
+    private void CustomerLogin() {
+        String email = emailTxt.getText().toString();
+        String password = pwTxt.getText().toString();
+
+        if (email.isEmpty()) {
+            emailTxt.setError("Email is required");
+            emailTxt.requestFocus();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailTxt.setError("Enter a valid email");
+            emailTxt.requestFocus();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            pwTxt.setError("Password is required");
+            pwTxt.requestFocus();
+            return;
+        }
+
+        loginStart(email, password);
+    }
+
     public void loginStart(final String email, String password) {
         // Toast.makeText(MainActivity.this,"loginStart 함수 안으로" ,Toast.LENGTH_SHORT).show();
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -188,9 +215,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     try {
                         throw task.getException();
                     } catch (FirebaseAuthInvalidUserException e) {
-                        Toast.makeText(MainActivity.this, "존재하지 않는 id 입니다.", Toast.LENGTH_SHORT).show();
+                        emailTxt.setError("존재하지 않는 email 입니다");
+                        emailTxt.requestFocus();
+                        //Toast.makeText(MainActivity.this, "존재하지 않는 id 입니다.", Toast.LENGTH_SHORT).show();
                     } catch (FirebaseAuthInvalidCredentialsException e) {
-                        Toast.makeText(MainActivity.this, "비밀번호를 다시 입력하세요.", Toast.LENGTH_SHORT).show();
+                        pwTxt.setError("비밀번호를 다시 입력하세요");
+                        pwTxt.requestFocus();
+                        // Toast.makeText(MainActivity.this, "비밀번호를 다시 입력하세요.", Toast.LENGTH_SHORT).show();
                     } catch (FirebaseNetworkException e) {
                         //  Toast.makeText(MainActivity.this,"Firebase NetworkException" ,Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
