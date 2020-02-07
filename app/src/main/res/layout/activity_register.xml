@@ -30,7 +30,9 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_rname"
-        android:gravity="center" />
+        android:gravity="center"
+        android:inputType="textPersonName"
+        />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -66,7 +68,8 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:hint=""/>
+            android:hint=""
+            android:inputType="textEmailAddress"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"

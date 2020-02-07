@@ -163,10 +163,13 @@
             android:orientation="horizontal">
             <EditText
                 android:id="@+id/edit_homeFree_reply"
-                android:layout_width="wrap_content"
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:hint="댓글을 입력하세요"
-                android:textSize="20dp"></EditText>
+                android:textSize="20dp"
+                android:inputType="text|textMultiLine"
+                android:minLines="1"
+                ></EditText>
             <Button
                 android:id="@+id/btn_homeFree_reply"
                 android:layout_width="80dp"
@@ -174,6 +177,7 @@
                 android:text="등록">
             </Button>
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

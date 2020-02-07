@@ -722,6 +722,11 @@ public class BoardContent extends AppCompatActivity {
                 .update(
                         "reply_doc",r_documentName
                 );
+        db.collection("user").document(id_uid)
+                .collection("reply").document(documentName)
+                .update(
+                        "reply_doc",r_documentName
+                );
     }
 
 

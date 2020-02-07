@@ -51,7 +51,7 @@ public class MyReplyActivity extends ListActivity {
                                 list_itemArrayList.add(new BoardList(i + ".", document.getData().get("title").toString(),
                                         document.getData().get("content").toString(), document.getData().get("id").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visitnum").toString(),
-                                        document.getData().get("good").toString(),document.getData().get("document_name").toString()));
+                                        document.getData().get("good").toString(),document.getData().get("documentName").toString()));
                                 i++;
                             }
                             boardListAdapter = new BoardListAdapter(MyReplyActivity.this, list_itemArrayList);

@@ -536,6 +536,7 @@ public class FreeContent extends AppCompatActivity {
             }
         });
 
+
         list_reply.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -713,6 +714,11 @@ public class FreeContent extends AppCompatActivity {
 
         db.collection("freeData").document(documentName).collection("reply")
                 .document(r_documentName)
+                .update(
+                        "reply_doc",r_documentName
+                );
+        db.collection("user").document(id_uid)
+                .collection("reply").document(documentName)
                 .update(
                         "reply_doc",r_documentName
                 );
