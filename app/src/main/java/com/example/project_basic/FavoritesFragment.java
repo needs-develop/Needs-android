@@ -48,17 +48,19 @@ public class FavoritesFragment extends Fragment {
     TextView spinnerView;
 
     static int f_spinnerNumber = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_dashboard,container,false);
+        View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
         MultiDex.install(getActivity());
 
 
@@ -72,6 +74,7 @@ public class FavoritesFragment extends Fragment {
                 spinnerView.setText(spinnerValue);
                 f_spinnerNumber = position;
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -80,7 +83,7 @@ public class FavoritesFragment extends Fragment {
 
         fragmentNumber = 0;
 
-        free_listView = (ListView)v.findViewById(R.id.free_list);
+        free_listView = (ListView) v.findViewById(R.id.free_list);
 
         list_itemArrayList = new ArrayList<FavoritesList>();
 
@@ -93,20 +96,20 @@ public class FavoritesFragment extends Fragment {
                             int i = 1;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String number = Integer.toString(i);
-                                list_itemArrayList.add(new FavoritesList(number,document.getData().get("title").toString() ,
-                                        document.getData().get("content").toString(), document.getData().get("write").toString() ,
-                                        document.getData().get("day").toString(),document.getData().get("visit_num").toString(),
-                                        document.getData().get("good_num").toString(),document.getData().get("document_name").toString()));
+                                list_itemArrayList.add(new FavoritesList(number, document.getData().get("title").toString(),
+                                        document.getData().get("content").toString(), document.getData().get("write").toString(),
+                                        document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
+                                        document.getData().get("good_num").toString(), document.getData().get("document_name").toString()));
                                 i = Integer.parseInt(number);
                                 i++;
                             }
-                            favorites_adapter= new Favorites_Adapter(getActivity(),list_itemArrayList);
+                            favorites_adapter = new Favorites_Adapter(getActivity(), list_itemArrayList);
                             free_listView.setAdapter(favorites_adapter);
 
                             free_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Intent intent = new Intent(getActivity(),HomeFreeContent.class);
+                                    Intent intent = new Intent(getActivity(), HomeFreeContent.class);
 
                                     String title = list_itemArrayList.get(position).getBtn_title();
                                     String content = list_itemArrayList.get(position).getContent();
@@ -117,16 +120,16 @@ public class FavoritesFragment extends Fragment {
                                     String documentName = list_itemArrayList.get(position).getDocument_name();
 
                                     int visitInt = Integer.parseInt(visitString);
-                                    visitInt = visitInt +1;
+                                    visitInt = visitInt + 1;
                                     visitString = Integer.toString(visitInt);
 
-                                    intent.putExtra("title",title);
-                                    intent.putExtra("content",content);
-                                    intent.putExtra("day",day);
-                                    intent.putExtra("id",conId);
-                                    intent.putExtra("good",goodNum);
-                                    intent.putExtra("visitnum",visitString);
-                                    intent.putExtra("documentName",documentName);
+                                    intent.putExtra("title", title);
+                                    intent.putExtra("content", content);
+                                    intent.putExtra("day", day);
+                                    intent.putExtra("id", conId);
+                                    intent.putExtra("good", goodNum);
+                                    intent.putExtra("visitnum", visitString);
+                                    intent.putExtra("documentName", documentName);
                                     startActivity(intent);
                                 }
                             });
@@ -136,11 +139,11 @@ public class FavoritesFragment extends Fragment {
                     }
                 });
 
-        free_write = (ImageView)v.findViewById(R.id.free_write);
+        free_write = (ImageView) v.findViewById(R.id.free_write);
         free_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("태그","클릭");
+                Log.d("태그", "클릭");
                 Intent intent = new Intent(getActivity(), FavoritesWrite.class);
                 //이부분 응용잘하기 후
                 startActivity(intent);
@@ -152,16 +155,17 @@ public class FavoritesFragment extends Fragment {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 String search = s.toString();
-                if(search.length() > 0) {
+                if (search.length() > 0) {
                     free_listView.setFilterText(search);
-                }
-                else {
+                } else {
                     free_listView.clearTextFilter();
                 }
             }

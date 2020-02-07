@@ -15,8 +15,7 @@ public class SubListAdapter extends BaseAdapter {
     LayoutInflater mLayoutInflater = null;
     ArrayList<SubList> sample;
 
-    public SubListAdapter(Context context,ArrayList<SubList>data)
-    {
+    public SubListAdapter(Context context, ArrayList<SubList> data) {
         mcontext = context;
         sample = data;
         mLayoutInflater = LayoutInflater.from(mcontext);
@@ -39,8 +38,8 @@ public class SubListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = mLayoutInflater.inflate(R.layout.activity_itemdraw,null);
-        TextView textView = (TextView)view.findViewById(R.id.draw_text);
+        View view = mLayoutInflater.inflate(R.layout.activity_itemdraw, null);
+        TextView textView = (TextView) view.findViewById(R.id.draw_text);
 
         textView.setText(sample.get(position).getCountry());
 

@@ -54,8 +54,7 @@
             android:text="N/A"
             android:textIsSelectable="true"
             app:layout_constraintLeft_toRightOf="@+id/user_profile_picture"
-            app:layout_constraintTop_toBottomOf="@+id/user_email" >
-        </TextView>
+            app:layout_constraintTop_toBottomOf="@+id/user_email"></TextView>
 
         <TextView
             android:id="@+id/user_enabled_providers"

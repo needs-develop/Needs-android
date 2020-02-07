@@ -39,7 +39,7 @@ public class MyLikeActivity extends ListActivity {
         String uid = user.getUid();
 
         CollectionReference colRef = db.collection("user").document(uid).collection("like");
-                 colRef
+        colRef
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -51,7 +51,7 @@ public class MyLikeActivity extends ListActivity {
                                 list_itemArrayList.add(new BoardList(i + ".", document.getData().get("title").toString(),
                                         document.getData().get("content").toString(), document.getData().get("id").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visitnum").toString(),
-                                        document.getData().get("good").toString(),document.getData().get("documentName").toString()));
+                                        document.getData().get("good").toString(), document.getData().get("documentName").toString()));
                                 i++;
                             }
                             boardListAdapter = new BoardListAdapter(MyLikeActivity.this, list_itemArrayList);

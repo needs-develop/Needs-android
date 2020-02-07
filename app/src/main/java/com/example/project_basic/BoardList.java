@@ -1,6 +1,6 @@
 package com.example.project_basic;
 
-public class BoardList  {
+public class BoardList {
 
     private String btn_num;
     private String btn_title;
@@ -11,9 +11,13 @@ public class BoardList  {
     private String content_good;
     private String document_name;
 
-    public String getDocument_name() { return document_name; }
+    public String getDocument_name() {
+        return document_name;
+    }
 
-    public void setDocument_name(String document_name) { this.document_name = document_name; }
+    public void setDocument_name(String document_name) {
+        this.document_name = document_name;
+    }
 
     public String getBtn_num() {
         return btn_num;
@@ -71,7 +75,7 @@ public class BoardList  {
         this.content_good = content_good;
     }
 
-    public BoardList(String btn_num, String btn_title,String content, String btn_writer, String btn_date, String btn_visit, String content_good,String document_name) {
+    public BoardList(String btn_num, String btn_title, String content, String btn_writer, String btn_date, String btn_visit, String content_good, String document_name) {
         this.btn_num = btn_num;
         this.btn_title = btn_title;
         this.btn_writer = btn_writer;

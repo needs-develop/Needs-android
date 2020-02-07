@@ -52,12 +52,12 @@ public class PointConversionActivity extends AppCompatActivity {
     ZonedDateTime nowAsiaSeoul = ZonedDateTime.ofInstant(nowUtc, asiaSeoul);
 
     String year = String.valueOf(nowAsiaSeoul.getYear());
-    String  month = String.valueOf(nowAsiaSeoul.getMonthValue());
-    String day  = String.valueOf(nowAsiaSeoul.getDayOfMonth()) ;
+    String month = String.valueOf(nowAsiaSeoul.getMonthValue());
+    String day = String.valueOf(nowAsiaSeoul.getDayOfMonth());
     String hour = String.valueOf(nowAsiaSeoul.getHour());
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
 
-    String fullDay = year+"/"+month+"/"+day+" "+hour+":"+minute;
+    String fullDay = year + "/" + month + "/" + day + " " + hour + ":" + minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

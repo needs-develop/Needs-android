@@ -20,7 +20,7 @@ public class Favorites_Adapter extends BaseAdapter implements Filterable {
     Context context;
     Filter listFilter;
 
-    public Favorites_Adapter(Context context, ArrayList<FavoritesList> data){
+    public Favorites_Adapter(Context context, ArrayList<FavoritesList> data) {
         this.data = data;
         this.context = context;
         this.list_itemArrayList = data;
@@ -46,26 +46,24 @@ public class Favorites_Adapter extends BaseAdapter implements Filterable {
 
         ViewHolder holder;
 
-        if(convertView==null)
-        {
+        if (convertView == null) {
             holder = new ViewHolder();
             convertView =
-                    LayoutInflater.from(context).inflate(R.layout.activity_item,null);
+                    LayoutInflater.from(context).inflate(R.layout.activity_item, null);
             holder.btn_num =
-                    (TextView)convertView.findViewById(R.id.btn_num);
+                    (TextView) convertView.findViewById(R.id.btn_num);
             holder.btn_title =
-                    (TextView)convertView.findViewById(R.id.btn_title);
+                    (TextView) convertView.findViewById(R.id.btn_title);
             holder.btn_writer =
-                    (TextView)convertView.findViewById(R.id.btn_writer);
+                    (TextView) convertView.findViewById(R.id.btn_writer);
             holder.btn_date =
-                    (TextView)convertView.findViewById(R.id.btn_date);
+                    (TextView) convertView.findViewById(R.id.btn_date);
             holder.btn_visitnum =
-                    (TextView)convertView.findViewById(R.id.btn_visitnum);
+                    (TextView) convertView.findViewById(R.id.btn_visitnum);
 
             convertView.setTag(holder);
-        }
-        else{
-            holder = (ViewHolder)convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
         holder.btn_num.setText(data.get(position).getBtn_num());
         holder.btn_title.setText(data.get(position).getBtn_title());
@@ -79,33 +77,28 @@ public class Favorites_Adapter extends BaseAdapter implements Filterable {
     @Override
     public Filter getFilter() {
         if (listFilter == null) {
-            listFilter = new ListFilter() ;
+            listFilter = new ListFilter();
         }
-        return listFilter ;
+        return listFilter;
     }
 
-    private class ListFilter extends Filter{
+    private class ListFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
-            if(constraint == null || constraint.length() ==0){
+            if (constraint == null || constraint.length() == 0) {
                 results.values = list_itemArrayList;
                 results.count = list_itemArrayList.size();
-            }
-            else {
+            } else {
                 ArrayList<FavoritesList> itemList = new ArrayList<>();
-                for(FavoritesList item : list_itemArrayList){
-                    if(f_spinnerNumber==0) {
+                for (FavoritesList item : list_itemArrayList) {
+                    if (f_spinnerNumber == 0) {
                         if (item.getBtn_title().toUpperCase().contains(constraint.toString().toUpperCase()))
                             itemList.add(item);
-                    }
-                    else if (f_spinnerNumber ==1)
-                    {
+                    } else if (f_spinnerNumber == 1) {
                         if (item.getBtn_writer().toUpperCase().contains(constraint.toString().toUpperCase()))
                             itemList.add(item);
-                    }
-                    else if(f_spinnerNumber==2)
-                    {
+                    } else if (f_spinnerNumber == 2) {
                         if (item.getBtn_date().toUpperCase().contains(constraint.toString().toUpperCase()))
                             itemList.add(item);
                     }
@@ -115,18 +108,19 @@ public class Favorites_Adapter extends BaseAdapter implements Filterable {
             }
             return results;
         }
+
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             data = (ArrayList<FavoritesList>) results.values;
-            if(results.count>0) {
+            if (results.count > 0) {
                 notifyDataSetChanged();
-            }
-            else{
+            } else {
                 notifyDataSetInvalidated();
             }
         }
     }
-    private class ViewHolder{
+
+    private class ViewHolder {
         TextView btn_num;
         TextView btn_title;
         TextView btn_writer;

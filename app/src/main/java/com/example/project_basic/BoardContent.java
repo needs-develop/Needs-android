@@ -53,45 +53,45 @@ import static com.example.project_basic.SubActivity.pointLimit;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class BoardContent extends AppCompatActivity {
-        TextView content_title ;
-        TextView content_content;
-        TextView content_good;
-        TextView content_Id;
-        TextView content_day;
-        TextView content_visitnum;
+    TextView content_title;
+    TextView content_content;
+    TextView content_good;
+    TextView content_Id;
+    TextView content_day;
+    TextView content_visitnum;
 
-        ImageView content_heart;
+    ImageView content_heart;
 
-        String title;
-        String content;
-        String day;
-        String conId;
-        String goodNum;
-        String visitNum;
-        String documentName;
-        String r_documentName;
+    String title;
+    String content;
+    String day;
+    String conId;
+    String goodNum;
+    String visitNum;
+    String documentName;
+    String r_documentName;
 
-        ListView list_reply;
-        ReplyListAdapter replyListAdapter;
-        ArrayList<ReplyList> list_replyArrayList = null;
+    ListView list_reply;
+    ReplyListAdapter replyListAdapter;
+    ArrayList<ReplyList> list_replyArrayList = null;
 
-        EditText edit_reply;
-        Button btn_reply;
+    EditText edit_reply;
+    Button btn_reply;
 
-        Boolean presentBoolean = false;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();//firestore객체
+    Boolean presentBoolean = false;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();//firestore객체
 
-         Instant nowUtc = Instant.now();
-         ZoneId asiaSeoul = ZoneId.of("Asia/Seoul");
-         ZonedDateTime nowAsiaSeoul = ZonedDateTime.ofInstant(nowUtc, asiaSeoul);
+    Instant nowUtc = Instant.now();
+    ZoneId asiaSeoul = ZoneId.of("Asia/Seoul");
+    ZonedDateTime nowAsiaSeoul = ZonedDateTime.ofInstant(nowUtc, asiaSeoul);
 
-        String year = String.valueOf(nowAsiaSeoul.getYear());
-        String  month = String.valueOf(nowAsiaSeoul.getMonthValue());
-        String day1  = String.valueOf(nowAsiaSeoul.getDayOfMonth()) ;
-        String hour = String.valueOf(nowAsiaSeoul.getHour());
-        String minute = String.valueOf(nowAsiaSeoul.getMinute());
+    String year = String.valueOf(nowAsiaSeoul.getYear());
+    String month = String.valueOf(nowAsiaSeoul.getMonthValue());
+    String day1 = String.valueOf(nowAsiaSeoul.getDayOfMonth());
+    String hour = String.valueOf(nowAsiaSeoul.getHour());
+    String minute = String.valueOf(nowAsiaSeoul.getMinute());
 
-         String fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
 
     private ProgressDialog mProgressDialog;
     private BackgroundThread mBackThread;
@@ -108,16 +108,14 @@ public class BoardContent extends AppCompatActivity {
         MultiDex.install(this);
         setContentView(R.layout.activity_board_content);
 
-        if(hour.length()==1)
-        {
-            hour = "0"+hour;
-            fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
+        if (hour.length() == 1) {
+            hour = "0" + hour;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
         }
 
-        if(minute.length()==1)
-        {
-            minute = "0"+minute;
-            fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
+        if (minute.length() == 1) {
+            minute = "0" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
         }
 
         Intent intent = getIntent();
@@ -146,7 +144,7 @@ public class BoardContent extends AppCompatActivity {
         content_visitnum.setText(visitNum);
 
 
-        list_reply = (ListView)findViewById(R.id.list_reply);
+        list_reply = (ListView) findViewById(R.id.list_reply);
         list_replyArrayList = new ArrayList<ReplyList>();
 
         Intent intent2 = getIntent();
@@ -154,7 +152,7 @@ public class BoardContent extends AppCompatActivity {
 
         //좋아요 버튼을 누르는것에 대한 data를 boolean을 이용해서 세팅해준다.
         DocumentReference docRef = db.collection("data").document("allData").collection(address)
-                .document(documentName).collection("like").document(id_value+"like");
+                .document(documentName).collection("like").document(id_value + "like");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -162,33 +160,28 @@ public class BoardContent extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        presentBoolean =  (boolean)document.getData().get("goodBoolean");
-                        Log.d("boolean의값",presentBoolean.toString());
-                        if(presentBoolean)
-                        {
+                        presentBoolean = (boolean) document.getData().get("goodBoolean");
+                        Log.d("boolean의값", presentBoolean.toString());
+                        if (presentBoolean) {
                             content_heart.setImageResource(R.raw.heart);
-                            Log.d("하트의색깔","빨간색");
-                        }
-
-                        else if (!presentBoolean)
-                        {
+                            Log.d("하트의색깔", "빨간색");
+                        } else if (!presentBoolean) {
 
                             content_heart.setImageResource(R.raw.bin_heart);
-                            Log.d("하트의색깔","빈색");
+                            Log.d("하트의색깔", "빈색");
                         }
 
-                    }
-                    else {
+                    } else {
                         CollectionReference goodBoolean = db.collection("data");
                         Map<String, Object> user = new HashMap<>();
                         user.put("goodBoolean", false);
 
                         goodBoolean.document("allData").collection(address).document(documentName)
-                                .collection("like").document(id_value+"like").set(user);
+                                .collection("like").document(id_value + "like").set(user);
 
                         db.collection("data").document("allData").collection(address)
                                 .document(documentName).
-                                collection("like").document(id_value+"like")
+                                collection("like").document(id_value + "like")
                                 .set(user)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -204,23 +197,18 @@ public class BoardContent extends AppCompatActivity {
                                 });
 
                     }
-                }
-                else {
+                } else {
                 }
             }
         });
 
-        if(presentBoolean)
-        {
+        if (presentBoolean) {
             content_heart.setImageResource(R.raw.heart);
-            Log.d("하트의색깔","빨간색");
-        }
-
-        else if (!presentBoolean)
-        {
+            Log.d("하트의색깔", "빨간색");
+        } else if (!presentBoolean) {
 
             content_heart.setImageResource(R.raw.bin_heart);
-            Log.d("하트의색깔","빈색");
+            Log.d("하트의색깔", "빈색");
         }
 
         content_heart.setOnClickListener(new View.OnClickListener() {
@@ -232,11 +220,9 @@ public class BoardContent extends AppCompatActivity {
                         .document(documentName).collection("like");
                 Map<String, Object> user = new HashMap<>();
 
-                if(presentBoolean == true)
-                {
+                if (presentBoolean == true) {
                     int numCompare = Integer.parseInt(pointLimit);
-                    if(numCompare>0)
-                    {
+                    if (numCompare > 0) {
                         int number = Integer.parseInt(pointLimit);
                         number = number + 1;
                         pointLimit = Integer.toString(number);
@@ -246,7 +232,7 @@ public class BoardContent extends AppCompatActivity {
                         point = Integer.toString(number2);
 
                         db.collection("user").document(id_uid).collection("pointDay")
-                                .document(id_value+"pointDay")
+                                .document(id_value + "pointDay")
                                 .update(
                                         "pointLimit", pointLimit
                                 );
@@ -271,11 +257,10 @@ public class BoardContent extends AppCompatActivity {
                     }
 
 
-
                     user.put("goodBoolean", false);
                     content_heart.setImageResource(R.raw.bin_heart);
                     int num = Integer.parseInt(goodNum);
-                    num = num-1;
+                    num = num - 1;
                     goodNum = Integer.toString(num);
                     content_good.setText(goodNum);
                     presentBoolean = false;
@@ -312,12 +297,9 @@ public class BoardContent extends AppCompatActivity {
                                 }
                             });
                     ///////////////////////////////////////data delete by user/////////////////////////////////////
-                }
-                else
-                {
+                } else {
                     int numCompare = Integer.parseInt(pointLimit);
-                    if(numCompare>0)
-                    {
+                    if (numCompare > 0) {
                         int number = Integer.parseInt(pointLimit);
                         number = number - 1;
                         pointLimit = Integer.toString(number);
@@ -327,7 +309,7 @@ public class BoardContent extends AppCompatActivity {
                         point = Integer.toString(number2);
 
                         db.collection("user").document(id_uid).collection("pointDay")
-                                .document(id_value+"pointDay")
+                                .document(id_value + "pointDay")
                                 .update(
                                         "pointLimit", pointLimit
                                 );
@@ -353,11 +335,10 @@ public class BoardContent extends AppCompatActivity {
                     }
 
 
-
-                    user.put("goodBoolean",true);
+                    user.put("goodBoolean", true);
                     content_heart.setImageResource(R.raw.heart);
                     int num = Integer.parseInt(goodNum);
-                    num = num+1;
+                    num = num + 1;
                     goodNum = Integer.toString(num);
                     content_good.setText(goodNum);
                     presentBoolean = true;
@@ -389,7 +370,7 @@ public class BoardContent extends AppCompatActivity {
                     toUser.put("day", day);
                     toUser.put("visitnum", visitNum);
                     toUser.put("good", goodNum);
-                    toUser.put("documentName",documentName);
+                    toUser.put("documentName", documentName);
                     userInfo.document(id_uid).collection("like").document(documentName)
                             .set(toUser);
 
@@ -409,10 +390,10 @@ public class BoardContent extends AppCompatActivity {
                     /////////////////////////////user로 전송////////////////////////////////////////////////
                 }
 
-                goodBoolean.document(id_value+"like").set(user);
+                goodBoolean.document(id_value + "like").set(user);
 
                 db.collection("data").document("allData").collection(address).document(documentName)
-                        .collection("like").document(id_value+"like")
+                        .collection("like").document(id_value + "like")
                         .set(user)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -458,10 +439,10 @@ public class BoardContent extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 list_replyArrayList.add(new ReplyList(document.getData().get("contentReply").toString(),
-                                        document.getData().get("writerReply").toString(),document.getData().get("timeReply").toString()
-                                ,document.getData().get("data_doc").toString(),document.getData().get("reply_doc").toString()));
+                                        document.getData().get("writerReply").toString(), document.getData().get("timeReply").toString()
+                                        , document.getData().get("data_doc").toString(), document.getData().get("reply_doc").toString()));
                             }
-                            replyListAdapter = new ReplyListAdapter(BoardContent.this,list_replyArrayList);
+                            replyListAdapter = new ReplyListAdapter(BoardContent.this, list_replyArrayList);
                             list_reply.setAdapter(replyListAdapter);
                         } else {
                             Log.d("태그", "Error getting documents: ", task.getException());
@@ -484,32 +465,31 @@ public class BoardContent extends AppCompatActivity {
 
                 builder.setTitle("댓글").setMessage("댓글을 작성하시겠습니까?");
 
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        String comment_reply= edit_reply.getText().toString().trim();
+                    public void onClick(DialogInterface dialog, int id) {
+                        String comment_reply = edit_reply.getText().toString().trim();
 
                         Map<String, Object> user = new HashMap<>();
                         user.put("contentReply", comment_reply);
                         user.put("writerReply", id_nickName);
-                        user.put("timeReply",fullDay);
-                        user.put("data_doc",documentName);
+                        user.put("timeReply", fullDay);
+                        user.put("data_doc", documentName);
 
                         //try {
-                            db.collection("data").document("allData").collection(address)
-                                    .document(documentName).collection("reply")
-                                    .add(user)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            r_documentName = documentReference.getId();
-                                            execute();
-                                        }
-                                    });
-                        mProgressDialog = ProgressDialog.show(BoardContent.this,"Loading"
-                                ,"댓글작성중입니다..");
+                        db.collection("data").document("allData").collection(address)
+                                .document(documentName).collection("reply")
+                                .add(user)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        r_documentName = documentReference.getId();
+                                        execute();
+                                    }
+                                });
+                        mProgressDialog = ProgressDialog.show(BoardContent.this, "Loading"
+                                , "댓글작성중입니다..");
 
                         mBackThread = new BackgroundThread();
                         mBackThread.setRunning(true);
@@ -521,7 +501,6 @@ public class BoardContent extends AppCompatActivity {
                         }*/
 
 
-
                         ////////////////////////////////////////////////////////////////////////////////////
 
                         /////////////////////////////user로 전송////////////////////////////////////////////////
@@ -529,10 +508,9 @@ public class BoardContent extends AppCompatActivity {
                     }
                 });
 
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id)
-                    {
+                    public void onClick(DialogInterface dialog, int id) {
                     }
                 });
 
@@ -542,99 +520,91 @@ public class BoardContent extends AppCompatActivity {
         });
 
 
+        list_reply.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                r_writer = list_replyArrayList.get(position).getWriter_reply();
+                r_docName = list_replyArrayList.get(position).getR_doc_reply();
 
-      list_reply.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-          @Override
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               r_writer = list_replyArrayList.get(position).getWriter_reply();
-               r_docName = list_replyArrayList.get(position).getR_doc_reply();
+                AlertDialog.Builder builder = new AlertDialog.Builder(BoardContent.this);
 
-              AlertDialog.Builder builder = new AlertDialog.Builder(BoardContent.this);
+                builder.setTitle("댓글 삭제").setMessage("삭제하시겠습니까?");
 
-              builder.setTitle("댓글 삭제").setMessage("삭제하시겠습니까?");
+                builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (r_writer.equals(id_nickName)) {
+                            db.collection("data").document("allData").collection(address).document(documentName)
+                                    .collection("reply").document(r_docName)
+                                    .delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(BoardContent.this, BoardContent.class);
+                                            BoardContent.this.finish();
+                                            intent.putExtra("title", title);
+                                            intent.putExtra("content", content);
+                                            intent.putExtra("day", day);
+                                            intent.putExtra("id", conId);
+                                            intent.putExtra("visitnum", visitNum);
+                                            intent.putExtra("good", goodNum);
+                                            intent.putExtra("documentName", documentName);
+                                            startActivity(intent);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
 
-              builder.setPositiveButton("삭제", new DialogInterface.OnClickListener(){
-                  @RequiresApi(api = Build.VERSION_CODES.O)
-                  @Override
-                  public void onClick(DialogInterface dialog, int id)
-                  {
-                      if(r_writer.equals(id_nickName)) {
-                          db.collection("data").document("allData").collection(address).document(documentName)
-                                  .collection("reply").document(r_docName)
-                                  .delete()
-                                  .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                      @Override
-                                      public void onComplete(@NonNull Task<Void> task) {
-                                          Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
-                                          Intent intent = new Intent(BoardContent.this, BoardContent.class);
-                                          BoardContent.this.finish();
-                                          intent.putExtra("title",title);
-                                          intent.putExtra("content",content);
-                                          intent.putExtra("day",day);
-                                          intent.putExtra("id",conId);
-                                          intent.putExtra("visitnum",visitNum);
-                                          intent.putExtra("good",goodNum);
-                                          intent.putExtra("documentName",documentName);
-                                          startActivity(intent);
-                                      }
-                                  })
-                                  .addOnFailureListener(new OnFailureListener() {
-                                      @Override
-                                      public void onFailure(@NonNull Exception e) {
+                                        }
+                                    });
+                            /////////////////////////////////////////////////////////////////////////////////////////////
+                            db.collection("user").document(id_uid).collection("reply").document(conId + title + content)
+                                    .delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                        }
+                                    });
+                            ///////////////////////////////////user쪽에서 reply삭제///////////////////////////////
+                        } else {
+                            Toast.makeText(getApplicationContext(), "권한이 없습니다", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
-                                      }
-                                  });
-                          /////////////////////////////////////////////////////////////////////////////////////////////
-                          db.collection("user").document(id_uid).collection("reply").document(conId+title+content)
-                                  .delete()
-                                  .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                      @Override
-                                      public void onComplete(@NonNull Task<Void> task) {
-                                      }
-                                  })
-                                  .addOnFailureListener(new OnFailureListener() {
-                                      @Override
-                                      public void onFailure(@NonNull Exception e) {
-                                      }
-                                  });
-                          ///////////////////////////////////user쪽에서 reply삭제///////////////////////////////
-                      }
-                      else{
-                          Toast.makeText(getApplicationContext(), "권한이 없습니다", Toast.LENGTH_SHORT).show();
-                      }
-                  }
-              });
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
 
-              builder.setNegativeButton("취소", new DialogInterface.OnClickListener(){
-                  @Override
-                  public void onClick(DialogInterface dialog, int id)
-                  {
-                  }
-              });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
 
-              AlertDialog alertDialog = builder.create();
-              alertDialog.show();
-
-          }
-      });
+            }
+        });
 
     }
 
 
-
-
-    public void OnClickHandler(View view)
-    {
+    public void OnClickHandler(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("게시물 삭제").setMessage("삭제하시겠습니까?");
 
-        builder.setPositiveButton("삭제", new DialogInterface.OnClickListener(){
+        builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onClick(DialogInterface dialog, int id)
-            {
-                if(id_value.equals(conId)) {
+            public void onClick(DialogInterface dialog, int id) {
+                if (id_value.equals(conId)) {
                     Log.d("성공 id값", id_value);
                     Log.d("성공 conId값", conId);
                     db.collection("data").document("allData").collection(address).document(documentName)
@@ -655,7 +625,7 @@ public class BoardContent extends AppCompatActivity {
                                 }
                             });
                     /////////////////////////////////////////////////////////////////////////////////////////////
-                    db.collection("user").document(id_uid).collection("reply").document(conId+title+content)
+                    db.collection("user").document(id_uid).collection("reply").document(conId + title + content)
                             .delete()
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -668,8 +638,7 @@ public class BoardContent extends AppCompatActivity {
                                 }
                             });
                     ///////////////////////////////////user쪽에서 reply삭제///////////////////////////////
-                }
-                else{
+                } else {
                     Log.d("실패 id값", id_value);
                     Log.d("실패 conId값", conId);
                     Toast.makeText(getApplicationContext(), "권한이 없습니다", Toast.LENGTH_SHORT).show();
@@ -677,10 +646,9 @@ public class BoardContent extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("취소", new DialogInterface.OnClickListener(){
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int id)
-            {
+            public void onClick(DialogInterface dialog, int id) {
             }
         });
 
@@ -688,8 +656,7 @@ public class BoardContent extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public void execute()
-    {
+    public void execute() {
         CollectionReference userInfo = db.collection("user");
         Map<String, Object> toUser = new HashMap<>();
         toUser.put("title", title);
@@ -698,7 +665,7 @@ public class BoardContent extends AppCompatActivity {
         toUser.put("day", day);
         toUser.put("visitnum", visitNum);
         toUser.put("good", goodNum);
-        toUser.put("documentName",documentName);
+        toUser.put("documentName", documentName);
 
         userInfo.document(id_uid).collection("reply").document(documentName)
                 .set(toUser);
@@ -720,12 +687,12 @@ public class BoardContent extends AppCompatActivity {
         db.collection("data").document("allData").collection(address)
                 .document(documentName).collection("reply").document(r_documentName)
                 .update(
-                        "reply_doc",r_documentName
+                        "reply_doc", r_documentName
                 );
         db.collection("user").document(id_uid)
                 .collection("reply").document(documentName)
                 .update(
-                        "reply_doc",r_documentName
+                        "reply_doc", r_documentName
                 );
     }
 
@@ -733,30 +700,28 @@ public class BoardContent extends AppCompatActivity {
     public void onBackPressed() {
         BoardContent.this.finish();
 
-        Intent intent = new Intent(BoardContent.this,BoardActivity.class);
+        Intent intent = new Intent(BoardContent.this, BoardActivity.class);
         startActivity(intent);
     }
 
-    public class BackgroundThread extends Thread{
-        volatile  boolean running = false;
+    public class BackgroundThread extends Thread {
+        volatile boolean running = false;
         int cnt;
 
-        void setRunning(boolean b)
-        {
+        void setRunning(boolean b) {
             running = b;
             cnt = 7;
         }
 
         @Override
-        public void run()
-        {
-            while (running){
-                try{
+        public void run() {
+            while (running) {
+                try {
                     sleep(150);
-                    if(cnt--==0){
+                    if (cnt-- == 0) {
                         running = false;
                     }
-                }catch(InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -765,31 +730,31 @@ public class BoardContent extends AppCompatActivity {
 
     }
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
 
         @Override
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             mProgressDialog.dismiss();
 
             boolean retry = true;
-            while(retry){
-                try{
+            while (retry) {
+                try {
                     mBackThread.join();
                     retry = false;
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
             Toast.makeText(getApplicationContext(), "댓글이 등록되었습니다", Toast.LENGTH_SHORT).show();
             BoardContent.this.finish();
             Intent intent2 = new Intent(BoardContent.this, BoardContent.class);
-            intent2.putExtra("title",title);
-            intent2.putExtra("content",content);
-            intent2.putExtra("day",day);
-            intent2.putExtra("id",conId);
-            intent2.putExtra("visitnum",visitNum);
-            intent2.putExtra("good",goodNum);
-            intent2.putExtra("documentName",documentName);
+            intent2.putExtra("title", title);
+            intent2.putExtra("content", content);
+            intent2.putExtra("day", day);
+            intent2.putExtra("id", conId);
+            intent2.putExtra("visitnum", visitNum);
+            intent2.putExtra("good", goodNum);
+            intent2.putExtra("documentName", documentName);
             startActivity(intent2);
         }
 

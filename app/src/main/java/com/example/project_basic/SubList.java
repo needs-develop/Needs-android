@@ -1,9 +1,12 @@
 package com.example.project_basic;
 
 public class SubList {
-  String country;
+    String country;
 
-  public SubList(){};
+    public SubList() {
+    }
+
+    ;
 
     public String getCountry() {
         return country;

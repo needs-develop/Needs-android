@@ -44,11 +44,12 @@ import static com.example.project_basic.MainActivity.id_uid;
 import static com.example.project_basic.MainActivity.photoUrl;
 import static com.example.project_basic.SubActivity.fragmentNumber;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
 public class SearchFragment extends Fragment {
 
     FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();//firestore객체
-    String nickName = "noDisplay" ;
+    String nickName = "noDisplay";
     String change_nickName;
 
     @Override
@@ -99,17 +100,12 @@ public class SearchFragment extends Fragment {
 
         providerList.append("Providers used: ");
 
-        if (user.getProviderData() == null || user.getProviderData().isEmpty())
-        {
+        if (user.getProviderData() == null || user.getProviderData().isEmpty()) {
             providerList.append("none");
-        }
-        else
-        {
-            for (UserInfo profile : user.getProviderData())
-            {
+        } else {
+            for (UserInfo profile : user.getProviderData()) {
                 String providerId = profile.getProviderId();
-                if (GoogleAuthProvider.PROVIDER_ID.equals(providerId))
-                {
+                if (GoogleAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Google");
                     DocumentReference doc = db.collection("user").document(id_uid);
                     doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -118,31 +114,22 @@ public class SearchFragment extends Fragment {
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
-                                Log.d("사진출력",(String)document.getData().get("photoUrl"));
-                                photoUrl =  (String)document.getData().get("photoUrl");
-                                Log.d("사진출력 photoUrl",photoUrl);
-                            }
-                            else {
+                                Log.d("사진출력", (String) document.getData().get("photoUrl"));
+                                photoUrl = (String) document.getData().get("photoUrl");
+                                Log.d("사진출력 photoUrl", photoUrl);
+                            } else {
                             }
                         }
                     });
-                    Log.d("사진출력 photoUrl 두번째",photoUrl);
+                    Log.d("사진출력 photoUrl 두번째", photoUrl);
                     Glide.with(this).load(photoUrl).into(iv_profile);
-                }
-                else if (FacebookAuthProvider.PROVIDER_ID.equals(providerId))
-                {
+                } else if (FacebookAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Facebook");
-                }
-                else if(TwitterAuthProvider.PROVIDER_ID.equals(providerId))
-                {
+                } else if (TwitterAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Twitter");
-                }
-                else if (EmailAuthProvider.PROVIDER_ID.equals(providerId))
-                {
+                } else if (EmailAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Email");
-                }
-                else
-                {
+                } else {
                     providerList.append(providerId);
                 }
             }
@@ -159,10 +146,9 @@ public class SearchFragment extends Fragment {
                 final EditText et = new EditText(getActivity());
                 builder.setView(et);
 
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id)
-                    {
+                    public void onClick(DialogInterface dialog, int id) {
                         change_nickName = et.getText().toString();
                         db.collection("user").document(id_uid)
                                 .update(
@@ -173,10 +159,9 @@ public class SearchFragment extends Fragment {
                     }
                 });
 
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id)
-                    {
+                    public void onClick(DialogInterface dialog, int id) {
 
                     }
                 });
@@ -262,15 +247,12 @@ public class SearchFragment extends Fragment {
         startActivity(i);
     }
 
-    private void deleteAccountClicked()
-    {
+    private void deleteAccountClicked() {
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setMessage("이 계정을 삭제하시겠습니까?")
-                .setPositiveButton("예", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i)
-                    {
+                    public void onClick(DialogInterface dialogInterface, int i) {
                         deleteAccount();
                     }
                 })
@@ -280,22 +262,16 @@ public class SearchFragment extends Fragment {
         dialog.show();
     }
 
-    private void deleteAccount()
-    {
+    private void deleteAccount() {
         AuthUI.getInstance()
                 .delete(getContext())
-                .addOnCompleteListener(new OnCompleteListener<Void>()
-                {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        if (task.isSuccessful())
-                        {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
                             Intent i = new Intent(getActivity(), MainActivity.class);
                             startActivity(i);
-                        }
-                        else
-                        {
+                        } else {
                         }
                     }
                 });

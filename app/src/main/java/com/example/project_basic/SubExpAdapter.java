@@ -13,15 +13,19 @@ import java.util.List;
 public class SubExpAdapter extends BaseExpandableListAdapter {
 
     public List<String> firstGroups;
-    public HashMap<String,List<SubList>> firstItemGroups;
+    public HashMap<String, List<SubList>> firstItemGroups;
     public Context context;
 
-    public SubExpAdapter(Context context, List<String>firstGroups,HashMap<String,List<SubList>>firstItemGroups){
+    public SubExpAdapter(Context context, List<String> firstGroups, HashMap<String, List<SubList>> firstItemGroups) {
         this.context = context;
         this.firstGroups = firstGroups;
         this.firstItemGroups = firstItemGroups;
     }
-    public SubExpAdapter(){};
+
+    public SubExpAdapter() {
+    }
+
+    ;
 
 
     @Override
@@ -61,7 +65,7 @@ public class SubExpAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.activity_itemdraw, null);
         }
@@ -75,14 +79,14 @@ public class SubExpAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if(convertView == null) {
+        if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.activity_itemdrawin, null);
         }
 
         TextView tvItem = (TextView) convertView.findViewById(R.id.draw_text2);
 
-        SubList investment = (SubList)getChild(groupPosition, childPosition);
+        SubList investment = (SubList) getChild(groupPosition, childPosition);
         tvItem.setText(investment.getCountry());
 
         return convertView;

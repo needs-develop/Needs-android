@@ -2,21 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".FavoritesWrite">
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/textView4"
             android:layout_width="43dp"
             android:layout_height="24dp"
-            android:text="제목:"
-            />
+            android:text="제목:" />
+
         <EditText
             android:id="@+id/free_title_write"
             android:layout_width="215dp"
@@ -24,35 +26,38 @@
             android:ems="10"
             android:hint="제목을입력해주세요" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/textView5"
             android:layout_width="52dp"
             android:layout_height="25dp"
             android:layout_gravity="start"
-            android:text="내용"
-            />
+            android:text="내용" />
+
         <EditText
             android:id="@+id/free_content_write"
             android:layout_width="wrap_content"
             android:layout_height="500dp"
             android:ems="10"
-            android:hint="내용을입력해주세요"
-            />
+            android:hint="내용을입력해주세요" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
-        >
+        android:gravity="center">
+
         <Button
             android:id="@+id/free_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="확인" />
+
         <Button
             android:id="@+id/free_cancel"
             android:layout_width="wrap_content"

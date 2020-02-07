@@ -66,9 +66,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     static String id_nickName;
     static String id_name;
     static String photoUrl;
-    static  int changeNum = 0;
+    static int changeNum = 0;
 
-    String value = null ;
+    String value = null;
 
     private SignInButton btn_google; //구글로그인버튼
 
@@ -91,12 +91,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     ZonedDateTime nowAsiaSeoul = ZonedDateTime.ofInstant(nowUtc, asiaSeoul);
 
     String year = String.valueOf(nowAsiaSeoul.getYear());
-    String  month = String.valueOf(nowAsiaSeoul.getMonthValue());
-    String day1  = String.valueOf(nowAsiaSeoul.getDayOfMonth()) ;
+    String month = String.valueOf(nowAsiaSeoul.getMonthValue());
+    String day1 = String.valueOf(nowAsiaSeoul.getDayOfMonth());
     String hour = String.valueOf(nowAsiaSeoul.getHour());
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
 
-    String fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
 
     String pointLimit = "5";
 
@@ -111,21 +111,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-        if(hour.length()==1)
-        {
-            hour = "0"+hour;
-            fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
+        if (hour.length() == 1) {
+            hour = "0" + hour;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
         }
 
-        if(minute.length()==1)
-        {
-            minute = "0"+minute;
-            fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
+        if (minute.length() == 1) {
+            minute = "0" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
         }
 
 
-        final EditText emailTxt = (EditText)findViewById(R.id.et_id);
-        final EditText pwTxt = (EditText)findViewById(R.id.pw_id);
+        final EditText emailTxt = (EditText) findViewById(R.id.et_id);
+        final EditText pwTxt = (EditText) findViewById(R.id.pw_id);
 
 
         et_id = findViewById(R.id.et_id);
@@ -146,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                 id_value = email;
 
-                loginStart(email,password);
+                loginStart(email, password);
             }
         });
 
@@ -182,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         btn2_test.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,RegisterActivity.class);
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         }));
@@ -192,8 +190,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .requestEmail()
                 .build();
         googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
 
         auth = FirebaseAuth.getInstance();//파이어베이스 인증객체 초기화
@@ -203,14 +201,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             @Override
             public void onClick(View v) {
                 Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-                startActivityForResult(intent,REQ_SIGN_GOOGLE);
+                startActivityForResult(intent, REQ_SIGN_GOOGLE);
             }
         });
     }
 
-    public void loginStart(final String email, String password){
+    public void loginStart(final String email, String password) {
         // Toast.makeText(MainActivity.this,"loginStart 함수 안으로" ,Toast.LENGTH_SHORT).show();
-        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
@@ -219,21 +217,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     try {
                         throw task.getException();
                     } catch (FirebaseAuthInvalidUserException e) {
-                        Toast.makeText(MainActivity.this,"존재하지 않는 id 입니다." ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "존재하지 않는 id 입니다.", Toast.LENGTH_SHORT).show();
                     } catch (FirebaseAuthInvalidCredentialsException e) {
-                        Toast.makeText(MainActivity.this,"비밀번호를 다시 입력하세요." ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "비밀번호를 다시 입력하세요.", Toast.LENGTH_SHORT).show();
                     } catch (FirebaseNetworkException e) {
                         //  Toast.makeText(MainActivity.this,"Firebase NetworkException" ,Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         //  Toast.makeText(MainActivity.this,"Exception" ,Toast.LENGTH_SHORT).show();
                     }
 
-                }else{
+                } else {
                     currentUser = mAuth.getCurrentUser();
                     //Toast.makeText(MainActivity.this, "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
-                    Toast.makeText(MainActivity.this,"로그인 하였습니다",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "로그인 하였습니다", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
-
 
 
                     startActivity(new Intent(MainActivity.this, SubActivity.class));
@@ -251,12 +248,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = mAuth.getCurrentUser();
 
-        if(currentUser != null && id_value!=null){
+        if (currentUser != null && id_value != null) {
             startActivity(new Intent(MainActivity.this, SubActivity.class));
             finish();
         }
     }
-
 
 
     @Override
@@ -264,9 +260,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //구글로그인 인증요청했을때 결과 값을 되돌려 받는곳
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQ_SIGN_GOOGLE){
+        if (requestCode == REQ_SIGN_GOOGLE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if(result.isSuccess()){//인증결과 성공시
+            if (result.isSuccess()) {//인증결과 성공시
                 account = result.getSignInAccount();//구글로그인정보를 담고있음
                 resultLogin(account);//로그인 결과 값 출력 수행
             }
@@ -274,14 +270,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void resultLogin(final GoogleSignInAccount accountSuv) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {//로그인이 성공했으면
-                            Toast.makeText(MainActivity.this,"로그에 성공 하였습니다",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(),SubActivity.class);
+                        if (task.isSuccessful()) {//로그인이 성공했으면
+                            Toast.makeText(MainActivity.this, "로그에 성공 하였습니다", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), SubActivity.class);
                             //Intent intent = new Intent(getApplicationContext(),ResultActivity.class);
                             int returnNum = 0;
 
@@ -292,14 +288,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 e.printStackTrace();
                             }
 
-                            if(returnNum ==1)
-                            {
-                                Log.d("리턴넘버1","리턴넘버1");
+                            if (returnNum == 1) {
+                                Log.d("리턴넘버1", "리턴넘버1");
                                 firstLogin();
-                            }
-                            else if(returnNum ==0)
-                            {
-                                Log.d("리턴넘버2","리턴넘버2");
+                            } else if (returnNum == 0) {
+                                Log.d("리턴넘버2", "리턴넘버2");
                                 DocumentReference doc = db.collection("user").document(id_uid);
                                 doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -307,30 +300,28 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
                                             DocumentSnapshot document = task.getResult();
-                                            id_value = (String)document.getData().get("id_email");
-                                            id_uid = (String)document.getData().get("id_uid");
-                                            id_name = (String)document.getData().get("id_name");
-                                            id_nickName =  (String)document.getData().get("id_nickName");
-                                            photoUrl = (String)document.getData().get("photoUrl");
-                                            Log.d("순서체크","순서체크");
-                                        }
-                                        else {
+                                            id_value = (String) document.getData().get("id_email");
+                                            id_uid = (String) document.getData().get("id_uid");
+                                            id_name = (String) document.getData().get("id_name");
+                                            id_nickName = (String) document.getData().get("id_nickName");
+                                            photoUrl = (String) document.getData().get("photoUrl");
+                                            Log.d("순서체크", "순서체크");
+                                        } else {
                                         }
                                     }
                                 });
                             }
                             startActivity(intent);
 
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this,"로그인을 실패하였습니다",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "로그인을 실패하였습니다", Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 });
     }
-    public int firstCheck(GoogleSignInAccount account)
-    {
+
+    public int firstCheck(GoogleSignInAccount account) {
         db.collection("user")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -339,23 +330,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                if(!(document.exists()))
-                                {
+                                if (!(document.exists())) {
                                     compareNum = 1;
-                                    Log.d("존재여부","존재");
+                                    Log.d("존재여부", "존재");
 
-                                }
-                                else if (id_uid == document.getData().get("id_uid").toString())
-                                {
+                                } else if (id_uid == document.getData().get("id_uid").toString()) {
                                     //id_nickName = document.getData().get("id_nickName").toString();
 
-                                    Log.d("확인둘",id_nickName);
+                                    Log.d("확인둘", id_nickName);
                                     compareNum = 0;
                                     break;
-                                }
-                                else
-                                {
-                                    Log.d("파일이 없고 이름이 없다면","존재");
+                                } else {
+                                    Log.d("파일이 없고 이름이 없다면", "존재");
                                     compareNum = 1;
                                 }
                             }
@@ -367,8 +353,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         return compareNum;
     }
 
-    public void firstLogin()
-    {
+    public void firstLogin() {
         id_value = account.getEmail();
         id_uid = mAuth.getUid();
         id_name = account.getDisplayName();
@@ -383,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         user.put("id_name", id_name);
         user.put("id_nickName", id_nickName);
         user.put("id_point", point);
-        user.put("photoUrl",photoUrl);
+        user.put("photoUrl", photoUrl);
 
         title_content.document(id_uid).set(user);
         Log.d("유저정보 uid 확인", id_uid);
@@ -398,11 +383,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         CollectionReference pointDay = db.collection("user");
         Map<String, Object> user1 = new HashMap<>();
         user1.put("pointDay", day1);
-        user1.put("pointLimit",pointLimit);
+        user1.put("pointLimit", pointLimit);
 
-        pointDay.document(id_uid).collection("pointDay").document(id_value+"pointDay").set(user1);
+        pointDay.document(id_uid).collection("pointDay").document(id_value + "pointDay").set(user1);
         Log.d("유저정보 id로그인 uid 확인", id_uid);
-        db.collection("user").document(id_uid).collection("pointDay").document(id_value+"pointDay")
+        db.collection("user").document(id_uid).collection("pointDay").document(id_value + "pointDay")
                 .set(user1)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -431,7 +416,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(MainActivity.this,"연결이 해제되었습니다",Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "연결이 해제되었습니다", Toast.LENGTH_SHORT).show();
     }
 }
 

@@ -55,19 +55,19 @@ public class pointHistoryAdapter extends RecyclerView.Adapter<pointHistoryAdapte
         }
     }
 
-    public void addItem(pointHistory item){
+    public void addItem(pointHistory item) {
         items.add(item);
     }
 
-    public void setItems(ArrayList<pointHistory> items){
+    public void setItems(ArrayList<pointHistory> items) {
         this.items = items;
     }
 
-    public pointHistory getItem(int position){
+    public pointHistory getItem(int position) {
         return items.get(position);
     }
 
-    public void setItem(int position, pointHistory item){
+    public void setItem(int position, pointHistory item) {
         items.set(position, item);
     }
 }

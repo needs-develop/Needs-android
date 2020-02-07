@@ -6,96 +6,99 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".HomeContent">
+
     <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
+
         <TextView
-            android:textSize="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/content"
-            android:text="제목:">
-        </TextView>
+            android:text="제목:"
+            android:textSize="15dp"></TextView>
+
         <TextView
             android:id="@+id/content_home_title"
-            android:textSize="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="제목입니다">
-        </TextView>
+            android:text="제목입니다"
+            android:textSize="15dp"></TextView>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
         <TextView
-            android:fontFamily="@font/content"
-            android:textSize="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="작성자:">
-        </TextView>
+            android:fontFamily="@font/content"
+            android:text="작성자:"
+            android:textSize="15dp"></TextView>
+
         <TextView
-            android:fontFamily="@font/content_content"
             android:id="@+id/content_home_id"
-            android:textSize="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="작성자입니다">
-        </TextView>
-        <Button
-            android:onClick="OnClickHandler"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="삭제하기">
-        </Button>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginLeft="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:fontFamily="@font/content"
-            android:textSize="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="작성일시:">
-        </TextView>
-        <TextView
             android:fontFamily="@font/content_content"
-            android:id="@+id/content_home_day"
-            android:textSize="15dp"
+            android:text="작성자입니다"
+            android:textSize="15dp"></TextView>
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="작성일입니다">
-        </TextView>
+            android:onClick="OnClickHandler"
+            android:text="삭제하기"></Button>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:fontFamily="@font/content"
-            android:textSize="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="내용:">
-        </TextView>
-        <TextView
-            android:fontFamily="@font/content_content"
-            android:id="@+id/content_home_content"
-            android:textSize="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="내용입니다">
-        </TextView>
+        android:layout_marginLeft="20dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/content"
+            android:text="작성일시:"
+            android:textSize="15dp"></TextView>
+
+        <TextView
+            android:id="@+id/content_home_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/content_content"
+            android:text="작성일입니다"
+            android:textSize="15dp"></TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/content"
+            android:text="내용:"
+            android:textSize="15dp"></TextView>
+
+        <TextView
+            android:id="@+id/content_home_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/content_content"
+            android:text="내용입니다"
+            android:textSize="15dp"></TextView>
 
 
         <LinearLayout
@@ -109,6 +112,7 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp"
                 android:src="@raw/heart"></ImageView>
+
             <TextView
                 android:id="@+id/content_home_good"
                 android:layout_width="wrap_content"
@@ -118,76 +122,80 @@
                 android:gravity="bottom"
                 android:text="갯수"></TextView>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="조회수"
-                android:textSize="15dp">
-            </TextView>
+                android:textSize="15dp"></TextView>
+
             <TextView
-                android:fontFamily="@font/content_content"
                 android:id="@+id/content_home_visitnum"
-                android:textSize="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="조회수">
-            </TextView>
+                android:fontFamily="@font/content_content"
+                android:text="조회수"
+                android:textSize="15dp"></TextView>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
         android:orientation="vertical">
+
         <TextView
-            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="댓글">
-        </TextView>
+            android:text="댓글"
+            android:textSize="20dp"></TextView>
+
         <TextView
             android:id="@+id/content_home_number"
-            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="갯수">
-        </TextView>
+            android:text="갯수"
+            android:textSize="20dp"></TextView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <EditText
                 android:id="@+id/edit_home_reply"
                 android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:hint="댓글을 입력하세요"
-                android:textSize="20dp"
                 android:inputType="text|textMultiLine"
-                android:minLines="1"></EditText>
+                android:minLines="1"
+                android:textSize="20dp"></EditText>
+
             <Button
                 android:id="@+id/btn_home_reply"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:text="등록">
-            </Button>
+                android:text="등록"></Button>
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_marginBottom="20dp">
+
         <ListView
             android:id="@+id/list_home_reply"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
+            android:layout_height="match_parent"></ListView>
     </LinearLayout>
 </LinearLayout>

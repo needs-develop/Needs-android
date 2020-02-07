@@ -7,8 +7,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
-
-
 public class FavoritesFunc extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +14,7 @@ public class FavoritesFunc extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.free_list,new FavoritesFragment());
+        fragmentTransaction.replace(R.id.free_list, new FavoritesFragment());
         fragmentTransaction.commit();
           /*한가지 값 불러오기(firestore에서)
         DocumentReference docRef = db.collection("data").document("hello_one");

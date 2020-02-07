@@ -2,23 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/free_board"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FavoritesFragment"
-    android:id="@+id/free_board">
+    android:orientation="vertical"
+    tools:context=".FavoritesFragment">
 
     <LinearLayout
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="게시판" />
+
         <ImageView
             android:id="@+id/free_write"
             android:layout_width="83dp"
@@ -32,12 +34,14 @@
         android:layout_height="600dp"
         android:layout_gravity="center"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp"
             android:weightSum="7">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -45,10 +49,10 @@
                 android:text="번호" />
 
             <TextView
-                android:gravity="start"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2.8"
+                android:gravity="start"
                 android:text="제목" />
 
             <TextView
@@ -56,47 +60,53 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="작성자" />
+
             <TextView
-                android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.6"
+                android:gravity="center"
                 android:text="날짜" />
 
             <TextView
                 android:id="@+id/text_test"
-                android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
+                android:gravity="center"
                 android:text="조회수" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
+
         <ListView
             android:id="@+id/free_list"
             android:layout_width="match_parent"
-            android:textFilterEnabled="true"
-            android:layout_height="460dp"/>
+            android:layout_height="460dp"
+            android:textFilterEnabled="true" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
             <Spinner
                 android:id="@+id/free_spinner"
                 android:layout_width="83dp"
                 android:layout_height="26dp"
                 android:entries="@array/arrayName"
-                app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent" />
+
             <TextView
                 android:id="@+id/free_spinner_text"
-                android:hint="항목선택"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:hint="항목선택" />
+
             <EditText
                 android:id="@+id/free_edit"
                 android:layout_width="96dp"
@@ -104,6 +114,7 @@
                 android:layout_gravity="bottom"
                 android:gravity="bottom"
                 android:hint="입력하세요" />
+
             <Button
                 android:id="@+id/free_btn"
                 android:layout_width="70dp"

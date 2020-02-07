@@ -6,7 +6,6 @@ public class pointHistory {
     String day;
 
 
-
     public String getDay() {
         return day;
     }

@@ -1,4 +1,5 @@
 package com.example.project_basic;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -52,110 +53,109 @@ public class HomeFragment extends Fragment {
     ImageView btn_position;
     TextView text_position;
 
-    static String positionName=null;
+    static String positionName = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home,container,false);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
         //MultiDex.install(this);
         fragmentNumber = 0;
 
-        home_listView = (ListView)v.findViewById(R.id.home_hot);
+        home_listView = (ListView) v.findViewById(R.id.home_hot);
 
         list_itemArrayList = new ArrayList<FavoritesList>();
         text_position = v.findViewById(R.id.text_position);
         btn_position = v.findViewById(R.id.btn_position);
 
 
-            db.collection("user").document(id_uid).collection("myRegion")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    if (document.getData().get("positionName").toString() != null && document.getData().get("positionName").toString()!="") {
-                                        positionName = document.getData().get("positionName").toString();
-                                        Log.d("포지션 네임 first", positionName);
-                                        address = positionName;
+        db.collection("user").document(id_uid).collection("myRegion")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.getData().get("positionName").toString() != null && document.getData().get("positionName").toString() != "") {
+                                    positionName = document.getData().get("positionName").toString();
+                                    Log.d("포지션 네임 first", positionName);
+                                    address = positionName;
 
-                                        text_position.setText(positionName);
-                                        db.collection("data").document("allData").collection(address).orderBy("visit_num", Query.Direction.DESCENDING).limit(5)
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            int i = 1;
-                                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                String number = Integer.toString(i);
-                                                                Log.d("태그", document.getId() + " => " + document.getData().get("title")
-                                                                );
-                                                                list_itemArrayList.add(new FavoritesList(number , document.getData().get("title").toString(),
-                                                                        document.getData().get("content").toString(), document.getData().get("write").toString(),
-                                                                        document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
-                                                                        document.getData().get("good_num").toString(),document.getData().get("document_name").toString()));
-                                                                i = Integer.parseInt(number);
-                                                                i++;
-                                                            }
-                                                            favorites_adapter = new Favorites_Adapter(getActivity(), list_itemArrayList);
-                                                            home_listView.setAdapter(favorites_adapter);
-                                                            favorites_adapter.notifyDataSetChanged();
-                                                            home_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                                @Override
-                                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                                    Intent intent = new Intent(getActivity(),HomeContent.class);
-
-                                                                    String title = list_itemArrayList.get(position).getBtn_title();
-                                                                    String content = list_itemArrayList.get(position).getContent();
-                                                                    String day = list_itemArrayList.get(position).getBtn_date();
-                                                                    String conId = list_itemArrayList.get(position).getBtn_writer();
-                                                                    String goodNum = list_itemArrayList.get(position).getContent_good();
-                                                                    String visitString = list_itemArrayList.get(position).getBtn_visitnum();
-                                                                    String documentName = list_itemArrayList.get(position).getDocument_name();
-
-                                                                    int visitInt = Integer.parseInt(visitString);
-                                                                    visitInt = visitInt +1;
-                                                                    visitString = Integer.toString(visitInt);
-
-                                                                    intent.putExtra("title",title);
-                                                                    intent.putExtra("content",content);
-                                                                    intent.putExtra("day",day);
-                                                                    intent.putExtra("id",conId);
-                                                                    intent.putExtra("good",goodNum);
-                                                                    intent.putExtra("visitnum",visitString);
-                                                                    intent.putExtra("documentName",documentName);
-                                                                    startActivity(intent);
-                                                                }
-                                                            });
-                                                        } else {
-                                                            Log.d("태그", "Error getting documents: ", task.getException());
+                                    text_position.setText(positionName);
+                                    db.collection("data").document("allData").collection(address).orderBy("visit_num", Query.Direction.DESCENDING).limit(5)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        int i = 1;
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            String number = Integer.toString(i);
+                                                            Log.d("태그", document.getId() + " => " + document.getData().get("title")
+                                                            );
+                                                            list_itemArrayList.add(new FavoritesList(number, document.getData().get("title").toString(),
+                                                                    document.getData().get("content").toString(), document.getData().get("write").toString(),
+                                                                    document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
+                                                                    document.getData().get("good_num").toString(), document.getData().get("document_name").toString()));
+                                                            i = Integer.parseInt(number);
+                                                            i++;
                                                         }
+                                                        favorites_adapter = new Favorites_Adapter(getActivity(), list_itemArrayList);
+                                                        home_listView.setAdapter(favorites_adapter);
+                                                        favorites_adapter.notifyDataSetChanged();
+                                                        home_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                            @Override
+                                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                                Intent intent = new Intent(getActivity(), HomeContent.class);
+
+                                                                String title = list_itemArrayList.get(position).getBtn_title();
+                                                                String content = list_itemArrayList.get(position).getContent();
+                                                                String day = list_itemArrayList.get(position).getBtn_date();
+                                                                String conId = list_itemArrayList.get(position).getBtn_writer();
+                                                                String goodNum = list_itemArrayList.get(position).getContent_good();
+                                                                String visitString = list_itemArrayList.get(position).getBtn_visitnum();
+                                                                String documentName = list_itemArrayList.get(position).getDocument_name();
+
+                                                                int visitInt = Integer.parseInt(visitString);
+                                                                visitInt = visitInt + 1;
+                                                                visitString = Integer.toString(visitInt);
+
+                                                                intent.putExtra("title", title);
+                                                                intent.putExtra("content", content);
+                                                                intent.putExtra("day", day);
+                                                                intent.putExtra("id", conId);
+                                                                intent.putExtra("good", goodNum);
+                                                                intent.putExtra("visitnum", visitString);
+                                                                intent.putExtra("documentName", documentName);
+                                                                startActivity(intent);
+                                                            }
+                                                        });
+                                                    } else {
+                                                        Log.d("태그", "Error getting documents: ", task.getException());
                                                     }
-                                                });
+                                                }
+                                            });
 
 
-                                    } else if(positionName ==null || positionName ==""){
-                                        positionName = null;
-                                        Log.d("포지션 네임 null", "null");
-                                        list_itemArrayList.add(new FavoritesList(" ","상단의 내위치 정보를 등록한 후 목록이 갱신됩니다",
-                                                " "," "," "," "," ",""));
-                                        favorites_adapter = new Favorites_Adapter(getActivity(), list_itemArrayList);
-                                        home_listView.setAdapter(favorites_adapter);
-                                    }
+                                } else if (positionName == null || positionName == "") {
+                                    positionName = null;
+                                    Log.d("포지션 네임 null", "null");
+                                    list_itemArrayList.add(new FavoritesList(" ", "상단의 내위치 정보를 등록한 후 목록이 갱신됩니다",
+                                            " ", " ", " ", " ", " ", ""));
+                                    favorites_adapter = new Favorites_Adapter(getActivity(), list_itemArrayList);
+                                    home_listView.setAdapter(favorites_adapter);
                                 }
-                            } else {
                             }
+                        } else {
                         }
-                    });
-
-
+                    }
+                });
 
 
         btn_position.setOnClickListener(new View.OnClickListener() {
@@ -167,11 +167,10 @@ public class HomeFragment extends Fragment {
                 final EditText et = new EditText(getActivity());
                 builder.setView(et);
 
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        if(positionName == null) {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (positionName == null) {
                             positionName = et.getText().toString();
                             text_position.setText(positionName);
 
@@ -179,9 +178,9 @@ public class HomeFragment extends Fragment {
                             Map<String, Object> user = new HashMap<>();
                             user.put("positionName", positionName);
 
-                            title_content.document(id_value+"myRegion").set(user);
+                            title_content.document(id_value + "myRegion").set(user);
 
-                            db.collection("user").document(id_uid).collection("myRegion").document(id_value+"myRegion")
+                            db.collection("user").document(id_uid).collection("myRegion").document(id_value + "myRegion")
                                     .set(user)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -194,38 +193,32 @@ public class HomeFragment extends Fragment {
                                         }
                                     });
 
-                        }
-                        else
-                        {
+                        } else {
                             positionName = et.getText().toString();
-                            if(positionName ==null)
-                            {
+                            if (positionName == null) {
                                 positionName = null;
                                 db.collection("user").document(id_uid).collection("myRegion")
-                                        .document(id_value+"myRegion")
+                                        .document(id_value + "myRegion")
                                         .update(
-                                                "positionName",positionName
+                                                "positionName", positionName
                                         );
-                            }
-                            else
-                            {
+                            } else {
                                 db.collection("user").document(id_uid).collection("myRegion")
-                                        .document(id_value+"myRegion")
+                                        .document(id_value + "myRegion")
                                         .update(
-                                                "positionName",positionName
+                                                "positionName", positionName
                                         );
                             }
                         }
 
-                        Intent intent = new Intent(getActivity(),SubActivity.class);
+                        Intent intent = new Intent(getActivity(), SubActivity.class);
                         startActivity(intent);
                     }
                 });
 
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id)
-                    {
+                    public void onClick(DialogInterface dialog, int id) {
 
                     }
                 });
@@ -271,66 +264,66 @@ public class HomeFragment extends Fragment {
             home_listView.setAdapter(favorites_adapter);
         }
         */
-            homefree_listView = (ListView) v.findViewById(R.id.home_free);
+        homefree_listView = (ListView) v.findViewById(R.id.home_free);
 
-            list_itemArrayList1 = new ArrayList<FavoritesList>();
+        list_itemArrayList1 = new ArrayList<FavoritesList>();
 
-            db.collection("freeData").orderBy("visit_num", Query.Direction.DESCENDING).limit(5)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                int i = 1;
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    String number = Integer.toString(i);
-                                    list_itemArrayList1.add(new FavoritesList(number, document.getData().get("title").toString(),
-                                            document.getData().get("content").toString(), document.getData().get("write").toString(),
-                                            document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
-                                            document.getData().get("good_num").toString(),document.getData().get("document_name").toString()));
-                                    i = Integer.parseInt(number);
-                                    i++;
-                                }
-                                favorites_adapter1 = new Favorites_Adapter(getActivity(), list_itemArrayList1);
-                                homefree_listView.setAdapter(favorites_adapter1);
-                                favorites_adapter1.notifyDataSetChanged();
-
-
-                                homefree_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        Intent intent = new Intent(getActivity(),HomeFreeContent.class);
-
-                                        String title = list_itemArrayList1.get(position).getBtn_title();
-                                        String content = list_itemArrayList1.get(position).getContent();
-                                        String day = list_itemArrayList1.get(position).getBtn_date();
-                                        String conId = list_itemArrayList1.get(position).getBtn_writer();
-                                        String goodNum = list_itemArrayList1.get(position).getContent_good();
-                                        String visitString = list_itemArrayList1.get(position).getBtn_visitnum();
-                                        String documentName = list_itemArrayList1.get(position).getDocument_name();
-
-                                        int visitInt = Integer.parseInt(visitString);
-                                        visitInt = visitInt +1;
-                                        visitString = Integer.toString(visitInt);
-
-                                        intent.putExtra("title",title);
-                                        intent.putExtra("content",content);
-                                        intent.putExtra("day",day);
-                                        intent.putExtra("id",conId);
-                                        intent.putExtra("good",goodNum);
-                                        intent.putExtra("visitnum",visitString);
-                                        intent.putExtra("documentName",documentName);
-                                        startActivity(intent);
-                                    }
-                                });
-
-
-                            } else {
-                                Log.d("태그", "Error getting documents: ", task.getException());
+        db.collection("freeData").orderBy("visit_num", Query.Direction.DESCENDING).limit(5)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int i = 1;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String number = Integer.toString(i);
+                                list_itemArrayList1.add(new FavoritesList(number, document.getData().get("title").toString(),
+                                        document.getData().get("content").toString(), document.getData().get("write").toString(),
+                                        document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
+                                        document.getData().get("good_num").toString(), document.getData().get("document_name").toString()));
+                                i = Integer.parseInt(number);
+                                i++;
                             }
+                            favorites_adapter1 = new Favorites_Adapter(getActivity(), list_itemArrayList1);
+                            homefree_listView.setAdapter(favorites_adapter1);
+                            favorites_adapter1.notifyDataSetChanged();
 
+
+                            homefree_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent intent = new Intent(getActivity(), HomeFreeContent.class);
+
+                                    String title = list_itemArrayList1.get(position).getBtn_title();
+                                    String content = list_itemArrayList1.get(position).getContent();
+                                    String day = list_itemArrayList1.get(position).getBtn_date();
+                                    String conId = list_itemArrayList1.get(position).getBtn_writer();
+                                    String goodNum = list_itemArrayList1.get(position).getContent_good();
+                                    String visitString = list_itemArrayList1.get(position).getBtn_visitnum();
+                                    String documentName = list_itemArrayList1.get(position).getDocument_name();
+
+                                    int visitInt = Integer.parseInt(visitString);
+                                    visitInt = visitInt + 1;
+                                    visitString = Integer.toString(visitInt);
+
+                                    intent.putExtra("title", title);
+                                    intent.putExtra("content", content);
+                                    intent.putExtra("day", day);
+                                    intent.putExtra("id", conId);
+                                    intent.putExtra("good", goodNum);
+                                    intent.putExtra("visitnum", visitString);
+                                    intent.putExtra("documentName", documentName);
+                                    startActivity(intent);
+                                }
+                            });
+
+
+                        } else {
+                            Log.d("태그", "Error getting documents: ", task.getException());
                         }
-                    });
+
+                    }
+                });
 
         return v;
     }

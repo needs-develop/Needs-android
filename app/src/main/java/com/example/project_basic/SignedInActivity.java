@@ -23,7 +23,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
 import com.google.firebase.auth.UserInfo;
 
-public class SignedInActivity extends AppCompatActivity implements View.OnClickListener{
+public class SignedInActivity extends AppCompatActivity implements View.OnClickListener {
 
     private IdpResponse mIdpResponse;
 
@@ -33,8 +33,7 @@ public class SignedInActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_signedin);
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null)
-        {
+        if (currentUser == null) {
             finish();
             return;
         }
@@ -43,18 +42,16 @@ public class SignedInActivity extends AppCompatActivity implements View.OnClickL
 
         populateProfile();
 
-        Button signoutbtn = (Button)findViewById(R.id.sign_out);
+        Button signoutbtn = (Button) findViewById(R.id.sign_out);
         signoutbtn.setOnClickListener(this);
 
-        Button deleteuser = (Button)findViewById(R.id.delete_account);
+        Button deleteuser = (Button) findViewById(R.id.delete_account);
         deleteuser.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.sign_out:
                 signOut();
                 break;
@@ -66,35 +63,26 @@ public class SignedInActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void signOut()
-    {
+    private void signOut() {
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>()
-                {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        if (task.isSuccessful())
-                        {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
                             finish();
-                        }
-                        else
-                        {
+                        } else {
                         }
                     }
                 });
     }
 
-    private void deleteAccountClicked()
-    {
+    private void deleteAccountClicked() {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setMessage("Are you sure you want to delete this account?")
-                .setPositiveButton("Yes, nuke it!", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Yes, nuke it!", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i)
-                    {
+                    public void onClick(DialogInterface dialogInterface, int i) {
                         deleteAccount();
                     }
                 })
@@ -104,35 +92,28 @@ public class SignedInActivity extends AppCompatActivity implements View.OnClickL
         dialog.show();
     }
 
-    private void deleteAccount()
-    {
+    private void deleteAccount() {
         AuthUI.getInstance()
                 .delete(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>()
-                {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        if (task.isSuccessful())
-                        {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
                             finish();
-                        }
-                        else
-                        {
+                        } else {
                         }
                     }
                 });
     }
 
-    private void populateProfile()
-    {
+    private void populateProfile() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        TextView emailtxt = (TextView)findViewById(R.id.user_email);
+        TextView emailtxt = (TextView) findViewById(R.id.user_email);
         emailtxt.setText(
                 TextUtils.isEmpty(user.getEmail()) ? "No email" : user.getEmail());
 
-        TextView usernametxt = (TextView)findViewById(R.id.user_display_name);
+        TextView usernametxt = (TextView) findViewById(R.id.user_display_name);
         usernametxt.setText(
                 TextUtils.isEmpty(user.getDisplayName()) ? "No display name" : user.getDisplayName());
 
@@ -140,39 +121,26 @@ public class SignedInActivity extends AppCompatActivity implements View.OnClickL
 
         providerList.append("Providers used: ");
 
-        if (user.getProviderData() == null || user.getProviderData().isEmpty())
-        {
+        if (user.getProviderData() == null || user.getProviderData().isEmpty()) {
             providerList.append("none");
-        }
-        else
-        {
-            for (UserInfo profile : user.getProviderData())
-            {
+        } else {
+            for (UserInfo profile : user.getProviderData()) {
                 String providerId = profile.getProviderId();
-                if (GoogleAuthProvider.PROVIDER_ID.equals(providerId))
-                {
+                if (GoogleAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Google");
-                }
-                else if (FacebookAuthProvider.PROVIDER_ID.equals(providerId))
-                {
+                } else if (FacebookAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Facebook");
-                }
-                else if(TwitterAuthProvider.PROVIDER_ID.equals(providerId))
-                {
+                } else if (TwitterAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Twitter");
-                }
-                else if (EmailAuthProvider.PROVIDER_ID.equals(providerId))
-                {
+                } else if (EmailAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Email");
-                }
-                else
-                {
+                } else {
                     providerList.append(providerId);
                 }
             }
         }
 
-        TextView userenabled = (TextView)findViewById(R.id.user_enabled_providers);
+        TextView userenabled = (TextView) findViewById(R.id.user_enabled_providers);
         userenabled.setText(providerList);
     }
 

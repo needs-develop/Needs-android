@@ -14,7 +14,7 @@ public class ReplyListAdapter extends BaseAdapter {
     Context context;
     ArrayList<ReplyList> list_replyArrayList;
 
-    public ReplyListAdapter(Context context, ArrayList<ReplyList>list_replyArrayList){
+    public ReplyListAdapter(Context context, ArrayList<ReplyList> list_replyArrayList) {
         this.context = context;
         this.list_replyArrayList = list_replyArrayList;
     }
@@ -37,18 +37,16 @@ public class ReplyListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        if(convertView==null)
-        {
+        if (convertView == null) {
             holder = new ViewHolder();
             convertView =
-                    LayoutInflater.from(context).inflate(R.layout.activity_itemreply,null);
+                    LayoutInflater.from(context).inflate(R.layout.activity_itemreply, null);
             holder.comment_reply = (TextView) convertView.findViewById(R.id.comment_reply);
-            holder.writer_reply = (TextView)convertView.findViewById(R.id.writer_reply);
-            holder.time_reply = (TextView)convertView.findViewById(R.id.time_reply);
+            holder.writer_reply = (TextView) convertView.findViewById(R.id.writer_reply);
+            holder.time_reply = (TextView) convertView.findViewById(R.id.time_reply);
             convertView.setTag(holder);
-        }
-        else{
-            holder = (ViewHolder)convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         holder.comment_reply.setText(list_replyArrayList.get(position).getComment_reply());
@@ -58,7 +56,7 @@ public class ReplyListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public class ViewHolder{
+    public class ViewHolder {
         TextView comment_reply;
         TextView writer_reply;
         TextView time_reply;

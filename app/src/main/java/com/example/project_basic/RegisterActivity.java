@@ -65,12 +65,12 @@ public class RegisterActivity extends AppCompatActivity {
     ZonedDateTime nowAsiaSeoul = ZonedDateTime.ofInstant(nowUtc, asiaSeoul);
 
     String year = String.valueOf(nowAsiaSeoul.getYear());
-    String  month = String.valueOf(nowAsiaSeoul.getMonthValue());
-    String day1  = String.valueOf(nowAsiaSeoul.getDayOfMonth()) ;
+    String month = String.valueOf(nowAsiaSeoul.getMonthValue());
+    String day1 = String.valueOf(nowAsiaSeoul.getDayOfMonth());
     String hour = String.valueOf(nowAsiaSeoul.getHour());
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
 
-    String fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
 
     String email;
     String dupName;
@@ -79,32 +79,31 @@ public class RegisterActivity extends AppCompatActivity {
 
     int dupliNum = 0;
     int compnum = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        if(hour.length()==1)
-        {
-            hour = "0"+hour;
-            fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
+        if (hour.length() == 1) {
+            hour = "0" + hour;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
         }
 
-        if(minute.length()==1)
-        {
-            minute = "0"+minute;
-            fullDay = year+"/"+month+"/"+day1+" "+hour+":"+minute;
+        if (minute.length() == 1) {
+            minute = "0" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
         }
 
         mAuth = FirebaseAuth.getInstance();
 
-        final EditText emailTxt = (EditText)findViewById(R.id.m_id); //이메일
-        final EditText nameTxt = (EditText)findViewById(R.id.btn_name);//닉네임
-        final EditText pwdTxt = (EditText)findViewById(R.id.m_pass);//비번
-        final EditText rnameTxt = (EditText)findViewById(R.id.btn_rname);
+        final EditText emailTxt = (EditText) findViewById(R.id.m_id); //이메일
+        final EditText nameTxt = (EditText) findViewById(R.id.btn_name);//닉네임
+        final EditText pwdTxt = (EditText) findViewById(R.id.m_pass);//비번
+        final EditText rnameTxt = (EditText) findViewById(R.id.btn_rname);
 
 
-        final Button joinBtn = (Button)findViewById(R.id.btn_register);
+        final Button joinBtn = (Button) findViewById(R.id.btn_register);
         final Button btn_duplicate = findViewById(R.id.btn_duplicate);
 
         btn_duplicate.setOnClickListener(new View.OnClickListener() {
@@ -119,15 +118,11 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        if(!document.exists())
-                                        {
+                                        if (!document.exists()) {
                                             break;
                                         }
-                                        if(!(dupName.equals(document.getData().get("id_nickName").toString())))
-                                        {
-                                        }
-                                        else
-                                        {
+                                        if (!(dupName.equals(document.getData().get("id_nickName").toString()))) {
+                                        } else {
                                             compnum = 2;
                                         }
                                     }
@@ -136,15 +131,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                                 //////////////////////////중복확인 toast////////////////////////////////
 
-                                if( compnum == 2)
-                                {
-                                    Log.d("확인을 위한 num" , "중복일시");
-                                    Toast.makeText(RegisterActivity.this,"중복된닉네임입니다",Toast.LENGTH_SHORT).show();
-                                }
-                                else if (compnum == 1)
-                                {
-                                    Log.d("확인을 위한 num" , "중복이 아닐시");
-                                    Toast.makeText(RegisterActivity.this,"사용가능한닉네임입니다",Toast.LENGTH_SHORT).show();
+                                if (compnum == 2) {
+                                    Log.d("확인을 위한 num", "중복일시");
+                                    Toast.makeText(RegisterActivity.this, "중복된닉네임입니다", Toast.LENGTH_SHORT).show();
+                                } else if (compnum == 1) {
+                                    Log.d("확인을 위한 num", "중복이 아닐시");
+                                    Toast.makeText(RegisterActivity.this, "사용가능한닉네임입니다", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -160,10 +152,10 @@ public class RegisterActivity extends AppCompatActivity {
                 pw = pwdTxt.getText().toString();
                 rname = rnameTxt.getText().toString();
 
-                if(compnum == 2) Toast.makeText(RegisterActivity.this,"닉네임중복확인을해주세요",Toast.LENGTH_SHORT).show();
-                else if(compnum == 1)
-                {
-                    joinStart(email,dupName,pw,rname);
+                if (compnum == 2)
+                    Toast.makeText(RegisterActivity.this, "닉네임중복확인을해주세요", Toast.LENGTH_SHORT).show();
+                else if (compnum == 1) {
+                    joinStart(email, dupName, pw, rname);
                 }
             }
         });
@@ -210,27 +202,28 @@ public class RegisterActivity extends AppCompatActivity {
         });
          */
     }
+
     private void joinStart(final String email, final String name, String password, final String realname) {
 
-        mAuth.createUserWithEmailAndPassword(email,password)
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
 
-                        if(!task.isSuccessful()) {
+                        if (!task.isSuccessful()) {
                             try {
                                 throw task.getException();
-                            } catch(FirebaseAuthWeakPasswordException e) {
-                                Toast.makeText(RegisterActivity.this,"비밀번호가 간단해요.." ,Toast.LENGTH_SHORT).show();
-                            } catch(FirebaseAuthInvalidCredentialsException e) {
-                                Toast.makeText(RegisterActivity.this,"email 형식에 맞지 않습니다." ,Toast.LENGTH_SHORT).show();
-                            } catch(FirebaseAuthUserCollisionException e) {
-                                Toast.makeText(RegisterActivity.this,"이미존재하는 email 입니다." ,Toast.LENGTH_SHORT).show();
-                            } catch(Exception e) {
-                                Toast.makeText(RegisterActivity.this,"다시 확인해주세요.." ,Toast.LENGTH_SHORT).show();
+                            } catch (FirebaseAuthWeakPasswordException e) {
+                                Toast.makeText(RegisterActivity.this, "비밀번호가 간단해요..", Toast.LENGTH_SHORT).show();
+                            } catch (FirebaseAuthInvalidCredentialsException e) {
+                                Toast.makeText(RegisterActivity.this, "email 형식에 맞지 않습니다.", Toast.LENGTH_SHORT).show();
+                            } catch (FirebaseAuthUserCollisionException e) {
+                                Toast.makeText(RegisterActivity.this, "이미존재하는 email 입니다.", Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                Toast.makeText(RegisterActivity.this, "다시 확인해주세요..", Toast.LENGTH_SHORT).show();
                             }
-                        }else{
+                        } else {
                             currentUser = mAuth.getCurrentUser();
 
                             id_value = email;
@@ -238,7 +231,7 @@ public class RegisterActivity extends AppCompatActivity {
                             id_name = realname;
                             id_nickName = name;
 
-                            Log.d("닉네임 출력",id_nickName);
+                            Log.d("닉네임 출력", id_nickName);
 
                             String point = "10";
                             CollectionReference title_content = db.collection("user");
@@ -267,16 +260,16 @@ public class RegisterActivity extends AppCompatActivity {
                             CollectionReference pointDay = db.collection("user");
                             Map<String, Object> user1 = new HashMap<>();
                             user1.put("pointDay", day1);
-                            user1.put("pointLimit",pointLimit);
+                            user1.put("pointLimit", pointLimit);
 
-                            pointDay.document(id_uid).collection("pointDay").document(id_value+"pointDay").set(user1);
+                            pointDay.document(id_uid).collection("pointDay").document(id_value + "pointDay").set(user1);
                             Log.d("유저정보 id로그인 uid 확인", id_uid);
-                            db.collection("user").document(id_uid).collection("pointDay").document(id_value+"pointDay")
+                            db.collection("user").document(id_uid).collection("pointDay").document(id_value + "pointDay")
                                     .set(user1)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            Log.d("point 데이터 확인",day1 +"  "+pointLimit);
+                                            Log.d("point 데이터 확인", day1 + "  " + pointLimit);
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -299,13 +292,14 @@ public class RegisterActivity extends AppCompatActivity {
                                         }
                                     });
 
-                            Toast.makeText(RegisterActivity.this,"회원가입이 완료되었습니다",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                             finish();
                         }
                     }
                 });
     }
+
     public void onBackPressed() {
         RegisterActivity.this.finish();
         super.onBackPressed();

@@ -32,7 +32,6 @@ public class ReplyList {
     }
 
 
-
     public String getComment_reply() {
         return comment_reply;
     }
@@ -49,7 +48,7 @@ public class ReplyList {
         this.writer_reply = writer_reply;
     }
 
-    public ReplyList(String comment_reply, String writer_reply,String time_reply,String doc_reply,String r_doc_reply) {
+    public ReplyList(String comment_reply, String writer_reply, String time_reply, String doc_reply, String r_doc_reply) {
         this.comment_reply = comment_reply;
         this.writer_reply = writer_reply;
         this.time_reply = time_reply;
