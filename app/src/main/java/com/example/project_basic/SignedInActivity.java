@@ -1,3 +1,4 @@
+/*
 package com.example.project_basic;
 
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.project_basic.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -145,3 +147,4 @@ public class SignedInActivity extends AppCompatActivity implements View.OnClickL
     }
 
 }
+*/

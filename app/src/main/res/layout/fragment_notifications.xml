@@ -1,192 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
     <TextView
-        android:id="@+id/userprofile"
+        android:fontFamily="@font/jalnan"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:text="User profile"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="50dp"
+        android:text="User Profile">
+    </TextView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/profilelayout"
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/userprofile">
-
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/user_profile_picture"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
-            android:contentDescription="Profile picture"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:src="@mipmap/ic_launcher"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/user_email"
+            >
+        </ImageView>
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="N/A"
-            android:textIsSelectable="true"
-            app:layout_constraintLeft_toRightOf="@+id/user_profile_picture"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:fontFamily="@font/cookierunbold"
+                android:layout_margin="5dp"
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NAME:"
+                />
+            <TextView
+                android:fontFamily="@font/cookierunbold"
+                android:layout_margin="5dp"
+                android:id="@+id/user_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID:"
+                />
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:fontFamily="@font/cookierunbold"
+                    android:id="@+id/user_display_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NickName"
+                    />
+                <Button
+                    android:fontFamily="@font/cookierunbold"
+                    android:id="@+id/user_nickName_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="닉네임변경"
+                    />
+            </LinearLayout>
+            <TextView
+                android:fontFamily="@font/cookierunbold"
+                android:layout_margin="5dp"
+                android:id="@+id/user_enabled_providers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="user_providers"
+                />
+        </LinearLayout>
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/user_display_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="N/A"
-            android:textIsSelectable="true"
-            app:layout_constraintLeft_toRightOf="@+id/user_profile_picture"
-            app:layout_constraintTop_toBottomOf="@+id/user_email"></TextView>
-
-        <TextView
-            android:id="@+id/user_enabled_providers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="N/A"
-            android:textIsSelectable="true"
-            app:layout_constraintLeft_toRightOf="@+id/user_profile_picture"
-            app:layout_constraintTop_toBottomOf="@+id/user_display_name" />
-
-        <Button
-            android:id="@+id/user_nickName_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:text="닉네임변경"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/user_display_name"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.655" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/selectlayout"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/profilelayout"
-        tools:layout_editor_absoluteX="4dp">
-
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
         <TextView
-            android:id="@+id/toptxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:text="계정 관리"
-            android:textSize="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/sign_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:text="로그아웃"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toptxt" />
-
-        <Button
-            android:id="@+id/delete_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:text="계정 삭제"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_out" />
-
-        <Button
-            android:id="@+id/pointHistory"
+            android:fontFamily="@font/jalnan"
+            android:text="포인트관리" />
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:text="포인트 내역"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/delete_account" />
+            android:layout_height="wrap_content">
+            <GridView
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center"
+                android:id="@+id/gridView"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:numColumns="3"/>
+        </LinearLayout>
+    </LinearLayout>
 
-        <Button
-            android:id="@+id/pointConversion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:text="포인트 전환"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pointHistory" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/forumlayout"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/selectlayout"
-        tools:layout_editor_absoluteX="-16dp">
-
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
         <TextView
-            android:id="@+id/toptxt2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:text="게시판"
-            android:textSize="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/mypost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:text="내가 쓴 글"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toptxt2" />
-
-        <Button
-            android:id="@+id/myreply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:text="댓글 남긴 글"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mypost" />
+            android:fontFamily="@font/jalnan"
+            android:text="나의 활동 기록" />
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <GridView
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center"
+                android:id="@+id/gridViewInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:numColumns="3"/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/mygood"
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:text="공감한 글"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/myreply" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:fontFamily="@font/jalnan"
+            android:text="계정관리" />
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <GridView
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center"
+                android:id="@+id/gridViewUserInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:numColumns="3"/>
+        </LinearLayout>
+    </LinearLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

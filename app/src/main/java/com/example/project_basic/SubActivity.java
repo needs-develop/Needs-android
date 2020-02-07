@@ -135,7 +135,6 @@ public class SubActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(navListner);
 
         mAuth = FirebaseAuth.getInstance();
-        mTextMessage = findViewById(R.id.sub_id);
 
         final ExpandableListView expandableListView = findViewById(R.id.draw_listView);
         final ExpandableListView expandableListView1 = findViewById(R.id.good_listView);

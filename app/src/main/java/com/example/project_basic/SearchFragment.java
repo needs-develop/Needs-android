@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +41,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 import static com.example.project_basic.MainActivity.changeNum;
+import static com.example.project_basic.MainActivity.id_name;
 import static com.example.project_basic.MainActivity.id_nickName;
 import static com.example.project_basic.MainActivity.id_uid;
 import static com.example.project_basic.MainActivity.photoUrl;
@@ -51,6 +57,15 @@ public class SearchFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();//firestore객체
     String nickName = "noDisplay";
     String change_nickName;
+    String name;
+
+    GridView gridView;
+    GridView gridViewInfo;
+    GridView gridViewUser;
+
+    SettingAdapter settingAdapter;
+    SettingAdapter settingAdapterInfo;
+    SettingAdapter settingAdapterUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,13 +82,20 @@ public class SearchFragment extends Fragment {
 
         fragmentNumber = 0;
 
+        TextView nametxt = rootView.findViewById(R.id.user_name);
         TextView emailtxt = rootView.findViewById(R.id.user_email);
         final TextView usernametxt = rootView.findViewById(R.id.user_display_name);
         TextView userenabled = rootView.findViewById(R.id.user_enabled_providers);
+
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         ImageView iv_profile;
         iv_profile = rootView.findViewById(R.id.user_profile_picture);
+        gridView = rootView.findViewById(R.id.gridView);
+        gridViewInfo = rootView.findViewById(R.id.gridViewInfo);
+        gridViewUser = rootView.findViewById(R.id.gridViewUserInfo);
 
+        nametxt.setText(id_name);
         emailtxt.setText(
                 TextUtils.isEmpty(user.getEmail()) ? "No email" : user.getEmail());
 
@@ -171,69 +193,74 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        Button signoutbtn = rootView.findViewById(R.id.sign_out);
-        signoutbtn.setOnClickListener(new View.OnClickListener() {
+
+
+        settingAdapter = new SettingAdapter();
+        settingAdapter.addItem(new SettingItem("포인트내역",R.drawable.history));
+        settingAdapter.addItem(new SettingItem("포인트전환",R.drawable.money));
+
+        gridView.setAdapter(settingAdapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
-                signOut();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0)
+                {
+                    Intent i = new Intent(getActivity(), PointHistoryActivity.class);
+                    startActivity(i);
+                }
+                else if(position==1){
+                    Intent i = new Intent(getActivity(), PointConversionActivity.class);
+                    startActivity(i);
+                }
             }
         });
 
-        Button deleteuser = rootView.findViewById(R.id.delete_account);
-        deleteuser.setOnClickListener(new View.OnClickListener() {
+        settingAdapterInfo = new SettingAdapter();
+        settingAdapterInfo.addItem(new SettingItem("내가쓴글",R.drawable.write));
+        settingAdapterInfo.addItem(new SettingItem("공감한글",R.drawable.w_heart));
+        settingAdapterInfo.addItem(new SettingItem("댓글쓴글",R.drawable.comment));
+
+       gridViewInfo.setAdapter(settingAdapterInfo);
+
+       gridViewInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @SuppressLint("RestrictedApi")
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               if(position == 0)
+               {
+                   Intent i = new Intent(getActivity(), MyWriteActivity.class);
+                   startActivity(i);
+               }
+               else if(position==1){
+                   Intent i = new Intent(getActivity(), MyLikeActivity.class);
+                   startActivity(i);
+               }
+               else if(position==2){
+                   Intent i = new Intent(getActivity(), MyReplyActivity.class);
+                   startActivity(i);
+               }
+           }
+       });
+
+       settingAdapterUser = new SettingAdapter();
+        settingAdapterUser.addItem(new SettingItem("로그아웃",R.drawable.logout));
+        settingAdapterUser.addItem(new SettingItem("계정삭제",R.drawable.userdelete));
+
+        gridViewUser.setAdapter(settingAdapterUser);
+
+        gridViewUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
-            public void onClick(View view) {
-                deleteAccountClicked();
-            }
-        });
-
-        Button mywrite = rootView.findViewById(R.id.mypost);
-        mywrite.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), MyWriteActivity.class);
-                startActivity(i);
-            }
-        });
-
-        Button myreply = rootView.findViewById(R.id.myreply);
-        myreply.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), MyReplyActivity.class);
-                startActivity(i);
-            }
-        });
-
-        Button mylike = rootView.findViewById(R.id.mygood);
-        mylike.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), MyLikeActivity.class);
-                startActivity(i);
-            }
-        });
-
-        Button pointHistory = rootView.findViewById(R.id.pointHistory);
-        pointHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), PointHistoryActivity.class);
-                startActivity(i);
-            }
-        });
-
-        Button pointConversion = rootView.findViewById(R.id.pointConversion);
-        pointConversion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), PointConversionActivity.class);
-                startActivity(i);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position==0){
+                    Toast.makeText(getApplicationContext(), "로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
+                    signOut();
+                }
+                else if(position==1){
+                    deleteAccountClicked();
+                }
             }
         });
 
@@ -275,6 +302,36 @@ public class SearchFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    class SettingAdapter extends BaseAdapter{
+        ArrayList<SettingItem> items = new ArrayList<SettingItem>();
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        public void addItem(SettingItem settingItem){
+            items.add(settingItem);
+        }
+
+        @Override
+        public SettingItem getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            @SuppressLint("RestrictedApi") SettingViewer settingViewer = new SettingViewer(getApplicationContext());
+            settingViewer.setItem(items.get(position));
+            return settingViewer;
+        }
     }
 
 }

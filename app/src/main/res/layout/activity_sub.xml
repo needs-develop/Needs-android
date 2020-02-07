@@ -20,26 +20,6 @@
             android:layout_gravity="start"
             android:src="@raw/d" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end">
-
-            <TextView
-                android:id="@+id/sub_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:textSize="15sp" />
-
-            <Button
-                android:id="@+id/btn_logout"
-                android:layout_width="100dp"
-                android:layout_height="38dp"
-                android:onClick="OnClickHandler"
-                android:text="logout" />
-        </LinearLayout>
-
     </RelativeLayout>
     >
 
