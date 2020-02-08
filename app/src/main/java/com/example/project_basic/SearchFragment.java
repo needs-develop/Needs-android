@@ -147,6 +147,22 @@ public class SearchFragment extends Fragment {
                     Glide.with(this).load(photoUrl).into(iv_profile);
                 } else if (FacebookAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Facebook");
+                    DocumentReference doc = db.collection("user").document(id_uid);
+                    doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                Log.d("사진출력", (String) document.getData().get("photoUrl"));
+                                photoUrl = (String) document.getData().get("photoUrl");
+                                Log.d("사진출력 photoUrl", photoUrl);
+                            } else {
+                            }
+                        }
+                    });
+                    Log.d("사진출력 photoUrl 두번째", photoUrl);
+                    Glide.with(this).load(photoUrl).into(iv_profile);
                 } else if (TwitterAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Twitter");
                 } else if (EmailAuthProvider.PROVIDER_ID.equals(providerId)) {

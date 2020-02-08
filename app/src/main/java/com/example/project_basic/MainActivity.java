@@ -17,6 +17,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.multidex.MultiDex;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -31,6 +37,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     static int changeNum = 0;
 
     String value = null;
+    String googleString ;
 
     private SignInButton btn_google; //구글로그인버튼
 
@@ -104,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     GoogleSignInAccount account;
 
+    private CallbackManager callbackManager;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -137,6 +146,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         btn2_test = findViewById(R.id.btn2_test);
 
         firebaseAuth = firebaseAuth.getInstance();//객체 초기화
+        auth = FirebaseAuth.getInstance();//파이어베이스 인증객체 초기화
+
 
         btn_test.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,8 +178,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
 
-        auth = FirebaseAuth.getInstance();//파이어베이스 인증객체 초기화
-
         btn_google = findViewById(R.id.btn_google);
         btn_google.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +186,105 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 startActivityForResult(intent, REQ_SIGN_GOOGLE);
             }
         });
+
+        callbackManager = CallbackManager.Factory.create();
+        LoginButton loginButton = findViewById(R.id.login_button);
+        loginButton.setReadPermissions("email","public_profile");
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+            @Override
+            public void onCancel() {
+            }
+            @Override
+            public void onError(FacebookException error) {
+            }
+        });
     }
+
+    private void handleFacebookAccessToken(AccessToken token){
+        final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(!task.isSuccessful()){
+
+                }
+                else{
+                    Log.d("facebookUID",mAuth.getCurrentUser().getUid());
+                    Log.d("facebookDisplayName",mAuth.getCurrentUser().getDisplayName());
+                    Log.d("facebookEmail",mAuth.getCurrentUser().getEmail());
+                    Log.d("facebookIProviderId",mAuth.getCurrentUser().getProviderId());
+                    Log.d("facebookPhoto",mAuth.getCurrentUser().getPhotoUrl().toString());
+                    id_value = mAuth.getCurrentUser().getEmail();
+                    id_uid = mAuth.getCurrentUser().getUid();
+                    id_name = mAuth.getCurrentUser().getDisplayName();
+                    id_nickName = mAuth.getCurrentUser().getDisplayName();
+                    photoUrl = String.valueOf(mAuth.getCurrentUser().getPhotoUrl());
+
+                    Log.d ("photourl값출력",photoUrl);
+                    String point = "10";
+                    CollectionReference title_content = db.collection("user");
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("id_email", id_value);
+                    user.put("id_uid", id_uid);
+                    user.put("id_name", id_name);
+                    user.put("id_nickName", id_nickName);
+                    user.put("id_point", point);
+                    user.put("photoUrl",String.valueOf(mAuth.getCurrentUser().getPhotoUrl()));
+
+                    title_content.document(id_uid).set(user);
+                    Log.d("유저정보 uid 확인", id_uid);
+                    db.collection("user").document(id_uid)
+                            .set(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            });
+
+                    CollectionReference pointDay = db.collection("user");
+                    Map<String, Object> user1 = new HashMap<>();
+                    user1.put("pointDay", day1);
+                    user1.put("pointLimit",pointLimit);
+
+                    pointDay.document(id_uid).collection("pointDay").document(id_value+"pointDay").set(user1);
+                    Log.d("유저정보 id로그인 uid 확인", id_uid);
+                    db.collection("user").document(id_uid).collection("pointDay").document(id_value+"pointDay")
+                            .set(user1)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
+                    Map<String, Object> member = new HashMap<>();
+                    member.put("day", fullDay);
+                    member.put("point", "+10");
+                    member.put("type", "회원가입 지급 포인트");
+
+                    db.collection("user").document(id_uid).collection("pointHistory")
+                            .add(member)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                }
+                            });
+                    Intent intent = new Intent(MainActivity.this,SubActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+    }
+
 
     private void CustomerLogin() {
         String email = emailTxt.getText().toString();
@@ -260,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //구글로그인 인증요청했을때 결과 값을 되돌려 받는곳
         super.onActivityResult(requestCode, resultCode, data);
-
+        callbackManager.onActivityResult(requestCode,resultCode,data);
         if (requestCode == REQ_SIGN_GOOGLE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {//인증결과 성공시
@@ -271,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void resultLogin(final GoogleSignInAccount accountSuv) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        AuthCredential credential = GoogleAuthProvider.getCredential(accountSuv.getIdToken(), null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -281,20 +388,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                             Intent intent = new Intent(getApplicationContext(), SubActivity.class);
                             //Intent intent = new Intent(getApplicationContext(),ResultActivity.class);
                             int returnNum = 0;
-
-                            try {
-                                returnNum = firstCheck(accountSuv);
-                                Thread.sleep(2000);
+                            googleString = auth.getCurrentUser().getUid();
+                            //try {
+                                returnNum = firstCheck(googleString);
+                              /*  Thread.sleep(2000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
-                            }
+                            }*/
 
                             if (returnNum == 1) {
                                 Log.d("리턴넘버1", "리턴넘버1");
                                 firstLogin();
                             } else if (returnNum == 0) {
                                 Log.d("리턴넘버2", "리턴넘버2");
-                                DocumentReference doc = db.collection("user").document(id_uid);
+                                DocumentReference doc = db.collection("user").document(googleString);
                                 doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @RequiresApi(api = Build.VERSION_CODES.O)
                                     @Override
@@ -322,7 +429,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 });
     }
 
-    public int firstCheck(GoogleSignInAccount account) {
+    public int firstCheck(final String google_String) {
+        try {
+            DocumentReference doc = db.collection("user").document(google_String);
+            doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        compareNum = 0;
+                        Log.d("테스트1","테스트1");
+                    } else {
+                        compareNum = 1;
+                        Log.d("테스트2","테스트2");
+                    }
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            compareNum = 1;
+            Log.d("테스트3","테스트3");
+        }
+        /*
         db.collection("user")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -335,10 +464,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                     compareNum = 1;
                                     Log.d("존재여부", "존재");
 
-                                } else if (id_uid == document.getData().get("id_uid").toString()) {
+                                } else if (google_String == document.getData().get("id_uid").toString()) {
                                     //id_nickName = document.getData().get("id_nickName").toString();
-
-                                    Log.d("확인둘", id_nickName);
                                     compareNum = 0;
                                     break;
                                 } else {
@@ -350,7 +477,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                         }
                     }
-                });
+                });*/
         return compareNum;
     }
 
