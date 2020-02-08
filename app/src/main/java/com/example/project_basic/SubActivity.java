@@ -147,76 +147,53 @@ public class SubActivity extends AppCompatActivity {
 
         subExpAdapter1.notifyDataSetChanged();
 
-        String uid = mAuth.getUid();
 
-        id_uid = uid;
+        //////////////////////포인트 가져오기/////////////////////////////////////////
 
-        DocumentReference doc = db.collection("user").document(id_uid);
+        DocumentReference doc = db.collection("user").document(id_uid)
+                .collection("pointDay").document(id_value+"pointDay");
         doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    id_nickName = document.getData().get("id_nickName").toString();
-                } else {
+                    pointDay = document.getData().get("pointDay").toString();
+                    pointLimit = document.getData().get("pointLimit").toString();
+
+                    int pointDay1 = Integer.parseInt(pointDay);
+                    int pointDay2 = Integer.parseInt(day1);
+
+                    Log.d("point확인", pointDay + pointLimit);
+
+                    if (pointDay1 == pointDay2) {
+                        Log.d("update", "update를 하지 않습니다");
+                    } else {
+                        Log.d("update", "update를 합니다");
+                        db.collection("user").document(id_uid).collection("pointDay")
+                                .document(id_value + "pointDay")
+                                .update(
+                                        "pointDay", day1,
+                                        "pointLimit", "5"
+                                );
+                    }
                 }
             }
         });
+        DocumentReference docR = db.collection("user").document(id_uid);
+        docR.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    point = document.getData().get("id_point").toString();
+                    id_nickName = document.getData().get("id_nickName").toString();
+                    Log.d("포인트 출력",id_nickName+point);
 
-        //////////////////////포인트 가져오기/////////////////////////////////////////
-
-        db.collection("user").document(id_uid).collection("pointDay")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                pointDay = document.getData().get("pointDay").toString();
-                                pointLimit = document.getData().get("pointLimit").toString();
-
-                                int pointDay1 = Integer.parseInt(pointDay);
-                                int pointDay2 = Integer.parseInt(day1);
-
-                                Log.d("point확인", pointDay + pointLimit);
-
-                                if (pointDay1 == pointDay2) {
-                                    Log.d("update", "update를 하지 않습니다");
-                                } else {
-                                    Log.d("update", "update를 합니다");
-                                    db.collection("user").document(id_uid).collection("pointDay")
-                                            .document(id_value + "pointDay")
-                                            .update(
-                                                    "pointDay", day1,
-                                                    "pointLimit", "5"
-                                            );
-                                }
-
-                            }
-                        } else {
-
-                        }
-                    }
-                });
-
-        db.collection("user")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (id_uid.equals(document.getData().get("id_uid").toString())) {
-                                    point = document.getData().get("id_point").toString();
-                                    break;
-                                }
-                            }
-                        } else {
-                        }
-                    }
-                });
-
+                }
+            }
+        });
 
         ///////////////////포인트 가져오기////////////////////////////////////////////////
 

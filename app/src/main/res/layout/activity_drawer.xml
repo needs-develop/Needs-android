@@ -4,7 +4,7 @@
     android:layout_width="200dp"
     android:layout_height="732dp"
     android:layout_gravity="start"
-    android:background="#EBEB68"
+    android:background="#7AC7EB"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,7 +19,7 @@
             android:fontFamily="@font/jalnan"
             android:gravity="center"
             android:text="지역"
-            android:textColor="#4092B8"
+            android:textColor="#74746E"
             android:textSize="30dp" />
     </LinearLayout>
 

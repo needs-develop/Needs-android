@@ -1,10 +1,13 @@
 package com.example.project_basic;
 //첫 로그인창//
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
-    int compareNum = 1;
+    boolean compareBoolean = false;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -114,6 +117,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     GoogleSignInAccount account;
 
     private CallbackManager callbackManager;
+
+    private ProgressDialog mProgressDialog;
+    private BackgroundThread mBackThread;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -226,66 +233,116 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     id_nickName = mAuth.getCurrentUser().getDisplayName();
                     photoUrl = String.valueOf(mAuth.getCurrentUser().getPhotoUrl());
 
-                    Log.d ("photourl값출력",photoUrl);
-                    String point = "10";
-                    CollectionReference title_content = db.collection("user");
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("id_email", id_value);
-                    user.put("id_uid", id_uid);
-                    user.put("id_name", id_name);
-                    user.put("id_nickName", id_nickName);
-                    user.put("id_point", point);
-                    user.put("photoUrl",String.valueOf(mAuth.getCurrentUser().getPhotoUrl()));
+                    try {
+                        DocumentReference doc = db.collection("user").document(id_uid);
+                        Log.d("compare false1","compare false1");
+                        doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("compare false2","compare false2");
+                                    try {
+                                        String value = task.getResult().get("id_email").toString();
+                                        Log.d("compare false",value);
+                                        compareBoolean = false;
 
-                    title_content.document(id_uid).set(user);
-                    Log.d("유저정보 uid 확인", id_uid);
-                    db.collection("user").document(id_uid)
-                            .set(user)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                }
-                            });
+                                        Intent intent = new Intent(MainActivity.this,SubActivity.class);
+                                        mProgressDialog = ProgressDialog.show(MainActivity.this, "Loading"
+                                                , "로그인중입니다..");
 
-                    CollectionReference pointDay = db.collection("user");
-                    Map<String, Object> user1 = new HashMap<>();
-                    user1.put("pointDay", day1);
-                    user1.put("pointLimit",pointLimit);
+                                        mBackThread = new BackgroundThread();
+                                        mBackThread.setRunning(true);
+                                        mBackThread.start();
+                                        startActivity(intent);
 
-                    pointDay.document(id_uid).collection("pointDay").document(id_value+"pointDay").set(user1);
-                    Log.d("유저정보 id로그인 uid 확인", id_uid);
-                    db.collection("user").document(id_uid).collection("pointDay").document(id_value+"pointDay")
-                            .set(user1)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                                        if(!MainActivity.this.isFinishing()) mProgressDialog.dismiss();
+                                        finish();
+                                    }catch (Exception e){
+                                        Log.d("compare false","예외처리");
+                                        compareBoolean = true;
+                                        facebookFirstLogin();
+                                    }
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                }
-                            });
-                    Map<String, Object> member = new HashMap<>();
-                    member.put("day", fullDay);
-                    member.put("point", "+10");
-                    member.put("type", "회원가입 지급 포인트");
+                            }
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d("compare true","compare true");
+                        compareBoolean = true;
+                    }
 
-                    db.collection("user").document(id_uid).collection("pointHistory")
-                            .add(member)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                }
-                            });
-                    Intent intent = new Intent(MainActivity.this,SubActivity.class);
-                    startActivity(intent);
-                    finish();
                 }
             }
         });
     }
 
+    private void facebookFirstLogin()
+    {
+        Log.d ("photourl값출력",photoUrl);
+        String point = "10";
+        CollectionReference title_content = db.collection("user");
+        Map<String, Object> user = new HashMap<>();
+        user.put("id_email", id_value);
+        user.put("id_uid", id_uid);
+        user.put("id_name", id_name);
+        user.put("id_nickName", id_nickName);
+        user.put("id_point", point);
+        user.put("photoUrl",photoUrl);
+
+        title_content.document(id_uid)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("firebase 등록", id_uid);
+                    }
+                });
+
+        CollectionReference pointDay = db.collection("user");
+        Map<String, Object> user1 = new HashMap<>();
+        user1.put("pointDay", day1);
+        user1.put("pointLimit",pointLimit);
+
+        pointDay.document(id_uid).collection("pointDay").document(id_value+"pointDay").set(user1);
+        db.collection("user").document(id_uid).collection("pointDay").document(id_value+"pointDay")
+                .set(user1)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("pointDay", id_uid);
+                    }
+                });
+
+        Map<String, Object> member = new HashMap<>();
+        member.put("day", fullDay);
+        member.put("point", "+10");
+        member.put("type", "회원가입 지급 포인트");
+
+        db.collection("user").document(id_uid).collection("pointHistory")
+                .add(member)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("pointHistory", id_uid);
+                    }
+                });
+
+        Intent intent = new Intent(MainActivity.this,SubActivity.class);
+        mProgressDialog = ProgressDialog.show(MainActivity.this, "Loading"
+                , "로그인중입니다..");
+
+        mBackThread = new BackgroundThread();
+        mBackThread.setRunning(true);
+        mBackThread.start();
+        //Toast.makeText(MainActivity.this,"회원가입이 완료되었습니다.다시로그인해주세요", Toast.LENGTH_SHORT).show();
+        startActivity(intent);
+
+        if(!MainActivity.this.isFinishing()) mProgressDialog.dismiss();
+        finish();
+
+    }
 
     private void CustomerLogin() {
         String email = emailTxt.getText().toString();
@@ -343,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     Intent intent = new Intent();
 
                     startActivity(new Intent(MainActivity.this, SubActivity.class));
-
+                    mProgressDialog.dismiss();
                     finish();
                 }
 
@@ -384,43 +441,59 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {//로그인이 성공했으면
-                            Toast.makeText(MainActivity.this, "로그에 성공 하였습니다", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), SubActivity.class);
-                            //Intent intent = new Intent(getApplicationContext(),ResultActivity.class);
-                            int returnNum = 0;
-                            googleString = auth.getCurrentUser().getUid();
-                            //try {
-                                returnNum = firstCheck(googleString);
-                              /*  Thread.sleep(2000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }*/
+                            //Toast.makeText(MainActivity.this, "로그에 성공 하였습니다", Toast.LENGTH_SHORT).show();
+                            boolean returnBoolean = true;
 
-                            if (returnNum == 1) {
-                                Log.d("리턴넘버1", "리턴넘버1");
-                                firstLogin();
-                            } else if (returnNum == 0) {
-                                Log.d("리턴넘버2", "리턴넘버2");
-                                DocumentReference doc = db.collection("user").document(googleString);
+                            googleString = auth.getCurrentUser().getUid();
+                            id_value = auth.getCurrentUser().getEmail();
+                            id_uid =  auth.getCurrentUser().getUid();
+                            id_name =  auth.getCurrentUser().getDisplayName();
+                            id_nickName =  auth.getCurrentUser().getDisplayName();
+                            photoUrl =  String.valueOf(auth.getCurrentUser().getPhotoUrl());
+
+                             //returnBoolean = firstCheck(googleString);
+
+                            try {
+                                DocumentReference doc = db.collection("user").document(id_uid);
                                 doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @RequiresApi(api = Build.VERSION_CODES.O)
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
-                                            DocumentSnapshot document = task.getResult();
-                                            id_value = (String) document.getData().get("id_email");
-                                            id_uid = (String) document.getData().get("id_uid");
-                                            id_name = (String) document.getData().get("id_name");
-                                            id_nickName = (String) document.getData().get("id_nickName");
-                                            photoUrl = (String) document.getData().get("photoUrl");
-                                            Log.d("순서체크", "순서체크");
-                                        } else {
+                                            Log.d("compare false","compare false");
+                                            try {
+                                                String value = task.getResult().get("id_email").toString();
+                                                Log.d("compare false",value);
+                                                compareBoolean = false;
+                                                Intent intent = new Intent(getApplicationContext(), SubActivity.class);
+                                                startActivity(intent);
+
+
+                                                mProgressDialog = ProgressDialog.show(MainActivity.this, "Loading"
+                                                        , "로그인중입니다..");
+
+                                                mBackThread = new BackgroundThread();
+                                                mBackThread.setRunning(true);
+                                                mBackThread.start();
+                                                if (! MainActivity.this.isFinishing()) {
+                                                    mProgressDialog.dismiss();
+                                                }
+                                                finish();
+
+                                            }catch (Exception e){
+                                                Log.d("compare false","예외처리");
+                                                compareBoolean = true;
+                                                firstLogin();
+                                            }
                                         }
                                     }
                                 });
                             }
-                            startActivity(intent);
-
+                            catch (Exception e)
+                            {
+                                Log.d("compare true","compare true");
+                                compareBoolean = true;
+                            }
                         } else {
                             Toast.makeText(MainActivity.this, "로그인을 실패하였습니다", Toast.LENGTH_SHORT).show();
                         }
@@ -428,61 +501,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     }
                 });
     }
-
-    public int firstCheck(final String google_String) {
-        try {
-            DocumentReference doc = db.collection("user").document(google_String);
-            doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        compareNum = 0;
-                        Log.d("테스트1","테스트1");
-                    } else {
-                        compareNum = 1;
-                        Log.d("테스트2","테스트2");
-                    }
-                }
-            });
-        }
-        catch (Exception e)
-        {
-            compareNum = 1;
-            Log.d("테스트3","테스트3");
-        }
-        /*
-        db.collection("user")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (!(document.exists())) {
-                                    compareNum = 1;
-                                    Log.d("존재여부", "존재");
-
-                                } else if (google_String == document.getData().get("id_uid").toString()) {
-                                    //id_nickName = document.getData().get("id_nickName").toString();
-                                    compareNum = 0;
-                                    break;
-                                } else {
-                                    Log.d("파일이 없고 이름이 없다면", "존재");
-                                    compareNum = 1;
-                                }
-                            }
-                        } else {
-
-                        }
-                    }
-                });*/
-        return compareNum;
-    }
-
-
-
     public void firstLogin() {
         id_value = account.getEmail();
         id_uid = mAuth.getUid();
@@ -507,6 +525,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        Log.d("첫","첫");
                     }
                 });
 
@@ -522,13 +541,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                        Log.d("둘","둘");
                     }
                 });
+
         Map<String, Object> member = new HashMap<>();
         member.put("day", fullDay);
         member.put("point", "+10");
@@ -539,15 +555,73 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-
+                        Log.d("셋","셋");
                     }
                 });
+        Intent intent = new Intent(getApplicationContext(), SubActivity.class);
+        startActivity(intent);
+
+
+        mProgressDialog = ProgressDialog.show(MainActivity.this, "Loading"
+                , "로그인중입니다..");
+
+        mBackThread = new BackgroundThread();
+        mBackThread.setRunning(true);
+        mBackThread.start();
+        if (! MainActivity.this.isFinishing()) {
+            mProgressDialog.dismiss();
+        }
+        finish();
+
+
     }
 
-    public boolean GroupNameCheck(final Context context, final String GroupName){
-    return true;
+    public class BackgroundThread extends Thread {
+        volatile boolean running = false;
+        int cnt;
+
+        void setRunning(boolean b) {
+            running = b;
+            cnt = 10;
+        }
+
+        @Override
+        public void run() {
+            while (running) {
+                try {
+                    sleep(10000);
+                    if (cnt-- == 0) {
+                        running = false;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            handler.sendMessage(handler.obtainMessage());
+        }
+
     }
 
+    Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            mProgressDialog.dismiss();
+
+            boolean retry = true;
+            while (retry) {
+                try {
+                    mBackThread.join();
+                    retry = false;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+
+    };
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
