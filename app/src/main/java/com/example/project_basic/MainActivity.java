@@ -1,6 +1,7 @@
 package com.example.project_basic;
 //첫 로그인창//
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -355,7 +356,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = mAuth.getCurrentUser();
-
         if (currentUser != null && id_value != null) {
             startActivity(new Intent(MainActivity.this, SubActivity.class));
             finish();
@@ -481,6 +481,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         return compareNum;
     }
 
+
+
     public void firstLogin() {
         id_value = account.getEmail();
         id_uid = mAuth.getUid();
@@ -541,6 +543,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     }
                 });
     }
+
+    public boolean GroupNameCheck(final Context context, final String GroupName){
+    return true;
+    }
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
