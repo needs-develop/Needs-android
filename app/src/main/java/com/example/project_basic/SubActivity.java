@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.project_basic.MainActivity.id_name;
 import static com.example.project_basic.MainActivity.id_nickName;
 import static com.example.project_basic.MainActivity.id_uid;
 import static com.example.project_basic.MainActivity.id_value;
@@ -187,6 +188,7 @@ public class SubActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+                    id_name = document.getData().get("id_name").toString();
                     point = document.getData().get("id_point").toString();
                     id_nickName = document.getData().get("id_nickName").toString();
                     Log.d("포인트 출력",id_nickName+point);

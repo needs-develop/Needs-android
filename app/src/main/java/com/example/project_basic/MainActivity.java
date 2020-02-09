@@ -395,12 +395,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                 } else {
                     currentUser = mAuth.getCurrentUser();
-                    //Toast.makeText(MainActivity.this, "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
-                    Toast.makeText(MainActivity.this, "로그인 하였습니다", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent();
+                    id_uid = currentUser.getUid();
+                    id_value = email;
 
-                    startActivity(new Intent(MainActivity.this, SubActivity.class));
-                    mProgressDialog.dismiss();
+                    //Toast.makeText(MainActivity.this, "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this,SubActivity.class);
+                    mProgressDialog = ProgressDialog.show(MainActivity.this, "Loading"
+                            , "로그인중입니다..");
+
+                    mBackThread = new BackgroundThread();
+                    mBackThread.setRunning(true);
+                    mBackThread.start();
+                    //Toast.makeText(MainActivity.this,"회원가입이 완료되었습니다.다시로그인해주세요", Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+
+                    if(!MainActivity.this.isFinishing()) mProgressDialog.dismiss();
                     finish();
                 }
 

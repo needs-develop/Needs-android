@@ -220,8 +220,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                             id_value = email;
                             id_uid = mAuth.getUid();
-                            id_name = realname;
-                            id_nickName = name;
+                            id_name = name;
+                            id_nickName = realname;
 
                             Log.d("닉네임 출력", id_nickName);
 
