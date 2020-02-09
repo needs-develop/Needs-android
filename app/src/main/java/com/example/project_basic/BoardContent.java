@@ -160,42 +160,11 @@ public class BoardContent extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        presentBoolean = (boolean) document.getData().get("goodBoolean");
-                        Log.d("boolean의값", presentBoolean.toString());
-                        if (presentBoolean) {
-                            content_heart.setImageResource(R.raw.heart);
-                            Log.d("하트의색깔", "빨간색");
-                        } else if (!presentBoolean) {
-
-                            content_heart.setImageResource(R.raw.bin_heart);
-                            Log.d("하트의색깔", "빈색");
-                        }
-
+                            presentBoolean = true;
+                        content_heart.setImageResource(R.raw.heart);
                     } else {
-                        CollectionReference goodBoolean = db.collection("data");
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("goodBoolean", false);
-
-                        goodBoolean.document("allData").collection(address).document(documentName)
-                                .collection("like").document(id_value + "like").set(user);
-
-                        db.collection("data").document("allData").collection(address)
-                                .document(documentName).
-                                collection("like").document(id_value + "like")
-                                .set(user)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        presentBoolean = false;
-                                        content_heart.setImageResource(R.raw.bin_heart);
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                    }
-                                });
-
+                        presentBoolean = false;
+                        content_heart.setImageResource(R.raw.bin_heart);
                     }
                 } else {
                 }
@@ -256,8 +225,6 @@ public class BoardContent extends AppCompatActivity {
                                 });
                     }
 
-
-                    user.put("goodBoolean", false);
                     content_heart.setImageResource(R.raw.bin_heart);
                     int num = Integer.parseInt(goodNum);
                     num = num - 1;
@@ -289,6 +256,19 @@ public class BoardContent extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
+                    db.collection("data").document("allData").collection(address).document(documentName)
+                            .collection("like").document(id_value + "like")
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -359,6 +339,22 @@ public class BoardContent extends AppCompatActivity {
 
                                 }
                             });
+
+                    goodBoolean.document(id_value + "like").set(user);
+
+                    db.collection("data").document("allData").collection(address).document(documentName)
+                            .collection("like").document(id_value + "like")
+                            .set(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
                     //////////////////////////////////db로 goodBoolean update//////////////////////////////////////////////////
 
 
@@ -389,22 +385,6 @@ public class BoardContent extends AppCompatActivity {
                             });
                     /////////////////////////////user로 전송////////////////////////////////////////////////
                 }
-
-                goodBoolean.document(id_value + "like").set(user);
-
-                db.collection("data").document("allData").collection(address).document(documentName)
-                        .collection("like").document(id_value + "like")
-                        .set(user)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                            }
-                        });
 
             }
 
