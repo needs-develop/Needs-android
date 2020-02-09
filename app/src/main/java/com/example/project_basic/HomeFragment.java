@@ -59,7 +59,9 @@ public class HomeFragment extends Fragment {
 
     ImageView btn_position;
     TextView text_position;
-    int i = 1;
+
+    int home = 1;
+    int free= 1;
 
     static String positionName = null;
     static boolean text_boolean = false;
@@ -103,7 +105,7 @@ public class HomeFragment extends Fragment {
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                                    String number = Integer.toString(i);
+                                                    String number = Integer.toString(home);
                                                     int num2 = Integer.parseInt(document.getData().get("good_num").toString());
                                                     String stringNum = Integer.toString(num2);
                                                     int count = stringNum.length();
@@ -126,10 +128,10 @@ public class HomeFragment extends Fragment {
                                                             document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
                                                             document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
                                                             , builder));
-                                                    i = Integer.parseInt(number);
-                                                    i++;
+                                                    home = Integer.parseInt(number);
+                                                    home++;
                                                 }
-                                                if(i==1) {
+                                                if(home==1) {
                                                     v.findViewById(R.id.regionText_visible).setVisibility(View.VISIBLE);
                                                     v.findViewById(R.id.home_hot).setVisibility(View.GONE);
                                                 }
@@ -402,9 +404,8 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            int i = 1;
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String number = Integer.toString(i);
+                                String number = Integer.toString(free);
                                 int num2 = Integer.parseInt(document.getData().get("good_num").toString());
                                 String stringNum = Integer.toString(num2);
                                 int count = stringNum.length();
@@ -425,8 +426,12 @@ public class HomeFragment extends Fragment {
                                         document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
                                         document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
                                 ,builder));
-                                i = Integer.parseInt(number);
-                                i++;
+                                free = Integer.parseInt(number);
+                                free++;
+                            }
+                            if(free==1) {
+                                v.findViewById(R.id.homeFreeText_visible).setVisibility(View.VISIBLE);
+                                v.findViewById(R.id.home_free).setVisibility(View.GONE);
                             }
                             favorites_adapter1 = new Favorites_Adapter(getActivity(), list_itemArrayList1);
                             homefree_listView.setAdapter(favorites_adapter1);

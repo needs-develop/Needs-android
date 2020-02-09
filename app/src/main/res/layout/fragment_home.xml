@@ -75,7 +75,19 @@
         android:text="자유게시판 인기글"
         android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/homeFreeText_visible"
+        android:layout_width="wrap_content"
+        android:layout_height="270dp"
+        android:fontFamily="@font/cookierunbold"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="자유게시판에 게시된 글이 없습니다"
+        android:textSize="15sp" />
+
     <ListView
+        android:visibility="visible"
         android:id="@+id/home_free"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></ListView>

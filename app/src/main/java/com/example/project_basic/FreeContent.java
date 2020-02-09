@@ -581,7 +581,7 @@ public class FreeContent extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                if (id_value.equals(conId)) {
+                if (id_nickName.equals(conId)) {
                     Log.d("성공 id값", id_value);
                     Log.d("성공 conId값", conId);
                     db.collection("freeData").document(documentName)

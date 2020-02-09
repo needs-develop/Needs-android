@@ -177,6 +177,12 @@ public class BoardActivity extends AppCompatActivity {
                                 board_count++;
 
                             }
+
+                            if(board_count==1) {
+                                findViewById(R.id.boardText_visible).setVisibility(View.VISIBLE);
+                                findViewById(R.id._listView).setVisibility(View.GONE);
+                            }
+
                             spinnerText = "day";
                             spinnerCmpNum = 0;
                             boardListAdapter = new BoardListAdapter(BoardActivity.this, list_itemArrayList);

@@ -98,7 +98,15 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical" />
-
+        <TextView
+            android:id="@+id/boardText_visible"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:fontFamily="@font/cookierunbold"
+            android:visibility="gone"
+            android:gravity="center"
+            android:text="지역게시판에 게시된 글이 없습니다"
+            android:textSize="15sp" />
         <ListView
             android:id="@+id/_listView"
             android:layout_width="match_parent"

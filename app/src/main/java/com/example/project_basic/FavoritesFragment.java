@@ -54,7 +54,9 @@ public class FavoritesFragment extends Fragment {
     TextView spinnerView;
 
     static int f_spinnerNumber = 0;
+    int i=1;
 
+    private  View v;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,7 @@ public class FavoritesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        v = inflater.inflate(R.layout.fragment_dashboard, container, false);
         MultiDex.install(getActivity());
 
 
@@ -99,7 +101,7 @@ public class FavoritesFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            int i = 1;
+                            i = 1;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String number = Integer.toString(i);
                                 int num2 = Integer.parseInt(document.getData().get("good_num").toString());
@@ -124,6 +126,10 @@ public class FavoritesFragment extends Fragment {
                                 ,builder));
                                 i = Integer.parseInt(number);
                                 i++;
+                            }
+                            if(i==1) {
+                                v.findViewById(R.id.freeText_visible).setVisibility(View.VISIBLE);
+                                v.findViewById(R.id.free_list).setVisibility(View.GONE);
                             }
                             favorites_adapter = new Favorites_Adapter(getActivity(), list_itemArrayList);
                             free_listView.setAdapter(favorites_adapter);
