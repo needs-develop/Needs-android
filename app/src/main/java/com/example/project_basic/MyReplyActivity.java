@@ -34,6 +34,8 @@ public class MyReplyActivity extends ListActivity {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String writer = TextUtils.isEmpty(user.getDisplayName()) ? user.getEmail() : user.getDisplayName();
 
+    int board_count;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,18 +52,21 @@ public class MyReplyActivity extends ListActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            int i = 0;
+                            board_count = 1;
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                SpannableStringBuilder builder = new SpannableStringBuilder("");
-                                builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")),
-                                        0,0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                Log.d("태그", document.getId() + " => " + document.getData());
-                                list_itemArrayList.add(new BoardList(i + ".", document.getData().get("title").toString(),
+                                String number = Integer.toString(board_count);
+
+                                String goodNum = document.getData().get("title").toString();
+
+                                SpannableStringBuilder builder = new SpannableStringBuilder(goodNum);
+
+                                list_itemArrayList.add(new BoardList(number, document.getData().get("title").toString(),
                                         document.getData().get("content").toString(), document.getData().get("id").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visitnum").toString(),
                                         document.getData().get("good").toString(), document.getData().get("documentName").toString()
-                                ,builder));
-                                i++;
+                                        ,builder));
+                                board_count = Integer.parseInt(number);
+                                board_count++;
                             }
                             //document.getData().get("title").toString()+"["+document.getData().get("good_num").toString()+"]"
                             boardListAdapter = new BoardListAdapter(MyReplyActivity.this, list_itemArrayList);
