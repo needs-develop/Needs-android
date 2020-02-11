@@ -60,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:text="NickName"
                     />
+                <!--
                 <Button
                     android:fontFamily="@font/cookierunbold"
                     android:id="@+id/user_nickName_change"
@@ -67,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:text="닉네임변경"
                     />
+                    -->
             </LinearLayout>
             <TextView
                 android:fontFamily="@font/cookierunbold"

@@ -2,10 +2,13 @@ package com.example.project_basic;
 
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,8 +43,11 @@ import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import static com.example.project_basic.MainActivity.changeNum;
 import static com.example.project_basic.MainActivity.id_name;
@@ -66,6 +72,12 @@ public class SearchFragment extends Fragment {
     SettingAdapter settingAdapter;
     SettingAdapter settingAdapterInfo;
     SettingAdapter settingAdapterUser;
+
+    boolean boolean_nickname = false;
+    boolean boolean_second = false;
+
+    private ProgressDialog mProgressDialog;
+    private BackgroundThread mBackThread;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -173,6 +185,7 @@ public class SearchFragment extends Fragment {
             }
         }
         userenabled.setText(providerList);
+        /*
 
         Button user_nickName_change = rootView.findViewById(R.id.user_nickName_change);
         user_nickName_change.setOnClickListener(new View.OnClickListener() {
@@ -184,16 +197,52 @@ public class SearchFragment extends Fragment {
                 final EditText et = new EditText(getActivity());
                 builder.setView(et);
 
+                change_nickName = et.getText().toString();
+                db.collection("user").get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                for (QueryDocumentSnapshot document : task.getResult())
+                                {
+                                    if(change_nickName.equals(document.getData().get("id_nickName").toString()))
+                                    {
+                                        boolean_nickname = true;
+                                    }
+                                }
+                            }
+                        });
+
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        change_nickName = et.getText().toString();
-                        db.collection("user").document(id_uid)
-                                .update(
-                                        "id_nickName", change_nickName
-                                );
-                        changeNum = 1;
-                        signOut();
+                        mProgressDialog = ProgressDialog.show(getActivity(), "Loading"
+                                , "로그아웃중입니다..");
+
+                        mBackThread = new BackgroundThread();
+                        mBackThread.setRunning(true);
+                        mBackThread.start();
+
+                        if(boolean_nickname ==false)
+                        {
+                            Toast.makeText(getActivity(),"닉네임이 중복됩니다",Toast.LENGTH_SHORT).show();
+                            Log.d("닉네임이 중복되는 경우","닉네임이 중복되는 경우");
+                        }
+                        else {
+                            Toast.makeText(getActivity(),"닉네임이 변경됩니다",Toast.LENGTH_SHORT).show();
+                            Log.d("닉네임이 변경되는 경우","닉네임이 변경되는 경우");
+                            db.collection("user").document(id_uid)
+
+                                    .update(
+
+                                            "id_nickName", change_nickName
+
+                                    );
+
+                            changeNum = 1;
+
+                            signOut();
+                            mProgressDialog.dismiss();
+                        }
                     }
                 });
 
@@ -208,9 +257,7 @@ public class SearchFragment extends Fragment {
                 alertDialog.show();
             }
         });
-
-
-
+        */
         settingAdapter = new SettingAdapter();
         settingAdapter.addItem(new SettingItem("포인트내역",R.drawable.history));
         settingAdapter.addItem(new SettingItem("포인트전환",R.drawable.money));
@@ -263,6 +310,7 @@ public class SearchFragment extends Fragment {
        settingAdapterUser = new SettingAdapter();
         settingAdapterUser.addItem(new SettingItem("로그아웃",R.drawable.logout));
         settingAdapterUser.addItem(new SettingItem("계정삭제",R.drawable.userdelete));
+        settingAdapterUser.addItem(new SettingItem("계정설정",R.drawable.user_img));
 
         gridViewUser.setAdapter(settingAdapterUser);
 
@@ -276,6 +324,10 @@ public class SearchFragment extends Fragment {
                 }
                 else if(position==1){
                     deleteAccountClicked();
+                }
+                else if(position==2){
+                    Intent intent= new Intent(getActivity(),UserInfoActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -319,6 +371,56 @@ public class SearchFragment extends Fragment {
                     }
                 });
     }
+
+
+    public class BackgroundThread extends Thread {
+        volatile boolean running = false;
+        int cnt;
+
+        void setRunning(boolean b) {
+            running = b;
+            cnt = 10;
+        }
+
+        @Override
+        public void run() {
+            while (running) {
+                try {
+                    sleep(1000);
+                    if (cnt-- == 0) {
+                        running = false;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            handler.sendMessage(handler.obtainMessage());
+        }
+
+    }
+
+    Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            mProgressDialog.dismiss();
+
+            boolean retry = true;
+            while (retry) {
+                try {
+                    mBackThread.join();
+                    retry = false;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+
+    };
+
+
 
     class SettingAdapter extends BaseAdapter{
         ArrayList<SettingItem> items = new ArrayList<SettingItem>();

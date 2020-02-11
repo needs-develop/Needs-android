@@ -244,6 +244,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                     Log.d("compare false2","compare false2");
                                     try {
                                         String value = task.getResult().get("id_email").toString();
+                                        id_value = task.getResult().get("id_email").toString();
+                                        id_uid = task.getResult().get("id_uid").toString();
+                                        id_name = task.getResult().get("id_name").toString();
+                                        id_nickName = task.getResult().get("id_nickName").toString();
+                                        photoUrl = task.getResult().get("photoUrl").toString();
+
                                         Log.d("compare false",value);
                                         compareBoolean = false;
 
@@ -472,6 +478,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                             Log.d("compare false","compare false");
                                             try {
                                                 String value = task.getResult().get("id_email").toString();
+                                                id_value = task.getResult().get("id_email").toString();
+                                                id_uid = task.getResult().get("id_uid").toString();
+                                                id_name = task.getResult().get("id_name").toString();
+                                                id_nickName = task.getResult().get("id_nickName").toString();
+                                                photoUrl = task.getResult().get("photoUrl").toString();
                                                 Log.d("compare false",value);
                                                 compareBoolean = false;
                                                 Intent intent = new Intent(getApplicationContext(), SubActivity.class);

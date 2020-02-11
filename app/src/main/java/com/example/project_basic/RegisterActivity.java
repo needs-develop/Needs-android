@@ -122,7 +122,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     Log.d("태그", "Error getting documents: ", task.getException());
                                 }
                                 //////////////////////////중복확인 toast////////////////////////////////
-
                                 if (compnum == 2) {
                                     Log.d("확인을 위한 num", "중복일시");
                                     usernameTxt.setError("중복된 닉네임");

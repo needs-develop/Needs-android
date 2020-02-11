@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.project_basic">
 
+    <uses-permission android:name="android.permission.INTERNET " />
+
     <application
         android:name="androidx.multidex.MultiDexApplication"
         android:allowBackup="true"
@@ -9,19 +11,22 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".UserInfoActivity"></activity>
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
-        </activity>
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_application_id"/>
-        <activity android:name=".MainActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@style/SplashTheme"></activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_application_id" />
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -40,16 +45,14 @@
         <activity android:name=".SubListAdapter" />
         <activity android:name=".SubExpAdapter" />
         <activity android:name=".SubList" />
-        <activity android:name=".FreeContent"></activity>
+        <activity android:name=".FreeContent" />
         <activity android:name=".HomeFreeContent" />
         <activity android:name=".HomeContent" />
-        <activity android:name=".MyWriteActivity"></activity>
+        <activity android:name=".MyWriteActivity" />
         <activity android:name=".MyLikeActivity" />
         <activity android:name=".MyReplyActivity" />
         <activity android:name=".PointConversionActivity" />
         <activity android:name=".PointHistoryActivity" />
-        <!--<activity android:name=".SignedInActivity" /> -->
     </application>
-    <uses-permission android:name="android.permission.INTERNET " />
 
 </manifest>
