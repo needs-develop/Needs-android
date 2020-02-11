@@ -29,6 +29,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     String pointLimit = "5";
 
     GoogleSignInAccount account;
+    GoogleSignInClient ac;
 
     private CallbackManager callbackManager;
 
@@ -129,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         MultiDex.install(this);
         setContentView(R.layout.activity_main);
 
+
+
         mAuth = FirebaseAuth.getInstance();
         if (hour.length() == 1) {
             hour = "0" + hour;
@@ -140,8 +144,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
         }
 
-
-        emailTxt = (EditText) findViewById(R.id.et_id);
+                emailTxt = (EditText) findViewById(R.id.et_id);
         pwTxt = (EditText) findViewById(R.id.pw_id);
 
 
@@ -155,6 +158,35 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         firebaseAuth = firebaseAuth.getInstance();//객체 초기화
         auth = FirebaseAuth.getInstance();//파이어베이스 인증객체 초기화
+
+        /*만약 email인증을 해야된다면 이런예시로 구현할 예정
+        Button buttonFind = (Button) findViewById(R.id.buttonFind);
+
+        buttonFind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //비밀번호 재설정 이메일 보내기
+
+                firebaseAuth.sendPasswordResetEmail("oss5824@naver.com")
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(MainActivity.this, "이메일을 보냈습니다.", Toast.LENGTH_LONG).show();
+                                    Log.d("성공","이메일전송 성공");
+
+                                } else {
+                                    Toast.makeText(MainActivity.this, "메일 보내기 실패!", Toast.LENGTH_LONG).show();
+                                    Log.d("실패","이메일전송 실패");
+                                }
+
+                            }
+                        });
+
+            }
+
+        });
+        */
 
 
         btn_test.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 startActivity(intent);
             }
         }));
+
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))

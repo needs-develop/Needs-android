@@ -31,7 +31,12 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -43,6 +48,7 @@ import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -53,6 +59,7 @@ import static com.example.project_basic.MainActivity.changeNum;
 import static com.example.project_basic.MainActivity.id_name;
 import static com.example.project_basic.MainActivity.id_nickName;
 import static com.example.project_basic.MainActivity.id_uid;
+import static com.example.project_basic.MainActivity.id_value;
 import static com.example.project_basic.MainActivity.photoUrl;
 import static com.example.project_basic.SubActivity.fragmentNumber;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
@@ -77,7 +84,11 @@ public class SearchFragment extends Fragment {
     boolean boolean_second = false;
 
     private ProgressDialog mProgressDialog;
-    private BackgroundThread mBackThread;
+
+    GoogleSignInClient googleSignInClient;
+
+    String delete_value[];
+    int delete_count = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -157,6 +168,13 @@ public class SearchFragment extends Fragment {
                     });
                     Log.d("사진출력 photoUrl 두번째", photoUrl);
                     Glide.with(this).load(photoUrl).into(iv_profile);
+                    GoogleSignInOptions gso =
+                            new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                    .requestIdToken(getString(R.string.default_web_client_id))
+                                    .requestEmail()
+                                    .build();
+
+                    googleSignInClient = GoogleSignIn.getClient(getActivity(),gso);
                 } else if (FacebookAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Facebook");
                     DocumentReference doc = db.collection("user").document(id_uid);
@@ -346,6 +364,7 @@ public class SearchFragment extends Fragment {
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setMessage("이 계정을 삭제하시겠습니까?")
                 .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         deleteAccount();
@@ -357,69 +376,132 @@ public class SearchFragment extends Fragment {
         dialog.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void deleteAccount() {
-        AuthUI.getInstance()
-                .delete(getContext())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Intent i = new Intent(getActivity(), MainActivity.class);
-                            startActivity(i);
-                        } else {
+        mProgressDialog = ProgressDialog.show(getActivity(), "Loading"
+                , "게정을 삭제하는 중입니다..");
+
+            db.collection("user").document(id_uid).collection("pointDay")
+                    .document(id_value+"pointDay").delete();
+
+            db.collection("user").document(id_uid).collection("pointHistory").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    db.collection("user").document(id_uid).collection("pointHistory")
+                                            .document(document.getId()).delete();
+                                }
+
+                            } else {
+                                Log.d("태그", "Error getting documents: ", task.getException());
+                            }
                         }
-                    }
-                });
-    }
+                    });
+            db.collection("user").document(id_uid).collection("myRegion").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    db.collection("user").document(id_uid).collection("myRegion")
+                                            .document(document.getId()).delete();
+                                }
 
+                            } else {
+                                Log.d("태그", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
 
-    public class BackgroundThread extends Thread {
-        volatile boolean running = false;
-        int cnt;
+            db.collection("user").document(id_uid).collection("write").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    db.collection("user").document(id_uid).collection("write")
+                                            .document(document.getId()).delete();
+                                }
 
-        void setRunning(boolean b) {
-            running = b;
-            cnt = 10;
-        }
+                            } else {
+                                Log.d("태그", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
 
-        @Override
-        public void run() {
-            while (running) {
-                try {
-                    sleep(1000);
-                    if (cnt-- == 0) {
-                        running = false;
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            db.collection("user").document(id_uid).collection("like").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    db.collection("user").document(id_uid).collection("like")
+                                            .document(document.getId()).delete();
+                                }
+
+                            } else {
+                                Log.d("태그", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+            db.collection("user").document(id_uid).collection("reply").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    db.collection("user").document(id_uid).collection("reply")
+                                            .document(document.getId()).delete();
+                                }
+
+                            } else {
+                                Log.d("태그", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                AuthUI.getInstance()
+                        .delete(getContext())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                            /*
+                            googleSignInClient.revokeAccess().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                }
+                            });*/
+                                    db.collection("user").document(id_uid).delete()
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+
+                                                }
+                                            });
+
+                                } else {
+                                }
+                            }
+                        });
+                Intent intent = new Intent(getActivity(),MainActivity.class);
+                startActivity(intent);
+
+                id_value = null;
+                mProgressDialog.dismiss();
+                getActivity().finish();
+
             }
-            handler.sendMessage(handler.obtainMessage());
-        }
+        }, 5000);
 
     }
-
-    Handler handler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            mProgressDialog.dismiss();
-
-            boolean retry = true;
-            while (retry) {
-                try {
-                    mBackThread.join();
-                    retry = false;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-        }
-
-    };
-
 
 
     class SettingAdapter extends BaseAdapter{

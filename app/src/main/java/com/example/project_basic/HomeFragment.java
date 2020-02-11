@@ -85,6 +85,9 @@ public class HomeFragment extends Fragment {
         text_position = v.findViewById(R.id.text_position);
         btn_position = v.findViewById(R.id.btn_position);
 
+        String path = db.collection("user").document(id_uid).collection("write").getPath();
+        Log.d("path이름",path);
+
         db.collection("user").document(id_uid).collection("myRegion").document(id_value+"myRegion")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

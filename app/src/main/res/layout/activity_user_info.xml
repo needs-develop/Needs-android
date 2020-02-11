@@ -1,205 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".UserInfoActivity">
-
+    tools:context=".UserInfoActivity"
+    >
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@raw/ne" />
-
+        android:src="@raw/ne">
+    </ImageView>
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <TextView
+            android:fontFamily="@font/cookierunbold"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:fontFamily="@font/cookierunbold"
-            android:text="사용자 이름:"
-            android:textSize="20sp" />
-
+            android:text="성   명:     ">
+        </TextView>
         <TextView
+            android:fontFamily="@font/cookierunbold"
             android:id="@+id/userInfo_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/cookierunbold"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:hint="name"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+            android:textSize="20dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="이 름:">
+         </TextView>
+    </LinearLayout>
+    <LinearLayout
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <TextView
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
             android:fontFamily="@font/cookierunbold"
-            android:text="닉네임:"
-            android:textSize="20sp" />
-
+            android:text="닉네임:     ">
+        </TextView>
         <TextView
+            android:fontFamily="@font/cookierunbold"
             android:id="@+id/userInfo_nickName"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/cookierunbold"
-            android:hint="username"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:textSize="20sp" />
-
+            android:text="이 름:">
+        </TextView>
         <Button
             android:id="@+id/userInfo_change_btn"
+            android:fontFamily="@font/cookierunbold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/cookierunbold"
-            android:text="닉네임 변경" />
+            android:text="닉네임변경">
+        </Button>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/userInfo_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
+        android:visibility="gone"
         android:layout_marginTop="10dp"
-        android:layout_weight="1"
         android:orientation="horizontal"
-        android:visibility="gone">
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <TextView
+            android:fontFamily="@font/cookierunbold"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/cookierunbold"
-            android:text="입력:     "
-            android:textSize="20sp" />
-
+            android:text="입력:     ">
+        </TextView>
         <EditText
             android:id="@+id/userInfo_edit"
             android:layout_width="180dp"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content">
+        </EditText>
         <Button
             android:id="@+id/userInfo_dup_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:background="#F3DCDC"
             android:fontFamily="@font/cookierunbold"
-            android:text="중복확인" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="중복확인">
+        </Button>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/userInfo_layout_ok"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:visibility="gone">
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <Button
             android:id="@+id/userInfo_change_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:background="#F3DCDC"
             android:fontFamily="@font/cookierunbold"
-            android:text="변경완료" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="변경완료">
+        </Button>
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
 
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <TextView
+            android:fontFamily="@font/cookierunbold"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:fontFamily="@font/cookierunbold"
-            android:text="이메일:"
-            android:textSize="20sp" />
-
+            android:text="이메일:     ">
+        </TextView>
         <TextView
             android:id="@+id/userInfo_email"
+            android:fontFamily="@font/cookierunbold"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/cookierunbold"
-            android:hint="email"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:textSize="20sp" />
+            android:text="이 름:">
+        </TextView>
     </LinearLayout>
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <TextView
+            android:fontFamily="@font/cookierunbold"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:fontFamily="@font/cookierunbold"
-            android:text="보유 포인트:"
-            android:textSize="20sp" />
-
+            android:text="보유포인트:     ">
+        </TextView>
         <TextView
             android:id="@+id/userInfo_point"
+            android:fontFamily="@font/cookierunbold"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/cookierunbold"
-            android:hint="point"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:textSize="20sp" />
+            android:text="이 름:">
+        </TextView>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <TextView
+            android:fontFamily="@font/cookierunbold"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:fontFamily="@font/cookierunbold"
-            android:text="획득 제한 포인트:"
-            android:textSize="20sp" />
-
+            android:text="획득제한포인트:     ">
+        </TextView>
         <TextView
             android:id="@+id/userInfo_limit_point"
+            android:fontFamily="@font/cookierunbold"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/cookierunbold"
-            android:hint="point"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:textSize="20sp" />
+            android:text="이 름:">
+        </TextView>
 
     </LinearLayout>
 
