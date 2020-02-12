@@ -475,32 +475,6 @@ public class SubActivity extends AppCompatActivity {
         goodGroups.add("즐겨찾기 목록");
     }
 
-    //팝업창
-    public void OnClickHandler(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("종료").setMessage("로그아웃하시겠습니까?");
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                Toast.makeText(getApplicationContext(), "로그아웃되었습니다", Toast.LENGTH_SHORT).show();
-                signOut();
-                Intent intent = new Intent(SubActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListner =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -523,11 +497,6 @@ public class SubActivity extends AppCompatActivity {
                     return true;
                 }
             };
-
-    private void signOut() {
-        FirebaseAuth.getInstance().signOut();
-        mAuth.getInstance().signOut();
-    }
 
 
     private void revokeAccess() {
