@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -139,7 +140,6 @@ public class SubActivity extends AppCompatActivity {
 
         final ExpandableListView expandableListView = findViewById(R.id.draw_listView);
         final ExpandableListView expandableListView1 = findViewById(R.id.good_listView);
-        //ListView listView = findViewById(R.id.draw_listView);
         this.InitializeDrawList();
 
 
@@ -152,7 +152,7 @@ public class SubActivity extends AppCompatActivity {
         //////////////////////포인트 가져오기/////////////////////////////////////////
 
         DocumentReference doc = db.collection("user").document(id_uid)
-                .collection("pointDay").document(id_value+"pointDay");
+                .collection("pointDay").document(id_value + "pointDay");
         doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -191,20 +191,13 @@ public class SubActivity extends AppCompatActivity {
                     id_name = document.getData().get("id_name").toString();
                     point = document.getData().get("id_point").toString();
                     id_nickName = document.getData().get("id_nickName").toString();
-                    Log.d("포인트 출력",id_nickName+point);
+                    Log.d("포인트 출력", id_nickName + point);
 
                 }
             }
         });
 
         ///////////////////포인트 가져오기////////////////////////////////////////////////
-
-        //sub_id = findViewById(R.id.sub_id);
-        final Intent intent = getIntent();//어디선가 날라오는 intent있으면 받아온다
-        // String str = intent.getStringExtra("str");//str은 쏘는곳과 받는곳 동일해야함
-
-        //mTextMessage.setText(str);
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerView = (View) findViewById(R.id.drawer);
 
@@ -238,7 +231,7 @@ public class SubActivity extends AppCompatActivity {
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                Toast.makeText(getApplicationContext(), firstGroups.get(groupPosition) + "지역으로이동합니다", Toast.LENGTH_SHORT).show();
+                Snackbar.make(v, firstGroups.get(groupPosition) + "지역으로 이동합니다.", Snackbar.LENGTH_SHORT).show();
                 strict = firstGroups.get(groupPosition);
                 Log.d("strict", strict);
                 return false;
@@ -250,7 +243,7 @@ public class SubActivity extends AppCompatActivity {
                 String childname = firstItemGroup.get(firstGroups.get(groupPosition)).get(childPosition).getCountry();
                 Log.d("아이들 지역", childname);
                 address = strict + childname;
-                Toast.makeText(getApplicationContext(), address + "게시판으로이동합니다", Toast.LENGTH_SHORT).show();
+                Snackbar.make(v, address + "게시판으로 이동합니다.", Snackbar.LENGTH_SHORT).show();
 
 
                 Intent intent1 = new Intent(SubActivity.this, BoardActivity.class);
@@ -268,11 +261,12 @@ public class SubActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 fourth = goodone.get(childPosition).getCountry();
-                Toast.makeText(getApplicationContext(), fourth + "게시판으로이동합니다", Toast.LENGTH_SHORT).show();
+                Snackbar.make(v, fourth + "게시판으로 이동합니다", Snackbar.LENGTH_SHORT).show();
 
                 address = fourth;
 
                 Intent intent1 = new Intent(SubActivity.this, BoardActivity.class);
+                finish();
                 startActivity(intent1);
 
                 return false;
@@ -282,7 +276,7 @@ public class SubActivity extends AppCompatActivity {
 
         expandableListView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
                 int itemType = ExpandableListView.getPackedPositionType(id);
                 boolean retVal = true;
 
@@ -299,18 +293,17 @@ public class SubActivity extends AppCompatActivity {
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(getApplicationContext(), fourth + "가즐겨찾기에서 삭제되었습니다", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(view, fourth + "가 즐겨찾기에서 삭제되었습니다.", Snackbar.LENGTH_SHORT).show();
                             db.collection("user").document(id_uid).collection("favorites")
                                     .document(id_value + address)
                                     .delete()
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                                             subExpAdapter1.notifyDataSetChanged();
-                                            Intent intent2 = new Intent(SubActivity.this, SubActivity.class);
-                                            SubActivity.this.finish();
-                                            startActivity(intent2);
+                                            Intent intent = getIntent();
+                                            finish();
+                                            startActivity(intent);
                                         }
                                     })
 
@@ -345,7 +338,7 @@ public class SubActivity extends AppCompatActivity {
 
         expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
                 int itemType = ExpandableListView.getPackedPositionType(id);
                 boolean retVal = true;
 
@@ -366,7 +359,7 @@ public class SubActivity extends AppCompatActivity {
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(getApplicationContext(), "즐겨찾기에 추가되었습니다", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(view, "즐겨찾기에 추가되었습니다", Snackbar.LENGTH_SHORT).show();
                             Log.d("즐겨찾기목록", third);
 
 
@@ -385,9 +378,9 @@ public class SubActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             subExpAdapter1.notifyDataSetChanged();
-                                            Intent intent3 = new Intent(SubActivity.this, SubActivity.class);
-                                            SubActivity.this.finish();
-                                            startActivity(intent3);
+                                            Intent intent = getIntent();
+                                            finish();
+                                            startActivity(intent);
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
