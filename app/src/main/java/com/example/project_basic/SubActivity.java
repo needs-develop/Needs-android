@@ -245,9 +245,8 @@ public class SubActivity extends AppCompatActivity {
                 address = strict + childname;
                 Snackbar.make(v, address + "게시판으로 이동합니다.", Snackbar.LENGTH_SHORT).show();
 
-
-                Intent intent1 = new Intent(SubActivity.this, BoardActivity.class);
-                startActivity(intent1);
+                finish();
+                startActivity(new Intent(SubActivity.this, BoardActivity.class));
                 return false;
             }
         });
@@ -265,9 +264,8 @@ public class SubActivity extends AppCompatActivity {
 
                 address = fourth;
 
-                Intent intent1 = new Intent(SubActivity.this, BoardActivity.class);
                 finish();
-                startActivity(intent1);
+                startActivity(new Intent(SubActivity.this, BoardActivity.class));
 
                 return false;
             }
