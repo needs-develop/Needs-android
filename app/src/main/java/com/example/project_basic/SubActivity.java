@@ -295,7 +295,7 @@ public class SubActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             Snackbar.make(view, fourth + "가 즐겨찾기에서 삭제되었습니다.", Snackbar.LENGTH_SHORT).show();
                             db.collection("user").document(id_uid).collection("favorites")
-                                    .document(id_value + address)
+                                    .document(id_value + fourth)
                                     .delete()
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
