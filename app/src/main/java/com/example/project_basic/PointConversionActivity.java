@@ -118,7 +118,7 @@ public class PointConversionActivity extends AppCompatActivity {
 
                     Map<String, Object> member = new HashMap<>();
                     member.put("day", fullDay);
-                    member.put("point", editText.getText().toString());
+                    member.put("point", "-" + editText.getText().toString());
                     member.put("type", "사용");
 
                     db.collection("user").document(uid).collection("pointHistory")
