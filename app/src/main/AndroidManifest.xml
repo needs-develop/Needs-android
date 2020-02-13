@@ -11,10 +11,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserInfoActivity"></activity>
+        <activity android:name=".MyService"></activity>
+        <activity android:name=".UserInfoActivity" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme"></activity>
+            android:theme="@style/SplashTheme" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

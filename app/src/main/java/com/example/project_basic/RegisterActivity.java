@@ -69,9 +69,10 @@ public class RegisterActivity extends AppCompatActivity {
     String dupName;
     String pw;
     String rname;
+    String changeDupName;
 
     int dupliNum = 0;
-    int compnum = 1;
+    int compnum = 2;
 
     private EditText nameTxt, usernameTxt, emailTxt, passwordTxt;
 
@@ -116,6 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         if (!(dupName.equals(document.getData().get("id_nickName").toString()))) {
                                         } else {
                                             compnum = 2;
+                                            break;
                                         }
                                     }
                                 } else {
@@ -130,6 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     Log.d("확인을 위한 num", "중복이 아닐시");
                                     usernameTxt.setError("사용가능한 닉네임");
                                     usernameTxt.requestFocus();
+                                    changeDupName = usernameTxt.getText().toString();
                                 }
                             }
                         });
@@ -141,6 +144,14 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    if (!changeDupName.equals(usernameTxt.getText().toString())) {
+                        compnum = 2;
+                        usernameTxt.requestFocus();
+                    }
+                }catch(Exception e){
+
+                }
                 if (compnum == 2) {
                     usernameTxt.setError("닉네임 중복 확인을 해주세요");
                     usernameTxt.requestFocus();
