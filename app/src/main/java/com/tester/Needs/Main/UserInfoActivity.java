@@ -12,11 +12,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -41,6 +44,9 @@ public class UserInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+
+        Switch foreGroundSwitch = findViewById(R.id.foreSwitch);
+        foreGroundSwitch.setOnCheckedChangeListener(new foreGroundSwitchListener());
 
         TextView userInfo_name = findViewById(R.id.userInfo_name);
         TextView userInfo_nickName = findViewById(R.id.userInfo_nickName);
@@ -183,5 +189,28 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    class foreGroundSwitchListener implements CompoundButton.OnCheckedChangeListener{
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked)
+            {
+                Intent intent = new Intent(UserInfoActivity.this,MyService.class);
+                intent.setAction("startForeground");
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                    startForegroundService(intent);
+                }else{
+                    startService(intent);
+                }
+            }
+            else
+            {
+                Intent intent = new Intent(UserInfoActivity.this,MyService.class);
+                startService(intent);
+            }
+
+        }
     }
 }

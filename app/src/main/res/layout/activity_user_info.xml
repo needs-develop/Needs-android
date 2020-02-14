@@ -203,5 +203,14 @@
 
     </LinearLayout>
 
+    <Switch
+        android:id="@+id/foreSwitch"
+        android:text="foreground"
+        android:switchMinWidth="100dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </Switch>
 
 </LinearLayout>

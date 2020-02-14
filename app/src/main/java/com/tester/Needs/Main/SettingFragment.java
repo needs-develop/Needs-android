@@ -15,8 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,6 +106,7 @@ public class SettingFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_notifications, container,
                 false);
+
 
         fragmentNumber = 0;
 
@@ -512,6 +516,7 @@ public class SettingFragment extends Fragment {
         }, 5000);
 
     }
+
 
 
     class SettingAdapter extends BaseAdapter{

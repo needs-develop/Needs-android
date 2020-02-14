@@ -1,6 +1,9 @@
 package com.tester.Needs.Main;
 //첫 로그인창//
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -18,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.multidex.MultiDex;
 
 import com.facebook.AccessToken;
@@ -127,8 +131,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         MultiDex.install(this);
         setContentView(R.layout.activity_main);
-
-
 
         mAuth = FirebaseAuth.getInstance();
         if (hour.length() == 1) {
