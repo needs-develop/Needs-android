@@ -11,10 +11,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.tester.Needs.MyService"></activity>
-        <activity android:name="com.tester.Needs.UserInfoActivity" />
+        <activity android:name="com.tester.Needs.Common.MyService"></activity>
+        <activity android:name="com.tester.Needs.Main.UserInfoActivity" />
         <activity
-            android:name="com.tester.Needs.SplashActivity"
+            android:name="com.tester.Needs.Common.SplashActivity"
             android:theme="@style/SplashTheme" />
 
         <meta-data
@@ -22,7 +22,7 @@
             android:value="@string/facebook_application_id" />
 
         <activity
-            android:name="com.tester.Needs.MainActivity"
+            android:name="com.tester.Needs.Main.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name">
             <intent-filter>
@@ -31,29 +31,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.tester.Needs.SubActivity" />
-        <activity android:name="com.tester.Needs.RegisterActivity" />
-        <activity android:name="com.tester.Needs.BoardActivity" />
-        <activity android:name="com.tester.Needs.BoardWrite" />
-        <activity android:name="com.tester.Needs.ReplyListAdapter" />
-        <activity android:name="com.tester.Needs.ReplyList" />
-        <activity android:name="com.tester.Needs.BoardContent" />
-        <activity android:name="com.tester.Needs.FavoritesFunc" />
-        <activity android:name="com.tester.Needs.FavoritesWrite" />
-        <activity android:name="com.tester.Needs.Favorites_Adapter" />
-        <activity android:name="com.tester.Needs.FavoritesList" />
-        <activity android:name="com.tester.Needs.FavoritesFragment" />
-        <activity android:name="com.tester.Needs.SubListAdapter" />
-        <activity android:name="com.tester.Needs.SubExpAdapter" />
-        <activity android:name="com.tester.Needs.SubList" />
-        <activity android:name="com.tester.Needs.FreeContent" />
-        <activity android:name="com.tester.Needs.HomeFreeContent" />
-        <activity android:name="com.tester.Needs.HomeContent" />
-        <activity android:name="com.tester.Needs.MyWriteActivity" />
-        <activity android:name="com.tester.Needs.MyLikeActivity" />
-        <activity android:name="com.tester.Needs.MyReplyActivity" />
-        <activity android:name="com.tester.Needs.PointConversionActivity" />
-        <activity android:name="com.tester.Needs.PointHistoryActivity" />
+        <activity android:name="com.tester.Needs.Main.SubActivity" />
+        <activity android:name="com.tester.Needs.Main.RegisterActivity" />
+        <activity android:name="com.tester.Needs.Main.BoardActivity" />
+        <activity android:name="com.tester.Needs.Main.BoardWrite" />
+        <activity android:name="com.tester.Needs.Common.ReplyListAdapter" />
+        <activity android:name="com.tester.Needs.Common.ReplyList" />
+        <activity android:name="com.tester.Needs.Main.BoardContent" />
+        <activity android:name="com.tester.Needs.Common.FavoritesFunc" />
+        <activity android:name="com.tester.Needs.Main.FavoritesWrite" />
+        <activity android:name="com.tester.Needs.Main.Favorites_Adapter" />
+        <activity android:name="com.tester.Needs.Common.FavoritesList" />
+        <activity android:name="com.tester.Needs.Main.FavoritesFragment" />
+        <activity android:name="com.tester.Needs.Common.SubListAdapter" />
+        <activity android:name="com.tester.Needs.Common.SubExpAdapter" />
+        <activity android:name="com.tester.Needs.Common.SubList" />
+        <activity android:name="com.tester.Needs.Main.FreeContent" />
+        <activity android:name="com.tester.Needs.Main.HomeFreeContent" />
+        <activity android:name="com.tester.Needs.Main.HomeContent" />
+        <activity android:name="com.tester.Needs.Setting.MyWriteActivity" />
+        <activity android:name="com.tester.Needs.Setting.MyLikeActivity" />
+        <activity android:name="com.tester.Needs.Setting.MyReplyActivity" />
+        <activity android:name="com.tester.Needs.Setting.PointConversionActivity" />
+        <activity android:name="com.tester.Needs.Setting.PointHistoryActivity" />
     </application>
 
 </manifest>

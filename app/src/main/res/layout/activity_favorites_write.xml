@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".FavoritesWrite">
+    tools:context=".Main.FavoritesWrite">
 
     <LinearLayout
         android:layout_width="wrap_content"
