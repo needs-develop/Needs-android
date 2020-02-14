@@ -64,7 +64,9 @@ public class RegisterActivity extends AppCompatActivity {
     String hour = String.valueOf(nowAsiaSeoul.getHour());
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+    String second = String.valueOf(nowAsiaSeoul.getSecond());
+
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
 
     String email;
     String dupName;
@@ -84,14 +86,18 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (hour.length() == 1) {
             hour = "0" + hour;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
         }
 
         if (minute.length() == 1) {
             minute = "0" + minute;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
         }
 
+        if (second.length() == 1) {
+            second = "0" + second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
         mAuth = FirebaseAuth.getInstance();
 
         nameTxt = (EditText) findViewById(R.id.name);

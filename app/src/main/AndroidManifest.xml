@@ -3,6 +3,8 @@
     package="com.tester.Needs">
 
     <uses-permission android:name="android.permission.INTERNET " />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name="androidx.multidex.MultiDexApplication"
@@ -11,10 +13,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.tester.Needs.Common.MyService"></activity>
-        <activity android:name="com.tester.Needs.Main.UserInfoActivity" />
+        <service
+            android:name=".Common.MyService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+        <activity android:name=".Main.UserInfoActivity" />
         <activity
-            android:name="com.tester.Needs.Common.SplashActivity"
+            android:name=".Common.SplashActivity"
             android:theme="@style/SplashTheme" />
 
         <meta-data
@@ -22,7 +28,7 @@
             android:value="@string/facebook_application_id" />
 
         <activity
-            android:name="com.tester.Needs.Main.MainActivity"
+            android:name=".Main.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name">
             <intent-filter>
@@ -31,29 +37,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.tester.Needs.Main.SubActivity" />
-        <activity android:name="com.tester.Needs.Main.RegisterActivity" />
-        <activity android:name="com.tester.Needs.Main.BoardActivity" />
-        <activity android:name="com.tester.Needs.Main.BoardWrite" />
-        <activity android:name="com.tester.Needs.Common.ReplyListAdapter" />
-        <activity android:name="com.tester.Needs.Common.ReplyList" />
-        <activity android:name="com.tester.Needs.Main.BoardContent" />
-        <activity android:name="com.tester.Needs.Common.FavoritesFunc" />
-        <activity android:name="com.tester.Needs.Main.FavoritesWrite" />
-        <activity android:name="com.tester.Needs.Main.Favorites_Adapter" />
-        <activity android:name="com.tester.Needs.Common.FavoritesList" />
-        <activity android:name="com.tester.Needs.Main.FavoritesFragment" />
-        <activity android:name="com.tester.Needs.Common.SubListAdapter" />
-        <activity android:name="com.tester.Needs.Common.SubExpAdapter" />
-        <activity android:name="com.tester.Needs.Common.SubList" />
-        <activity android:name="com.tester.Needs.Main.FreeContent" />
-        <activity android:name="com.tester.Needs.Main.HomeFreeContent" />
-        <activity android:name="com.tester.Needs.Main.HomeContent" />
-        <activity android:name="com.tester.Needs.Setting.MyWriteActivity" />
-        <activity android:name="com.tester.Needs.Setting.MyLikeActivity" />
-        <activity android:name="com.tester.Needs.Setting.MyReplyActivity" />
-        <activity android:name="com.tester.Needs.Setting.PointConversionActivity" />
-        <activity android:name="com.tester.Needs.Setting.PointHistoryActivity" />
+        <activity android:name=".Main.SubActivity" />
+        <activity android:name=".Main.RegisterActivity" />
+        <activity android:name=".Main.BoardActivity" />
+        <activity android:name=".Main.BoardWrite" />
+        <activity android:name=".Common.ReplyListAdapter" />
+        <activity android:name=".Common.ReplyList" />
+        <activity android:name=".Main.BoardContent" />
+        <activity android:name=".Common.FavoritesFunc" />
+        <activity android:name=".Main.FavoritesWrite" />
+        <activity android:name=".Main.Favorites_Adapter" />
+        <activity android:name=".Common.FavoritesList" />
+        <activity android:name=".Main.FavoritesFragment" />
+        <activity android:name=".Common.SubListAdapter" />
+        <activity android:name=".Common.SubExpAdapter" />
+        <activity android:name=".Common.SubList" />
+        <activity android:name=".Main.FreeContent" />
+        <activity android:name=".Main.HomeFreeContent" />
+        <activity android:name=".Main.HomeContent" />
+        <activity android:name=".Setting.MyWriteActivity" />
+        <activity android:name=".Setting.MyLikeActivity" />
+        <activity android:name=".Setting.MyReplyActivity" />
+        <activity android:name=".Setting.PointConversionActivity" />
+        <activity android:name=".Setting.PointHistoryActivity" />
     </application>
 
 </manifest>

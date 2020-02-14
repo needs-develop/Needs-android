@@ -59,8 +59,9 @@ public class BoardWrite extends AppCompatActivity {
     String day1 = String.valueOf(nowAsiaSeoul.getDayOfMonth());
     String hour = String.valueOf(nowAsiaSeoul.getHour());
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
+    String second = String.valueOf(nowAsiaSeoul.getSecond());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
     String pointNum = point;
     String docName = "name";
     int data = 0;
@@ -79,12 +80,16 @@ public class BoardWrite extends AppCompatActivity {
         Intent intent = getIntent();
         if (hour.length() == 1) {
             hour = "0" + hour;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
         }
 
         if (minute.length() == 1) {
             minute = "0" + minute;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
+        if (second.length() == 1) {
+            second = "0" + second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
         }
 
         btn_ok = findViewById(R.id.btn_ok);

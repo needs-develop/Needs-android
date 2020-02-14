@@ -19,10 +19,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.tester.Needs.Common.MyService;
 import com.tester.Needs.R;
 
 import static com.tester.Needs.Main.MainActivity.id_name;
@@ -197,7 +197,7 @@ public class UserInfoActivity extends AppCompatActivity {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if(isChecked)
             {
-                Intent intent = new Intent(UserInfoActivity.this,MyService.class);
+                Intent intent = new Intent(UserInfoActivity.this, MyService.class);
                 intent.setAction("startForeground");
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
                     startForegroundService(intent);
@@ -207,7 +207,7 @@ public class UserInfoActivity extends AppCompatActivity {
             }
             else
             {
-                Intent intent = new Intent(UserInfoActivity.this,MyService.class);
+                Intent intent = new Intent(UserInfoActivity.this, MyService.class);
                 startService(intent);
             }
 

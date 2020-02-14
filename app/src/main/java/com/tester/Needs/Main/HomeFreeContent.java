@@ -93,7 +93,10 @@ public class HomeFreeContent extends AppCompatActivity {
     String hour = String.valueOf(nowAsiaSeoul.getHour());
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+    String second = String.valueOf(nowAsiaSeoul.getSecond());
+
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+
 
     private ProgressDialog mProgressDialog;
     private BackgroundThread mBackThread;
@@ -111,15 +114,18 @@ public class HomeFreeContent extends AppCompatActivity {
 
         if (hour.length() == 1) {
             hour = "0" + hour;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
         }
-
 
         if (minute.length() == 1) {
             minute = "0" + minute;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
         }
 
+        if (second.length() == 1) {
+            second = "0" + second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
 
         Intent intent = getIntent();
         title = intent.getStringExtra("title");

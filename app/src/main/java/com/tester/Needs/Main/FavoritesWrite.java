@@ -61,8 +61,9 @@ public class FavoritesWrite extends AppCompatActivity {
     String day1 = String.valueOf(nowAsiaSeoul.getDayOfMonth());
     String hour = String.valueOf(nowAsiaSeoul.getHour());
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
+    String second = String.valueOf(nowAsiaSeoul.getSecond());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
     String pointNum = point;
 
 
@@ -85,6 +86,11 @@ public class FavoritesWrite extends AppCompatActivity {
         if (minute.length() == 1) {
             minute = "0" + minute;
             fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+        }
+
+        if (second.length() == 1) {
+            second = "0" + second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
         }
 
         Intent intent = getIntent();

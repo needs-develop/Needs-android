@@ -30,6 +30,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -112,7 +113,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     String hour = String.valueOf(nowAsiaSeoul.getHour());
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+    String second = String.valueOf(nowAsiaSeoul.getSecond());
+
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+
 
     String pointLimit = "5";
 
@@ -135,14 +139,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         mAuth = FirebaseAuth.getInstance();
         if (hour.length() == 1) {
             hour = "0" + hour;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
         }
 
         if (minute.length() == 1) {
             minute = "0" + minute;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
         }
 
+        if (second.length() == 1) {
+            second = "0" + second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
                 emailTxt = (EditText) findViewById(R.id.et_id);
         pwTxt = (EditText) findViewById(R.id.pw_id);
 
@@ -315,9 +323,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
     }
-
     private void facebookFirstLogin()
     {
+
         Log.d ("photourl값출력",photoUrl);
         String point = "10";
         CollectionReference title_content = db.collection("user");
@@ -641,7 +649,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         public void run() {
             while (running) {
                 try {
-                    sleep(10000);
+                    sleep(500);
                     if (cnt-- == 0) {
                         running = false;
                     }
@@ -680,3 +688,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Toast.makeText(MainActivity.this, "연결이 해제되었습니다", Toast.LENGTH_SHORT).show();
     }
 }
+
