@@ -1,5 +1,6 @@
 package com.tester.Needs.Main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -37,6 +38,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.FavoritesList;
 import com.tester.Needs.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import static com.tester.Needs.Main.SubActivity.fragmentNumber;
@@ -57,6 +60,12 @@ public class FavoritesFragment extends Fragment {
 
     static int f_spinnerNumber = 0;
     int i=1;
+
+    Spinner free_top_spinner;
+    TextView free_top_spinnerView;
+    String free_top_spinnerValue;
+    static String free_spinnerText = "day";
+    static int free_spinnerCmpNum = 0;
 
     private  View v;
     @Override
@@ -91,13 +100,67 @@ public class FavoritesFragment extends Fragment {
         });
 
 
+        free_top_spinner = v.findViewById(R.id.free_top_spinner);
+        free_top_spinnerView = v.findViewById(R.id.free_top_spinner_text);
+
+
+        free_top_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                free_top_spinnerValue = parent.getItemAtPosition(position).toString();
+                if (position == 0) {
+                    free_spinnerText = "day";
+                    if (free_spinnerCmpNum == 0) {
+                        free_top_spinnerView.setText("기본");
+                    } else if (free_spinnerCmpNum == 1) {
+                        free_top_spinnerView.setText("날짜순");
+                    } else if (free_spinnerCmpNum == 2) {
+                        free_top_spinnerView.setText("조회순");
+                    }else if(free_spinnerCmpNum==3){
+                        free_top_spinnerView.setText("공감순");
+                    }
+
+                } else if (position == 1) {
+                    fragmentNumber = 1;
+                    free_spinnerText = "day";
+                    free_spinnerCmpNum = 1;
+                    getActivity().finish();
+                    Intent intent2 = new Intent(getActivity(), SubActivity.class);
+                    startActivity(intent2);
+                } else if (position == 2) {
+                    fragmentNumber = 1;
+                    free_spinnerText = "visit_num";
+                    free_spinnerCmpNum = 2;
+                    getActivity().finish();
+                    Intent intent = new Intent(getActivity(), SubActivity.class);
+                    startActivity(intent);
+                }
+                else if(position == 3)
+                {
+                    fragmentNumber = 1;
+                    free_spinnerText = "good_num";
+                    free_spinnerCmpNum = 3;
+                    getActivity().finish();
+                    Intent intent = new Intent(getActivity(), SubActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
+
+
         fragmentNumber = 0;
 
         free_listView = (ListView) v.findViewById(R.id.free_list);
 
         list_itemArrayList = new ArrayList<FavoritesList>();
 
-        db.collection("freeData").orderBy("day", Query.Direction.DESCENDING)
+        db.collection("freeData").orderBy(free_spinnerText, Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -133,6 +196,10 @@ public class FavoritesFragment extends Fragment {
                                 v.findViewById(R.id.freeText_visible).setVisibility(View.VISIBLE);
                                 v.findViewById(R.id.free_list).setVisibility(View.GONE);
                             }
+
+                            free_spinnerText = "day";
+                            free_spinnerCmpNum = 0;
+
                             favorites_adapter = new Favorites_Adapter(getActivity(), list_itemArrayList);
                             free_listView.setAdapter(favorites_adapter);
 

@@ -15,10 +15,32 @@
         android:gravity="center">
 
         <TextView
+            android:textSize="20dp"
             android:id="@+id/textView8"
+            android:fontFamily="@font/librarystyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="게시판" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_gravity="end">
+        <Spinner
+            android:id="@+id/free_top_spinner"
+            android:layout_width="83dp"
+            android:layout_height="26dp"
+            android:entries="@array/arrayNameTwo"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/free_top_spinner_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="항목선택" />
 
         <ImageView
             android:id="@+id/free_write"
