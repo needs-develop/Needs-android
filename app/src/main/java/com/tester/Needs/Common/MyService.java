@@ -16,8 +16,8 @@ import com.tester.Needs.R;
 public class MyService extends Service {
     private static final String TAG = MyService.class.getSimpleName();
     private Thread mThread;
-
     private int mCount = 0;
+
 
     public MyService() {
     }
@@ -56,12 +56,14 @@ public class MyService extends Service {
     }
 
     private void startForegroundService(){
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
         builder.setSmallIcon(R.drawable.appicon);
         builder.setContentTitle("Needs");
         builder.setContentText("Needs Application이 실행중입니다.");
 
         Intent notificationIntent = new Intent(this, SubActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         builder.setContentIntent(pendingIntent);
 

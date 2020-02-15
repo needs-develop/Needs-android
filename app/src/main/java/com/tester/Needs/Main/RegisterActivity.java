@@ -84,6 +84,16 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        if(month.length() == 1){
+            month = "0" + month;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
+        if(day1.length() ==1){
+            day1 = "0" + day1;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
+
+
         if (hour.length() == 1) {
             hour = "0" + hour;
             fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;

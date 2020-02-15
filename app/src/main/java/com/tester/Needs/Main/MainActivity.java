@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     String day1 = String.valueOf(nowAsiaSeoul.getDayOfMonth());
     String hour = String.valueOf(nowAsiaSeoul.getHour());
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
-
     String second = String.valueOf(nowAsiaSeoul.getSecond());
 
     String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
@@ -137,6 +136,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+
+        if(month.length() == 1){
+            month = "0" + month;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
+        if(day1.length() ==1){
+            day1 = "0" + day1;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
+
         if (hour.length() == 1) {
             hour = "0" + hour;
             fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
@@ -272,7 +281,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     id_name = mAuth.getCurrentUser().getDisplayName();
                     id_nickName = mAuth.getCurrentUser().getDisplayName();
                     photoUrl = String.valueOf(mAuth.getCurrentUser().getPhotoUrl());
-
                     try {
                         DocumentReference doc = db.collection("user").document(id_uid);
                         Log.d("compare false1","compare false1");

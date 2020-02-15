@@ -44,6 +44,7 @@ public class BoardActivity extends AppCompatActivity {
     BoardListAdapter boardListAdapter;
     ArrayList<BoardList> list_itemArrayList = null;
 
+
     ImageView btn_write;
     EditText edit_board;
 
@@ -144,7 +145,7 @@ public class BoardActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id._listView);
         list_itemArrayList = new ArrayList<BoardList>();
 
-        db.collection("data").document("allData").collection(address).orderBy(spinnerText, Query.Direction.DESCENDING)
+        db.collection("data").document("allData").collection(address).orderBy(spinnerText,Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

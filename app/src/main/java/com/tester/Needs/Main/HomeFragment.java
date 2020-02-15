@@ -470,7 +470,7 @@ public class HomeFragment extends Fragment {
                                     startActivity(intent);
                                 }
                             });
-
+                       
 
                         } else {
                             Log.d("태그", "Error getting documents: ", task.getException());
@@ -481,5 +481,6 @@ public class HomeFragment extends Fragment {
 
         return v;
     }
+
 }
 

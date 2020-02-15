@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.R;
@@ -48,21 +49,47 @@ public class PointConversionActivity extends AppCompatActivity {
 
     String year = String.valueOf(nowAsiaSeoul.getYear());
     String month = String.valueOf(nowAsiaSeoul.getMonthValue());
-    String day = String.valueOf(nowAsiaSeoul.getDayOfMonth());
+    String day1 = String.valueOf(nowAsiaSeoul.getDayOfMonth());
     String hour = String.valueOf(nowAsiaSeoul.getHour());
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
+    String second = String.valueOf(nowAsiaSeoul.getSecond());
 
-    String fullDay = year + "/" + month + "/" + day + " " + hour + ":" + minute;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" +second;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_point_conversion);
 
+        if(month.length() == 1){
+            month = "0" + month;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
+        if(day1.length() ==1){
+            day1 = "0" + day1;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
+
+
+        if (hour.length() == 1) {
+            hour = "0" + hour;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
+
+        if (minute.length() == 1) {
+            minute = "0" + minute;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
+
+        if (second.length() == 1) {
+            second = "0" + second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+        }
+
         curPoint = findViewById(R.id.curPoint);
         uid = user.getUid();
 
-        db.collection("user")
+        db.collection("user").orderBy("day", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
