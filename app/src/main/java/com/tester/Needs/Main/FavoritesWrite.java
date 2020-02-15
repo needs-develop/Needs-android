@@ -132,8 +132,10 @@ public class FavoritesWrite extends AppCompatActivity {
                     user.put("content", content);
                     user.put("writer", id_value);
                     user.put("day", fullDay);
-                    user.put("visit_num", "0");
-                    user.put("good_num", "0");
+                    //user.put("visit_num", "0");
+                   // user.put("good_num", "0");
+                    user.put("visit_num", 0);
+                    user.put("good_num", 0);
                     user.put("write", id_nickName);
 
 

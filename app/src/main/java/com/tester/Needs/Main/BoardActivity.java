@@ -202,9 +202,10 @@ public class BoardActivity extends AppCompatActivity {
                                     String visitString = list_itemArrayList.get(position).getBtn_visitnum();
                                     String document_name = list_itemArrayList.get(position).getDocument_name();
 
-                                    int visitInt = Integer.parseInt(visitString);
-                                    visitInt = visitInt + 1;
-                                    String visitnum = Integer.toString(visitInt);
+                                    int visitnum = Integer.parseInt(visitString);
+                                    visitnum = visitnum + 1;
+                                    visitString = Integer.toString(visitnum);
+
 
 
                                     intent2.putExtra("title", title);
@@ -212,7 +213,7 @@ public class BoardActivity extends AppCompatActivity {
                                     intent2.putExtra("day", day);
                                     intent2.putExtra("id", conId);
                                     intent2.putExtra("good", goodNum);
-                                    intent2.putExtra("visitnum", visitnum);
+                                    intent2.putExtra("visitnum", visitString);
                                     intent2.putExtra("documentName", document_name);
                                     startActivity(intent2);
                                 }

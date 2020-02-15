@@ -56,6 +56,16 @@ public class MyService extends Service {
     }
 
     private void startForegroundService(){
+        /*
+        int badgeCount = 1;
+        Intent intent_badge = new Intent("android.intent.action.BADGE_COUNT_UPDATE");
+        intent_badge.putExtra("badge_count", badgeCount);
+        //앱의  패키지 명
+        intent_badge.putExtra("badge_count_package_name","com.tester.Needs.Main");
+        // AndroidManifest.xml에 정의된 메인 activity 명
+        intent_badge.putExtra("badge_count_class_name", "com.tester.Needs.Main.SubActivity");
+        sendBroadcast(intent_badge);
+        */
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
         builder.setSmallIcon(R.drawable.appicon);

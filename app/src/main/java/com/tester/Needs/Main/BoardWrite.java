@@ -132,8 +132,8 @@ public class BoardWrite extends AppCompatActivity {
                     user.put("day", fullDay);
                     //user.put("visit_num", "0");
                     //user.put("good_num", "0");
-                    user.put("visit_num", "0");
-                    user.put("good_num", "0");
+                    user.put("visit_num", 0);
+                    user.put("good_num", 0);
                     user.put("write", id_nickName);
 
 

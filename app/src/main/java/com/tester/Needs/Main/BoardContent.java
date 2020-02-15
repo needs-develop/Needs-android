@@ -103,6 +103,9 @@ public class BoardContent extends AppCompatActivity {
     String r_writer;
     String r_docName;
 
+    int num = 0;
+    int num2=0;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("ResourceType")
@@ -143,7 +146,9 @@ public class BoardContent extends AppCompatActivity {
         day = intent.getStringExtra("day");
         conId = intent.getStringExtra("id");
         goodNum = intent.getStringExtra("good");
+        num = Integer.parseInt(goodNum);
         visitNum = intent.getStringExtra("visitnum");
+        num2 = Integer.parseInt(visitNum);
         documentName = intent.getStringExtra("documentName");
 
 
@@ -245,7 +250,7 @@ public class BoardContent extends AppCompatActivity {
                     }
 
                     content_heart.setImageResource(R.raw.bin_heart);
-                    int num = Integer.parseInt(goodNum);
+                    num = Integer.parseInt(goodNum);
                     num = num - 1;
                     goodNum = Integer.toString(num);
                     content_good.setText(goodNum);
@@ -254,7 +259,7 @@ public class BoardContent extends AppCompatActivity {
                             .collection(address).document(documentName);
 
                     documentReference
-                            .update("good_num", goodNum)
+                            .update("good_num",num)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -336,7 +341,7 @@ public class BoardContent extends AppCompatActivity {
 
                     user.put("goodBoolean", true);
                     content_heart.setImageResource(R.raw.heart);
-                    int num = Integer.parseInt(goodNum);
+                    num = Integer.parseInt(goodNum);
                     num = num + 1;
                     goodNum = Integer.toString(num);
                     content_good.setText(goodNum);
@@ -345,7 +350,7 @@ public class BoardContent extends AppCompatActivity {
                             .collection(address).document(documentName);
 
                     documentReference
-                            .update("good_num", goodNum)
+                            .update("good_num", num)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -384,7 +389,7 @@ public class BoardContent extends AppCompatActivity {
                     toUser.put("id", conId);
                     toUser.put("day", day);
                     toUser.put("visitnum", visitNum);
-                    toUser.put("good", goodNum);
+                    toUser.put("good", num);
                     toUser.put("documentName", documentName);
                     userInfo.document(id_uid).collection("like").document(documentName)
                             .set(toUser);
@@ -414,7 +419,7 @@ public class BoardContent extends AppCompatActivity {
                 .collection(address).document(documentName);
 
         documentReference
-                .update("visit_num", visitNum)
+                .update("visit_num", num2)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
