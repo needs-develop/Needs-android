@@ -40,7 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.FavoritesList;
-import com.tester.Needs.Common.MyService;
+import com.tester.Needs.Service.MyService;
 import com.tester.Needs.Common.SubExpAdapter;
 import com.tester.Needs.Common.SubList;
 import com.tester.Needs.R;
@@ -527,6 +527,17 @@ public class SubActivity extends AppCompatActivity {
     };
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(SubActivity.this, MyService.class);
+        intent.setAction("startForeground");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            startForegroundService(intent);
+        }else{
+            startService(intent);
+        }
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
         Intent intent = new Intent(SubActivity.this, MyService.class);
         intent.setAction("startForeground");
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){

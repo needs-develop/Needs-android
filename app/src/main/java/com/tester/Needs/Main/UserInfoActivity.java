@@ -22,7 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.tester.Needs.Common.MyService;
+import com.tester.Needs.Service.MyService;
 import com.tester.Needs.R;
 
 import static com.tester.Needs.Main.MainActivity.id_name;
