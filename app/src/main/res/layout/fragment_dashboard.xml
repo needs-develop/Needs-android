@@ -42,12 +42,6 @@
             android:layout_height="wrap_content"
             android:hint="항목선택" />
 
-        <ImageView
-            android:id="@+id/free_write"
-            android:layout_width="40dp"
-            android:layout_height="35dp"
-            android:layout_gravity="end"
-            android:src="@drawable/write" />
     </LinearLayout>
 
     <LinearLayout
@@ -114,7 +108,7 @@
         <ListView
             android:id="@+id/free_list"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="450dp"
             android:textFilterEnabled="true" />
 
         <LinearLayout
@@ -149,6 +143,15 @@
                 android:layout_width="70dp"
                 android:layout_height="37dp"
                 android:text="검색" />
+
+            <ImageView
+                android:id="@+id/free_write"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
+                android:layout_gravity="end"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/write" />
         </LinearLayout>
     </LinearLayout>
 
