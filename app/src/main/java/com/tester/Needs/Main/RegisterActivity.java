@@ -1,6 +1,8 @@
 package com.tester.Needs.Main;
 //회원가입창//
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -66,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     String second = String.valueOf(nowAsiaSeoul.getSecond());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
 
     String email;
     String dupName;
@@ -84,29 +86,29 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        if(month.length() == 1){
+        if (month.length() == 1) {
             month = "0" + month;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
-        if(day1.length() ==1){
+        if (day1.length() == 1) {
             day1 = "0" + day1;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
 
         if (hour.length() == 1) {
             hour = "0" + hour;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (minute.length() == 1) {
             minute = "0" + minute;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (second.length() == 1) {
             second = "0" + second;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
         mAuth = FirebaseAuth.getInstance();
 
@@ -118,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
         final Button btn_duplicate = findViewById(R.id.btn_duplicate);
         btn_duplicate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 compnum = 1;
                 dupName = usernameTxt.getText().toString();
                 db.collection("user")
@@ -147,9 +149,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     usernameTxt.requestFocus();
                                 } else if (compnum == 1) {
                                     Log.d("확인을 위한 num", "중복이 아닐시");
-                                    usernameTxt.setError("사용가능한 닉네임");
-                                    usernameTxt.requestFocus();
-                                    changeDupName = usernameTxt.getText().toString();
+                                    showAlert();
                                 }
                             }
                         });
@@ -166,7 +166,7 @@ public class RegisterActivity extends AppCompatActivity {
                         compnum = 2;
                         usernameTxt.requestFocus();
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
 
                 }
                 if (compnum == 2) {
@@ -176,6 +176,31 @@ public class RegisterActivity extends AppCompatActivity {
                     customerRegister();
             }
         });
+    }
+
+
+    private void showAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("닉네임 중복확인");
+        builder.setMessage("사용 가능한 닉네임입니다.");
+
+        builder.setPositiveButton("사용하기", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                usernameTxt.setClickable(false);
+                usernameTxt.setFocusable(false);
+                changeDupName = usernameTxt.getText().toString();
+            }
+        });
+
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void customerRegister() {
