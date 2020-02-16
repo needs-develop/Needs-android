@@ -1,10 +1,14 @@
 package com.tester.Needs.Setting;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,11 +17,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.R;
+import com.tester.Needs.Service.MyService;
 
 public class PointHistoryActivity extends AppCompatActivity {
 
@@ -32,6 +39,7 @@ public class PointHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        stopService(new Intent(PointHistoryActivity.this, MyService.class));
         setContentView(R.layout.activity_point_history);
         TextView id = findViewById(R.id.id);
         curPoint = findViewById(R.id.curPoint);
@@ -39,23 +47,20 @@ public class PointHistoryActivity extends AppCompatActivity {
 
         id.setText(TextUtils.isEmpty(user.getDisplayName()) ? user.getEmail() : user.getDisplayName());
 
-        db.collection("user")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (uid.equals(document.getData().get("id_uid").toString())) {
-                                    point = document.getData().get("id_point").toString();
-                                    curPoint.setText(point);
-                                    break;
-                                }
-                            }
-                        } else {
-                        }
-                    }
-                });
+
+        DocumentReference docR = db.collection("user").document(uid);
+        docR.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    point = document.getData().get("id_point").toString();
+                    curPoint.setText(point);
+                }
+            }
+        });
+
 
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -79,5 +84,11 @@ public class PointHistoryActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 }

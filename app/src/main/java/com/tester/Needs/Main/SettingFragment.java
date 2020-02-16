@@ -106,8 +106,6 @@ public class SettingFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_notifications, container,
                 false);
-
-
         fragmentNumber = 0;
 
         TextView nametxt = rootView.findViewById(R.id.user_name);

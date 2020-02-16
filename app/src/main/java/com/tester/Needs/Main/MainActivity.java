@@ -1,6 +1,7 @@
 package com.tester.Needs.Main;
 //첫 로그인창//
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -56,6 +57,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.tester.Needs.R;
+import com.tester.Needs.Service.MyService;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        stopService(new Intent(MainActivity.this, MyService.class));
         MultiDex.install(this);
         setContentView(R.layout.activity_main);
 

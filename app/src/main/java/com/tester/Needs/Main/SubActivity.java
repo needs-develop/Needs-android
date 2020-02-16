@@ -3,6 +3,7 @@ package com.tester.Needs.Main;
 //로그인 되고 메인화면//
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -39,6 +40,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.tester.Needs.Common.FavoritesList;
 import com.tester.Needs.Service.MyService;
 import com.tester.Needs.Common.SubExpAdapter;
@@ -127,10 +130,23 @@ public class SubActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        stopService(new Intent(SubActivity.this,MyService.class));
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SubActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String newToken = instanceIdResult.getToken();
+                Log.e("newToken",newToken);
+
+            }
+        });
+
         if (fragmentNumber == 0) {
+            stopService(new Intent(SubActivity.this,MyService.class));
             transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, new HomeFragment()).commitAllowingStateLoss();
         } else if (fragmentNumber == 1) {
+            stopService(new Intent(SubActivity.this,MyService.class));
             transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, new FavoritesFragment()).commitAllowingStateLoss();
         }
@@ -432,6 +448,8 @@ public class SubActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
 
     @Override
@@ -485,12 +503,15 @@ public class SubActivity extends AppCompatActivity {
                     TextView textView = (TextView) findViewById(R.id.text_test);
                     switch (menuItem.getItemId()) {
                         case R.id.navigation_home:
+                            stopService(new Intent(SubActivity.this,MyService.class));
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.navigation_dashboard:
+                            stopService(new Intent(SubActivity.this,MyService.class));
                             selectedFragment = new FavoritesFragment();
                             break;
                         case R.id.navigation_notifications:
+                            stopService(new Intent(SubActivity.this,MyService.class));
                             selectedFragment = new SettingFragment();
                             break;
                     }
@@ -525,6 +546,7 @@ public class SubActivity extends AppCompatActivity {
 
         }
     };
+
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(SubActivity.this, MyService.class);

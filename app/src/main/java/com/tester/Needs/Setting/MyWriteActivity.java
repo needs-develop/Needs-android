@@ -1,6 +1,7 @@
 package com.tester.Needs.Setting;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.BoardList;
 import com.tester.Needs.Main.BoardListAdapter;
 import com.tester.Needs.R;
+import com.tester.Needs.Service.MyService;
 
 import java.util.ArrayList;
 
@@ -38,6 +40,7 @@ public class MyWriteActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        stopService(new Intent(MyWriteActivity.this, MyService.class));
         setContentView(R.layout.activity_mywrite);
 
         listViewWrite = getListView();
@@ -74,5 +77,10 @@ public class MyWriteActivity extends ListActivity {
                         }
                     }
                 });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 }

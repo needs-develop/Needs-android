@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,11 +22,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.R;
+import com.tester.Needs.Service.MyService;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -59,6 +62,7 @@ public class PointConversionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        stopService(new Intent(PointConversionActivity.this, MyService.class));
         setContentView(R.layout.activity_point_conversion);
 
         if (month.length() == 1) {
@@ -89,23 +93,19 @@ public class PointConversionActivity extends AppCompatActivity {
         curPoint = findViewById(R.id.curPoint);
         uid = user.getUid();
 
-        db.collection("user")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (uid.equals(document.getData().get("id_uid").toString())) {
-                                    point = document.getData().get("id_point").toString();
-                                    curPoint.setText(point);
-                                    break;
-                                }
-                            }
-                        } else {
-                        }
-                    }
-                });
+
+        DocumentReference docR = db.collection("user").document(uid);
+        docR.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    point = document.getData().get("id_point").toString();
+                    curPoint.setText(point);
+                }
+            }
+        });
 
         Button button = findViewById(R.id.conversion);
         button.setOnClickListener(new View.OnClickListener() {
@@ -170,5 +170,10 @@ public class PointConversionActivity extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 }

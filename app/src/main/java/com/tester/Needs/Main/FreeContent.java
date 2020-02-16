@@ -38,6 +38,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.ReplyList;
 import com.tester.Needs.Common.ReplyListAdapter;
 import com.tester.Needs.R;
+import com.tester.Needs.Service.MyService;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -111,6 +112,7 @@ public class FreeContent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        stopService(new Intent(FreeContent.this, MyService.class));
         MultiDex.install(this);
         setContentView(R.layout.activity_free_content);
 

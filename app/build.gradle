@@ -24,6 +24,7 @@ android {
 dependencies {
     //noinspection GradleCompatible
     implementation 'com.google.android.gms:play-services-auth:11.6.2'
+    implementation 'com.android.support:appcompat-v7:29.0.0'
     implementation 'com.facebook.android:facebook-login:[4,5)'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -46,10 +47,10 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'//글라이드 이미지로딩2
     implementation 'com.google.firebase:firebase-firestore:21.4.0'//firestore
-
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
-
 apply plugin: 'com.google.gms.google-services'
+googleServices.disableVersionCheck = true
