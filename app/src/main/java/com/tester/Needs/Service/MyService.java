@@ -11,22 +11,25 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.tester.Needs.Main.SubActivity;
 import com.tester.Needs.R;
 
+//import static com.tester.Needs.Main.SubActivity.getActivity;
+
 public class MyService extends Service {
 
     private Thread mThread;
     private int mCount = 0;
 
-
     public MyService() {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -73,6 +76,7 @@ public class MyService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void startForegroundService(){
         /*
         int badgeCount = 1;
@@ -94,6 +98,8 @@ public class MyService extends Service {
         builder.setWhen(System.currentTimeMillis());
         builder.setAutoCancel(true);
 
+        //Class name = getActivity;
+
         Intent notificationIntent = new Intent(this, SubActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
@@ -104,7 +110,10 @@ public class MyService extends Service {
             manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
         }
         startForeground(1,builder.build());
+        builder.setAutoCancel(true);
+
         /*
+
         String NOTIFICATION_CHANNEL_ID = "Nilesh_channel";
 
         long pattern[] = {0, 1000, 500, 1000};

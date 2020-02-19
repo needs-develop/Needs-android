@@ -29,6 +29,8 @@ import static com.tester.Needs.Main.MainActivity.id_name;
 import static com.tester.Needs.Main.MainActivity.id_nickName;
 import static com.tester.Needs.Main.MainActivity.id_uid;
 import static com.tester.Needs.Main.MainActivity.id_value;
+import static com.tester.Needs.Main.SubActivity.fragmentNumber;
+//import static com.tester.Needs.Main.SubActivity.getActivity;
 import static com.tester.Needs.Main.SubActivity.point;
 import static com.tester.Needs.Main.SubActivity.pointLimit;
 
@@ -45,6 +47,10 @@ public class UserInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         stopService(new Intent(UserInfoActivity.this,MyService.class));
         setContentView(R.layout.activity_user_info);
+
+        //fragmentNumber = 0;
+
+        //getActivity = UserInfoActivity.class;
 
         Switch foreGroundSwitch = findViewById(R.id.foreSwitch);
         foreGroundSwitch.setOnCheckedChangeListener(new foreGroundSwitchListener());
@@ -214,9 +220,28 @@ public class UserInfoActivity extends AppCompatActivity {
 
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        //fragmentNumber = 2;
+        //stopService(new Intent(UserInfoActivity.this, MyService.class));
+        //Intent intent = new Intent(UserInfoActivity.this,SubActivity.class);
+        //startActivity(intent);
         this.finish();
     }
+/*
+    @Override
+    protected void onUserLeaveHint() {
+        Intent intent = new Intent(UserInfoActivity.this, MyService.class);
+        intent.setAction("startForeground");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            startForegroundService(intent);
+        }else{
+            startService(intent);
+        }
+    }
+
+ */
+
 }

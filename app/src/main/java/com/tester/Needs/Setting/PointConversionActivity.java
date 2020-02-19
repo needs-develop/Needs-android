@@ -27,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.tester.Needs.Main.SubActivity;
 import com.tester.Needs.R;
 import com.tester.Needs.Service.MyService;
 
@@ -35,6 +36,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.tester.Needs.Main.SubActivity.fragmentNumber;
+//import static com.tester.Needs.Main.SubActivity.getActivity;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class PointConversionActivity extends AppCompatActivity {
@@ -64,6 +68,10 @@ public class PointConversionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         stopService(new Intent(PointConversionActivity.this, MyService.class));
         setContentView(R.layout.activity_point_conversion);
+
+       // getActivity = PointConversionActivity.class;
+
+       // fragmentNumber = 0;
 
         if (month.length() == 1) {
             month = "0" + month;
@@ -174,6 +182,23 @@ public class PointConversionActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        //fragmentNumber = 2;
+        //stopService(new Intent(PointConversionActivity.this, MyService.class));
+        //Intent intent = new Intent(PointConversionActivity.this, SubActivity.class);
+        //startActivity(intent);
         this.finish();
     }
+/*
+    @Override
+    protected void onUserLeaveHint() {
+        Intent intent = new Intent(PointConversionActivity.this, MyService.class);
+        intent.setAction("startForeground");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            startForegroundService(intent);
+        }else{
+            startService(intent);
+        }
+    }
+
+ */
 }

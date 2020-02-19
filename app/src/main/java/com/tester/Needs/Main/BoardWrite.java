@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.tester.Needs.R;
+import com.tester.Needs.Service.MyService;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -33,6 +34,7 @@ import static com.tester.Needs.Main.MainActivity.id_nickName;
 import static com.tester.Needs.Main.MainActivity.id_uid;
 import static com.tester.Needs.Main.MainActivity.id_value;
 import static com.tester.Needs.Main.SubActivity.address;
+//import static com.tester.Needs.Main.SubActivity.getActivity;
 import static com.tester.Needs.Main.SubActivity.point;
 
 
@@ -40,6 +42,8 @@ import static com.tester.Needs.Main.SubActivity.point;
 public class BoardWrite extends AppCompatActivity {
     Button btn_ok;
     Button btn_cancel;
+
+
 
     EditText btn_content_write;
     EditText btn_title_write;
@@ -74,8 +78,13 @@ public class BoardWrite extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        stopService(new Intent(BoardWrite.this, MyService.class));
         MultiDex.install(this);
         setContentView(R.layout.activity_board_write);
+
+        //getActivity = BoardWrite.class;
+
+
 
         Intent intent = getIntent();
         if (month.length() == 1) {
@@ -238,8 +247,20 @@ public class BoardWrite extends AppCompatActivity {
     }
 
     public void onBackPressed() {
+        stopService(new Intent(BoardWrite.this, MyService.class));
         BoardWrite.this.finish();
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        Intent intent = new Intent(BoardWrite.this, MyService.class);
+        intent.setAction("startForeground");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            startForegroundService(intent);
+        }else{
+            startService(intent);
+        }
     }
 
     public class BackgroundThread extends Thread {

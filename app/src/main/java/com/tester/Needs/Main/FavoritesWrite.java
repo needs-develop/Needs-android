@@ -1,5 +1,6 @@
 package com.tester.Needs.Main;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import androidx.multidex.MultiDex;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 import com.tester.Needs.R;
 import com.tester.Needs.Service.MyService;
 
@@ -34,12 +36,12 @@ import static com.tester.Needs.Main.MainActivity.id_nickName;
 import static com.tester.Needs.Main.MainActivity.id_uid;
 import static com.tester.Needs.Main.MainActivity.id_value;
 import static com.tester.Needs.Main.SubActivity.fragmentNumber;
+//import static com.tester.Needs.Main.SubActivity.getActivity;
 import static com.tester.Needs.Main.SubActivity.point;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class FavoritesWrite extends AppCompatActivity {
-
 
     Button free_ok;
     Button free_cancel;
@@ -77,6 +79,8 @@ public class FavoritesWrite extends AppCompatActivity {
         stopService(new Intent(FavoritesWrite.this, MyService.class));
         MultiDex.install(this);
         setContentView(R.layout.activity_favorites_write);
+
+       // getActivity = FavoritesWrite.class;
 
         fragmentNumber = 1;
 
@@ -243,6 +247,20 @@ public class FavoritesWrite extends AppCompatActivity {
         super.onBackPressed();
         FavoritesWrite.this.finish();
     }
+    /*
+    @Override
+    protected void onUserLeaveHint() {
+        Intent intent = new Intent(FavoritesWrite.this, MyService.class);
+        intent.setAction("startForeground");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            startForegroundService(intent);
+        }else{
+            startService(intent);
+        }
+    }
+     */
+
+
 
     public class BackgroundThread extends Thread {
         volatile boolean running = false;

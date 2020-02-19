@@ -138,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         MultiDex.install(this);
         setContentView(R.layout.activity_main);
 
+
+
         mAuth = FirebaseAuth.getInstance();
 
         if(month.length() == 1){

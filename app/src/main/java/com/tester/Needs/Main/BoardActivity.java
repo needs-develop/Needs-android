@@ -1,5 +1,6 @@
 package com.tester.Needs.Main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -33,10 +34,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.BoardList;
 import com.tester.Needs.R;
+import com.tester.Needs.Service.MyService;
 
 import java.util.ArrayList;
 
 import static com.tester.Needs.Main.SubActivity.address;
+//import static com.tester.Needs.Main.SubActivity.getActivity;
 
 public class BoardActivity extends AppCompatActivity {
 
@@ -73,6 +76,8 @@ public class BoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         MultiDex.install(this);
         setContentView(R.layout.activity_board);
+
+        //getActivity = BoardActivity.class;
 
         final Intent intent = getIntent();
 
@@ -279,6 +284,7 @@ public class BoardActivity extends AppCompatActivity {
         Intent intent = new Intent(BoardActivity.this, SubActivity.class);
         startActivity(intent);
     }
+
 }
 
 

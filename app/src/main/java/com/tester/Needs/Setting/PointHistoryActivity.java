@@ -23,8 +23,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.tester.Needs.Main.SubActivity;
 import com.tester.Needs.R;
 import com.tester.Needs.Service.MyService;
+
+import static com.tester.Needs.Main.SubActivity.fragmentNumber;
+//import static com.tester.Needs.Main.SubActivity.getActivity;
 
 public class PointHistoryActivity extends AppCompatActivity {
 
@@ -36,6 +40,7 @@ public class PointHistoryActivity extends AppCompatActivity {
     pointHistoryAdapter pointHistoryAdapter;
     RecyclerView recyclerView;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +49,10 @@ public class PointHistoryActivity extends AppCompatActivity {
         TextView id = findViewById(R.id.id);
         curPoint = findViewById(R.id.curPoint);
         uid = user.getUid();
+
+        //getActivity = PointHistoryActivity.class;
+
+        //fragmentNumber = 0;
 
         id.setText(TextUtils.isEmpty(user.getDisplayName()) ? user.getEmail() : user.getDisplayName());
 
@@ -86,9 +95,27 @@ public class PointHistoryActivity extends AppCompatActivity {
                 });
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        //fragmentNumber = 2;
+        //stopService(new Intent(PointHistoryActivity.this, MyService.class));
+
+        //Intent intent = new Intent(PointHistoryActivity.this, SubActivity.class);
+        //startActivity(intent);
         this.finish();
     }
+    /*
+    @Override
+    protected void onUserLeaveHint() {
+        Intent intent = new Intent(PointHistoryActivity.this, MyService.class);
+        intent.setAction("startForeground");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            startForegroundService(intent);
+        }else{
+            startService(intent);
+        }
+    }*/
 }

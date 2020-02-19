@@ -65,6 +65,8 @@ import static com.tester.Needs.Main.MainActivity.id_value;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class SubActivity extends AppCompatActivity {
 
+    //public static Class getActivity = SubActivity.class;
+
     private TextView sub_id;
     private DrawerLayout drawerLayout;
     private View drawerView;
@@ -120,10 +122,12 @@ public class SubActivity extends AppCompatActivity {
 
     FragmentTransaction transaction;
 
-    static int fragmentNumber = 0;
+    public static int fragmentNumber = 0;
 
     static String pointLimit = null;
     static String point = null;
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -150,6 +154,13 @@ public class SubActivity extends AppCompatActivity {
             transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, new FavoritesFragment()).commitAllowingStateLoss();
         }
+        /*
+        else if (fragmentNumber == 2) {
+            stopService(new Intent(SubActivity.this,MyService.class));
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, new SettingFragment()).commitAllowingStateLoss();
+        }
+         */
 
         setContentView(R.layout.activity_sub);
         BottomNavigationView navView = findViewById(R.id.bottom_navigation);
@@ -500,7 +511,6 @@ public class SubActivity extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     Fragment selectedFragment = null;
-                    TextView textView = (TextView) findViewById(R.id.text_test);
                     switch (menuItem.getItemId()) {
                         case R.id.navigation_home:
                             stopService(new Intent(SubActivity.this,MyService.class));
