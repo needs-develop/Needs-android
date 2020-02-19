@@ -164,7 +164,7 @@
 
             <EditText
                 android:id="@+id/edit_reply"
-                android:layout_width="300dp"
+                android:layout_width="290dp"
                 android:layout_height="wrap_content"
                 android:hint="댓글을 입력하세요"
                 android:fontFamily="@font/content"
@@ -173,6 +173,8 @@
                 android:textSize="20dp"></EditText>
 
             <Button
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:textColor="#ffffff"
                 android:background="#94CFEB"
                 android:fontFamily="@font/content"

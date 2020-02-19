@@ -5,26 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Main.HomeContent">
+    tools:context=".Main.FreeContent">
+
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginRight="20dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/content"
-            android:text="제목:"
+            android:text="제목"
             android:textSize="15dp"></TextView>
 
         <TextView
             android:id="@+id/content_home_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/corner_shape"
+            android:fontFamily="@font/content"
             android:text="제목입니다"
             android:textSize="15dp"></TextView>
     </LinearLayout>
@@ -36,6 +40,7 @@
         android:layout_marginRight="20dp">
 
         <TextView
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/content"
@@ -43,46 +48,22 @@
             android:textSize="15dp"></TextView>
 
         <TextView
+            android:layout_marginTop="5dp"
             android:id="@+id/content_home_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/content_content"
+            android:fontFamily="@font/content"
             android:text="작성자입니다"
             android:textSize="15dp"></TextView>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="OnClickHandler"
-            android:text="삭제하기"></Button>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/content"
-            android:text="작성일시:"
-            android:textSize="15dp"></TextView>
-
-        <TextView
-            android:id="@+id/content_home_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/content_content"
-            android:text="작성일입니다"
-            android:textSize="15dp"></TextView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <TextView
@@ -94,23 +75,53 @@
 
         <TextView
             android:id="@+id/content_home_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/content_content"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:fontFamily="@font/content"
+            android:background="@drawable/corner_shape"
             android:text="내용입니다"
             android:textSize="15dp"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/content"
+                android:text="작성일시:"
+                android:textSize="15dp"></TextView>
+
+            <TextView
+                android:id="@+id/content_home_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/content"
+                android:text="작성일입니다"
+                android:textSize="15dp"></TextView>
+            <Button
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="85dp"
+                android:textColor="#ffffff"
+                android:background="#94CFEB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/content"
+                android:onClick="OnClickHandler"
+                android:text="삭제하기"></Button>
+        </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <ImageView
                 android:id="@+id/content_home_heart"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="15dp"
                 android:src="@raw/heart"></ImageView>
 
             <TextView
@@ -118,22 +129,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginLeft="0dp"
                 android:gravity="bottom"
                 android:text="갯수"></TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="조회수"
-                android:textSize="15dp"></TextView>
+            <ImageView
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="bottom"
+                android:src="@raw/hits"
+                android:layout_width="30dp"
+                android:layout_height="30dp">
+            </ImageView>
 
             <TextView
+                android:layout_gravity="bottom"
                 android:id="@+id/content_home_visitnum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -147,22 +154,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="댓글"
-            android:textSize="20dp"></TextView>
-
-        <TextView
-            android:id="@+id/content_home_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="갯수"
-            android:textSize="20dp"></TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -171,14 +165,20 @@
 
             <EditText
                 android:id="@+id/edit_home_reply"
-                android:layout_width="260dp"
+                android:layout_width="290dp"
                 android:layout_height="wrap_content"
                 android:hint="댓글을 입력하세요"
+                android:fontFamily="@font/content"
                 android:inputType="text|textMultiLine"
                 android:minLines="1"
                 android:textSize="20dp"></EditText>
 
             <Button
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:background="#94CFEB"
+                android:fontFamily="@font/content"
                 android:id="@+id/btn_home_reply"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
@@ -195,6 +195,7 @@
 
         <ListView
             android:id="@+id/list_home_reply"
+            android:fontFamily="@font/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></ListView>
     </LinearLayout>
