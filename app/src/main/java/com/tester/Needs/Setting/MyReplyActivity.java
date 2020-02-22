@@ -48,7 +48,6 @@ public class MyReplyActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(MyReplyActivity.this, MyService.class));
         setContentView(R.layout.activity_myreply);
 
         //getActivity = MyReplyActivity.class;

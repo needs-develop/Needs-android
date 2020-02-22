@@ -47,7 +47,6 @@ public class MyWriteActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(MyWriteActivity.this, MyService.class));
         setContentView(R.layout.activity_mywrite);
 
        // getActivity = MyWriteActivity.class;

@@ -45,7 +45,6 @@ public class UserInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(UserInfoActivity.this,MyService.class));
         setContentView(R.layout.activity_user_info);
 
         //fragmentNumber = 0;

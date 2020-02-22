@@ -21,9 +21,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="게시판" />
-    </LinearLayout>
+        </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

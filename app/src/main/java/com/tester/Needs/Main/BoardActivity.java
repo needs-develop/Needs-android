@@ -61,6 +61,8 @@ public class BoardActivity extends AppCompatActivity {
     Spinner spinner;
     TextView spinnerView;
 
+
+
     static String spinnerText = "day";
     //static String spinnerContent="날짜순";
 
@@ -149,6 +151,7 @@ public class BoardActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id._listView);
         list_itemArrayList = new ArrayList<BoardList>();
+
 
         db.collection("data").document("allData").collection(address).orderBy(spinnerText,Query.Direction.DESCENDING)
                 .get()

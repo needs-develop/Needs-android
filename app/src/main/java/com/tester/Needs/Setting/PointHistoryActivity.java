@@ -44,7 +44,6 @@ public class PointHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(PointHistoryActivity.this, MyService.class));
         setContentView(R.layout.activity_point_history);
         TextView id = findViewById(R.id.id);
         curPoint = findViewById(R.id.curPoint);

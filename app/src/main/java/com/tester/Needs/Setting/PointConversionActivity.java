@@ -66,7 +66,6 @@ public class PointConversionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(PointConversionActivity.this, MyService.class));
         setContentView(R.layout.activity_point_conversion);
 
        // getActivity = PointConversionActivity.class;

@@ -65,7 +65,7 @@ import static com.tester.Needs.Main.MainActivity.id_value;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class SubActivity extends AppCompatActivity {
 
-    //public static Class getActivity = SubActivity.class;
+    //ㄴㅅpublic static Class getActivity = SubActivity.class;
 
     private TextView sub_id;
     private DrawerLayout drawerLayout;
@@ -146,11 +146,9 @@ public class SubActivity extends AppCompatActivity {
         });
 
         if (fragmentNumber == 0) {
-            stopService(new Intent(SubActivity.this,MyService.class));
             transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, new HomeFragment()).commitAllowingStateLoss();
         } else if (fragmentNumber == 1) {
-            stopService(new Intent(SubActivity.this,MyService.class));
             transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, new FavoritesFragment()).commitAllowingStateLoss();
         }
@@ -177,6 +175,18 @@ public class SubActivity extends AppCompatActivity {
         expandableListView.setAdapter(subExpAdapter);
 
         subExpAdapter1.notifyDataSetChanged();
+
+        ImageView btn_notification;
+        btn_notification = findViewById(R.id.btn_notification);
+
+        btn_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent record_intent = new Intent(SubActivity.this,RecordActivity.class);
+                startActivity(record_intent);
+                SubActivity.this.finish();
+            }
+        });
 
 
         //////////////////////포인트 가져오기/////////////////////////////////////////
@@ -513,15 +523,12 @@ public class SubActivity extends AppCompatActivity {
                     Fragment selectedFragment = null;
                     switch (menuItem.getItemId()) {
                         case R.id.navigation_home:
-                            stopService(new Intent(SubActivity.this,MyService.class));
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.navigation_dashboard:
-                            stopService(new Intent(SubActivity.this,MyService.class));
                             selectedFragment = new FavoritesFragment();
                             break;
                         case R.id.navigation_notifications:
-                            stopService(new Intent(SubActivity.this,MyService.class));
                             selectedFragment = new SettingFragment();
                             break;
                     }
@@ -563,11 +570,13 @@ public class SubActivity extends AppCompatActivity {
         intent.setAction("startForeground");
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             startForegroundService(intent);
+
         }else{
             startService(intent);
         }
     }
 
+/*
     @Override
     protected void onUserLeaveHint() {
         Intent intent = new Intent(SubActivity.this, MyService.class);
@@ -578,4 +587,6 @@ public class SubActivity extends AppCompatActivity {
             startService(intent);
         }
     }
+
+ */
 }

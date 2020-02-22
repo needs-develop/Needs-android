@@ -49,7 +49,6 @@ public class MyLikeActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(MyLikeActivity.this, MyService.class));
         setContentView(R.layout.activity_mylike);
 
         //getActivity = MyLikeActivity.class;

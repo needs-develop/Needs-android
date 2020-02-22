@@ -114,7 +114,6 @@ public class HomeContent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(HomeContent.this, MyService.class));
         MultiDex.install(this);
 
         setContentView(R.layout.activity_board_content);

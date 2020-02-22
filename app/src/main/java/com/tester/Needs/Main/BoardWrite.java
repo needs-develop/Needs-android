@@ -78,7 +78,6 @@ public class BoardWrite extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(BoardWrite.this, MyService.class));
         MultiDex.install(this);
         setContentView(R.layout.activity_board_write);
 
@@ -247,7 +246,6 @@ public class BoardWrite extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        stopService(new Intent(BoardWrite.this, MyService.class));
         BoardWrite.this.finish();
         super.onBackPressed();
     }

@@ -113,7 +113,6 @@ public class HomeFreeContent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(HomeFreeContent.this, MyService.class));
         MultiDex.install(this);
         setContentView(R.layout.activity_free_content);
         if(month.length() == 1){
