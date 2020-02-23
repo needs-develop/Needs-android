@@ -1,5 +1,6 @@
 package com.tester.Needs.Main;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import androidx.multidex.MultiDex;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 import com.tester.Needs.R;
 import com.tester.Needs.Service.MyService;
 
@@ -34,12 +36,12 @@ import static com.tester.Needs.Main.MainActivity.id_nickName;
 import static com.tester.Needs.Main.MainActivity.id_uid;
 import static com.tester.Needs.Main.MainActivity.id_value;
 import static com.tester.Needs.Main.SubActivity.fragmentNumber;
+//import static com.tester.Needs.Main.SubActivity.getActivity;
 import static com.tester.Needs.Main.SubActivity.point;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class FavoritesWrite extends AppCompatActivity {
-
 
     Button free_ok;
     Button free_cancel;
@@ -64,7 +66,7 @@ public class FavoritesWrite extends AppCompatActivity {
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
     String second = String.valueOf(nowAsiaSeoul.getSecond());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
     String pointNum = point;
 
 
@@ -74,19 +76,20 @@ public class FavoritesWrite extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(FavoritesWrite.this, MyService.class));
         MultiDex.install(this);
         setContentView(R.layout.activity_favorites_write);
 
+       // getActivity = FavoritesWrite.class;
+
         fragmentNumber = 1;
 
-        if(month.length() == 1){
+        if (month.length() == 1) {
             month = "0" + month;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
-        if(day1.length() ==1){
+        if (day1.length() == 1) {
             day1 = "0" + day1;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
 
@@ -102,7 +105,7 @@ public class FavoritesWrite extends AppCompatActivity {
 
         if (second.length() == 1) {
             second = "0" + second;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         Intent intent = getIntent();
@@ -113,68 +116,18 @@ public class FavoritesWrite extends AppCompatActivity {
             public void onClick(View v) {
                 int compareNum = Integer.parseInt(pointNum);
                 if (compareNum >= 2) {
-
-                    int number2 = Integer.parseInt(pointNum);
-                    number2 = number2 - 2;
-                    point = Integer.toString(number2);
-
-                    db.collection("user").document(id_uid)
-                            .update(
-                                    "id_point", point
-                            );
-
                     free_content_write = findViewById(R.id.free_content_write);
                     free_title_write = findViewById(R.id.free_title_write);
 
-                    title = free_title_write.getText().toString();//getText까지는 string 형태가 아님
-                    content = free_content_write.getText().toString();//getText까지는 string 형태가 아님
+                    title = free_title_write.getText().toString();
+                    content = free_content_write.getText().toString();
 
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("title", title);
-                    user.put("content", content);
-                    user.put("writer", id_value);
-                    user.put("day", fullDay);
-                    //user.put("visit_num", "0");
-                   // user.put("good_num", "0");
-                    user.put("visit_num", 0);
-                    user.put("good_num", 0);
-                    user.put("write", id_nickName);
-
-
-                    //try {
-                    Log.d("docName출력 1번테스트", "docName출력 1번테스트");
-                    db.collection("freeData")
-                            .add(user)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d("docName출력 2번테스트", "docName출력 2번테스트");
-                                    documentName = documentReference.getId();
-                                    Log.d("docName출력 5번테스트", "docName출력 5번테스트" + documentName);
-                                    execute();
-                                }
-                            });
-                    mProgressDialog = ProgressDialog.show(FavoritesWrite.this, "Loading"
-                            , "글작성중입니다..");
-
-                    mBackThread = new BackgroundThread();
-                    mBackThread.setRunning(true);
-                    mBackThread.start();
-                       /* Thread.sleep(1000);
-                        Log.d("docName출력 3번테스트","docName출력 3번테스트");
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
-                    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                    //////////////////////////////touser///////////////////////////////////////////////
-                        /*
-                    Intent intent_write = new Intent(FavoritesWrite.this, SubActivity.class);
-
-                    startActivity(intent_write);*/
-
-
+                    if (title.isEmpty()) {
+                        free_title_write.setError("Title is required");
+                        free_title_write.requestFocus();
+                    } else {
+                        registerStart();
+                    }
                 } else {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(FavoritesWrite.this);
@@ -202,6 +155,51 @@ public class FavoritesWrite extends AppCompatActivity {
                 FavoritesWrite.this.finish();
             }
         });
+    }
+
+    private void registerStart() {
+        pointDeduction();
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("title", title);
+        user.put("content", content);
+        user.put("writer", id_value);
+        user.put("day", fullDay);
+        user.put("visit_num", 0);
+        user.put("good_num", 0);
+        user.put("write", id_nickName);
+
+
+        //try {
+        Log.d("docName출력 1번테스트", "docName출력 1번테스트");
+        db.collection("freeData")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("docName출력 2번테스트", "docName출력 2번테스트");
+                        documentName = documentReference.getId();
+                        Log.d("docName출력 5번테스트", "docName출력 5번테스트" + documentName);
+                        execute();
+                    }
+                });
+        mProgressDialog = ProgressDialog.show(FavoritesWrite.this, "Loading"
+                , "글 작성중입니다..");
+
+        mBackThread = new BackgroundThread();
+        mBackThread.setRunning(true);
+        mBackThread.start();
+    }
+
+    private void pointDeduction() {
+        int number2 = Integer.parseInt(pointNum);
+        number2 = number2 - 2;
+        point = Integer.toString(number2);
+
+        db.collection("user").document(id_uid)
+                .update(
+                        "id_point", point
+                );
     }
 
     public void execute() {
@@ -248,6 +246,20 @@ public class FavoritesWrite extends AppCompatActivity {
         super.onBackPressed();
         FavoritesWrite.this.finish();
     }
+    /*
+    @Override
+    protected void onUserLeaveHint() {
+        Intent intent = new Intent(FavoritesWrite.this, MyService.class);
+        intent.setAction("startForeground");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            startForegroundService(intent);
+        }else{
+            startService(intent);
+        }
+    }
+     */
+
+
 
     public class BackgroundThread extends Thread {
         volatile boolean running = false;

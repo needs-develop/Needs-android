@@ -255,7 +255,6 @@ public class RegisterActivity extends AppCompatActivity {
             passwordTxt.setError("Password is required");
             passwordTxt.requestFocus();
             return;
-
         }
         registerStart(email, name, password, username);
     }

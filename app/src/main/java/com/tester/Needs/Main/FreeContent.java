@@ -112,7 +112,6 @@ public class FreeContent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopService(new Intent(FreeContent.this, MyService.class));
         MultiDex.install(this);
         setContentView(R.layout.activity_free_content);
 

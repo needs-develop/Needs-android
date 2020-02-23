@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.tester.Needs.R;
+import com.tester.Needs.Service.MyService;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -33,6 +34,7 @@ import static com.tester.Needs.Main.MainActivity.id_nickName;
 import static com.tester.Needs.Main.MainActivity.id_uid;
 import static com.tester.Needs.Main.MainActivity.id_value;
 import static com.tester.Needs.Main.SubActivity.address;
+//import static com.tester.Needs.Main.SubActivity.getActivity;
 import static com.tester.Needs.Main.SubActivity.point;
 
 
@@ -40,6 +42,8 @@ import static com.tester.Needs.Main.SubActivity.point;
 public class BoardWrite extends AppCompatActivity {
     Button btn_ok;
     Button btn_cancel;
+
+
 
     EditText btn_content_write;
     EditText btn_title_write;
@@ -61,7 +65,7 @@ public class BoardWrite extends AppCompatActivity {
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
     String second = String.valueOf(nowAsiaSeoul.getSecond());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
     String pointNum = point;
     String docName = "name";
     int data = 0;
@@ -77,28 +81,32 @@ public class BoardWrite extends AppCompatActivity {
         MultiDex.install(this);
         setContentView(R.layout.activity_board_write);
 
+        //getActivity = BoardWrite.class;
+
+
+
         Intent intent = getIntent();
-        if(month.length() == 1){
+        if (month.length() == 1) {
             month = "0" + month;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
-        if(day1.length() ==1){
+        if (day1.length() == 1) {
             day1 = "0" + day1;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (hour.length() == 1) {
             hour = "0" + hour;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (minute.length() == 1) {
             minute = "0" + minute;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
         if (second.length() == 1) {
             second = "0" + second;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         btn_ok = findViewById(R.id.btn_ok);
@@ -109,61 +117,17 @@ public class BoardWrite extends AppCompatActivity {
             public void onClick(View v) {
                 int compareNum = Integer.parseInt(pointNum);
                 if (compareNum >= 2) {
-
-                    int number2 = Integer.parseInt(pointNum);
-                    number2 = number2 - 2;
-                    point = Integer.toString(number2);
-
-                    db.collection("user").document(id_uid)
-                            .update(
-                                    "id_point", point
-                            );
-
                     btn_content_write = findViewById(R.id.btn_content_write);
                     btn_title_write = findViewById(R.id.btn_title_write);
 
-                    title = btn_title_write.getText().toString();//getText까지는 string 형태가 아님
-                    content = btn_content_write.getText().toString();//getText까지는 string 형태가 아님
+                    title = btn_title_write.getText().toString();
+                    content = btn_content_write.getText().toString();
 
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("title", title);
-                    user.put("content", content);
-                    user.put("writer", id_value);
-                    user.put("day", fullDay);
-                    //user.put("visit_num", "0");
-                    //user.put("good_num", "0");
-                    user.put("visit_num", 0);
-                    user.put("good_num", 0);
-                    user.put("write", id_nickName);
-
-
-                    //try {
-                    Log.d("docName출력 1번테스트", "docName출력 1번테스트");
-                    db.collection("data").document("allData").collection(address)
-                            .add(user)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d("docName출력 2번테스트", "docName출력 2번테스트");
-                                    docName = documentReference.getId();
-                                    Log.d("docName출력 5번테스트", "docName출력 5번테스트" + docName);
-                                    execute();
-                                }
-                            });
-                    mProgressDialog = ProgressDialog.show(BoardWrite.this, "Loading"
-                            , "글작성중입니다..");
-
-                    mBackThread = new BackgroundThread();
-                    mBackThread.setRunning(true);
-                    mBackThread.start();
-                    /*
-                        Thread.sleep(1500);
-                        Log.d("docName출력 3번테스트","docName출력 3번테스트");
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    */
+                    if (title.isEmpty()) {
+                        btn_title_write.setError("Title is required");
+                        btn_title_write.requestFocus();
+                    } else
+                        registerStart();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(BoardWrite.this);
 
@@ -185,11 +149,55 @@ public class BoardWrite extends AppCompatActivity {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(BoardWrite.this, BoardActivity.class);
-                BoardWrite.this.finish();
-                startActivity(intent1);
+                finish();
             }
         });
+    }
+
+    private void registerStart() {
+        pointDeduction();
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("title", title);
+        user.put("content", content);
+        user.put("writer", id_value);
+        user.put("day", fullDay);
+        user.put("visit_num", 0);
+        user.put("good_num", 0);
+        user.put("write", id_nickName);
+
+
+        //try {
+        Log.d("docName출력 1번테스트", "docName출력 1번테스트");
+        db.collection("data").document("allData").collection(address)
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("docName출력 2번테스트", "docName출력 2번테스트");
+                        docName = documentReference.getId();
+                        Log.d("docName출력 5번테스트", "docName출력 5번테스트" + docName);
+                        execute();
+                    }
+                });
+        mProgressDialog = ProgressDialog.show(BoardWrite.this, "Loading"
+                , "글 작성중입니다..");
+
+        mBackThread = new BackgroundThread();
+        mBackThread.setRunning(true);
+        mBackThread.start();
+
+    }
+
+    private void pointDeduction() {
+        int number2 = Integer.parseInt(pointNum);
+        number2 = number2 - 2;
+        point = Integer.toString(number2);
+
+        db.collection("user").document(id_uid)
+                .update(
+                        "id_point", point
+                );
     }
 
     public void execute() {
@@ -240,6 +248,17 @@ public class BoardWrite extends AppCompatActivity {
     public void onBackPressed() {
         BoardWrite.this.finish();
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        Intent intent = new Intent(BoardWrite.this, MyService.class);
+        intent.setAction("startForeground");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            startForegroundService(intent);
+        }else{
+            startService(intent);
+        }
     }
 
     public class BackgroundThread extends Thread {

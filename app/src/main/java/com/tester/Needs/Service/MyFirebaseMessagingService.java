@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.annotations.SerializedName;
 import com.tester.Needs.Main.MainActivity;
 import com.tester.Needs.Main.SubActivity;
 import com.tester.Needs.R;
@@ -33,12 +34,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e("NEW_TOKEN", s);
     }
 
+
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         Map<String, String> params = remoteMessage.getData();
         JSONObject object = new JSONObject(params);
         Log.e("JSON_OBJECT", object.toString());
+
 
         String NOTIFICATION_CHANNEL_ID = "Nilesh_channel";
 
@@ -63,6 +67,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = mNotificationManager.getNotificationChannel(NOTIFICATION_CHANNEL_ID);
             channel.canBypassDnd();
+            //channel.setShowBadge(true);
         }
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
@@ -71,6 +76,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setColor(ContextCompat.getColor(this, R.color.com_facebook_button_background_color))
                 .setSmallIcon(R.drawable.appicon)
                 .setContentTitle(getString(R.string.app_name))
+                //.setNumber(2)
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
