@@ -58,6 +58,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.tester.Needs.R;
 import com.tester.Needs.Service.MyService;
+import com.tester.Needs.Splash.SplashActivity;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     static int changeNum = 0;
 
     String value = null;
-    String googleString ;
+    String googleString;
 
     private SignInButton btn_google; //구글로그인버튼
 
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     String minute = String.valueOf(nowAsiaSeoul.getMinute());
     String second = String.valueOf(nowAsiaSeoul.getSecond());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
 
 
     String pointLimit = "5";
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         stopService(new Intent(MainActivity.this, MyService.class));
         MultiDex.install(this);
@@ -140,30 +142,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         mAuth = FirebaseAuth.getInstance();
 
-        if(month.length() == 1){
+        if (month.length() == 1) {
             month = "0" + month;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
-        if(day1.length() ==1){
+        if (day1.length() == 1) {
             day1 = "0" + day1;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (hour.length() == 1) {
             hour = "0" + hour;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (minute.length() == 1) {
             minute = "0" + minute;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (second.length() == 1) {
             second = "0" + second;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
-                emailTxt = (EditText) findViewById(R.id.et_id);
+        emailTxt = (EditText) findViewById(R.id.et_id);
         pwTxt = (EditText) findViewById(R.id.pw_id);
 
 
@@ -249,36 +251,37 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         callbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email","public_profile");
+        loginButton.setReadPermissions("email", "public_profile");
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
+
             @Override
             public void onCancel() {
             }
+
             @Override
             public void onError(FacebookException error) {
             }
         });
     }
 
-    private void handleFacebookAccessToken(AccessToken token){
+    private void handleFacebookAccessToken(AccessToken token) {
         final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(!task.isSuccessful()){
+                if (!task.isSuccessful()) {
 
-                }
-                else{
-                    Log.d("facebookUID",mAuth.getCurrentUser().getUid());
-                    Log.d("facebookDisplayName",mAuth.getCurrentUser().getDisplayName());
-                    Log.d("facebookEmail",mAuth.getCurrentUser().getEmail());
-                    Log.d("facebookIProviderId",mAuth.getCurrentUser().getProviderId());
-                    Log.d("facebookPhoto",mAuth.getCurrentUser().getPhotoUrl().toString());
+                } else {
+                    Log.d("facebookUID", mAuth.getCurrentUser().getUid());
+                    Log.d("facebookDisplayName", mAuth.getCurrentUser().getDisplayName());
+                    Log.d("facebookEmail", mAuth.getCurrentUser().getEmail());
+                    Log.d("facebookIProviderId", mAuth.getCurrentUser().getProviderId());
+                    Log.d("facebookPhoto", mAuth.getCurrentUser().getPhotoUrl().toString());
                     id_value = mAuth.getCurrentUser().getEmail();
                     id_uid = mAuth.getCurrentUser().getUid();
                     id_name = mAuth.getCurrentUser().getDisplayName();
@@ -286,13 +289,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     photoUrl = String.valueOf(mAuth.getCurrentUser().getPhotoUrl());
                     try {
                         DocumentReference doc = db.collection("user").document(id_uid);
-                        Log.d("compare false1","compare false1");
+                        Log.d("compare false1", "compare false1");
                         doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @RequiresApi(api = Build.VERSION_CODES.O)
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    Log.d("compare false2","compare false2");
+                                    Log.d("compare false2", "compare false2");
                                     try {
                                         String value = task.getResult().get("id_email").toString();
                                         id_value = task.getResult().get("id_email").toString();
@@ -301,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         id_nickName = task.getResult().get("id_nickName").toString();
                                         photoUrl = task.getResult().get("photoUrl").toString();
 
-                                        Log.d("compare false",value);
+                                        Log.d("compare false", value);
                                         compareBoolean = false;
 
                                         Intent intent = new Intent(MainActivity.this, SubActivity.class);
@@ -313,20 +316,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         mBackThread.start();
                                         startActivity(intent);
 
-                                        if(!MainActivity.this.isFinishing()) mProgressDialog.dismiss();
+                                        if (!MainActivity.this.isFinishing())
+                                            mProgressDialog.dismiss();
                                         finish();
-                                    }catch (Exception e){
-                                        Log.d("compare false","예외처리");
+                                    } catch (Exception e) {
+                                        Log.d("compare false", "예외처리");
                                         compareBoolean = true;
                                         facebookFirstLogin();
                                     }
                                 }
                             }
                         });
-                    }
-                    catch (Exception e)
-                    {
-                        Log.d("compare true","compare true");
+                    } catch (Exception e) {
+                        Log.d("compare true", "compare true");
                         compareBoolean = true;
                     }
 
@@ -334,10 +336,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
     }
-    private void facebookFirstLogin()
-    {
 
-        Log.d ("photourl값출력",photoUrl);
+    private void facebookFirstLogin() {
+
+        Log.d("photourl값출력", photoUrl);
         String point = "10";
         CollectionReference title_content = db.collection("user");
         Map<String, Object> user = new HashMap<>();
@@ -346,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         user.put("id_name", id_name);
         user.put("id_nickName", id_nickName);
         user.put("id_point", point);
-        user.put("photoUrl",photoUrl);
+        user.put("photoUrl", photoUrl);
 
         title_content.document(id_uid)
                 .set(user)
@@ -360,10 +362,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         CollectionReference pointDay = db.collection("user");
         Map<String, Object> user1 = new HashMap<>();
         user1.put("pointDay", day1);
-        user1.put("pointLimit",pointLimit);
+        user1.put("pointLimit", pointLimit);
 
-        pointDay.document(id_uid).collection("pointDay").document(id_value+"pointDay").set(user1);
-        db.collection("user").document(id_uid).collection("pointDay").document(id_value+"pointDay")
+        pointDay.document(id_uid).collection("pointDay").document(id_value + "pointDay").set(user1);
+        db.collection("user").document(id_uid).collection("pointDay").document(id_value + "pointDay")
                 .set(user1)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -386,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     }
                 });
 
-        Intent intent = new Intent(MainActivity.this,SubActivity.class);
+        Intent intent = new Intent(MainActivity.this, SubActivity.class);
         mProgressDialog = ProgressDialog.show(MainActivity.this, "Loading"
                 , "로그인중입니다..");
 
@@ -396,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //Toast.makeText(MainActivity.this,"회원가입이 완료되었습니다.다시로그인해주세요", Toast.LENGTH_SHORT).show();
         startActivity(intent);
 
-        if(!MainActivity.this.isFinishing()) mProgressDialog.dismiss();
+        if (!MainActivity.this.isFinishing()) mProgressDialog.dismiss();
         finish();
 
     }
@@ -456,7 +458,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     id_value = email;
 
                     //Toast.makeText(MainActivity.this, "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this,SubActivity.class);
+                    Intent intent = new Intent(MainActivity.this, SubActivity.class);
                     mProgressDialog = ProgressDialog.show(MainActivity.this, "Loading"
                             , "로그인중입니다..");
 
@@ -466,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     //Toast.makeText(MainActivity.this,"회원가입이 완료되었습니다.다시로그인해주세요", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
 
-                    if(!MainActivity.this.isFinishing()) mProgressDialog.dismiss();
+                    if (!MainActivity.this.isFinishing()) mProgressDialog.dismiss();
                     finish();
                 }
 
@@ -490,7 +492,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //구글로그인 인증요청했을때 결과 값을 되돌려 받는곳
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode,resultCode,data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_SIGN_GOOGLE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {//인증결과 성공시
@@ -512,12 +514,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                             googleString = auth.getCurrentUser().getUid();
                             id_value = auth.getCurrentUser().getEmail();
-                            id_uid =  auth.getCurrentUser().getUid();
-                            id_name =  auth.getCurrentUser().getDisplayName();
-                            id_nickName =  auth.getCurrentUser().getDisplayName();
-                            photoUrl =  String.valueOf(auth.getCurrentUser().getPhotoUrl());
+                            id_uid = auth.getCurrentUser().getUid();
+                            id_name = auth.getCurrentUser().getDisplayName();
+                            id_nickName = auth.getCurrentUser().getDisplayName();
+                            photoUrl = String.valueOf(auth.getCurrentUser().getPhotoUrl());
 
-                             //returnBoolean = firstCheck(googleString);
+                            //returnBoolean = firstCheck(googleString);
 
                             try {
                                 DocumentReference doc = db.collection("user").document(id_uid);
@@ -526,7 +528,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
-                                            Log.d("compare false","compare false");
+                                            Log.d("compare false", "compare false");
                                             try {
                                                 String value = task.getResult().get("id_email").toString();
                                                 id_value = task.getResult().get("id_email").toString();
@@ -534,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                                 id_name = task.getResult().get("id_name").toString();
                                                 id_nickName = task.getResult().get("id_nickName").toString();
                                                 photoUrl = task.getResult().get("photoUrl").toString();
-                                                Log.d("compare false",value);
+                                                Log.d("compare false", value);
                                                 compareBoolean = false;
                                                 Intent intent = new Intent(getApplicationContext(), SubActivity.class);
                                                 startActivity(intent);
@@ -546,23 +548,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                                 mBackThread = new BackgroundThread();
                                                 mBackThread.setRunning(true);
                                                 mBackThread.start();
-                                                if (! MainActivity.this.isFinishing()) {
+                                                if (!MainActivity.this.isFinishing()) {
                                                     mProgressDialog.dismiss();
                                                 }
                                                 finish();
 
-                                            }catch (Exception e){
-                                                Log.d("compare false","예외처리");
+                                            } catch (Exception e) {
+                                                Log.d("compare false", "예외처리");
                                                 compareBoolean = true;
                                                 firstLogin();
                                             }
                                         }
                                     }
                                 });
-                            }
-                            catch (Exception e)
-                            {
-                                Log.d("compare true","compare true");
+                            } catch (Exception e) {
+                                Log.d("compare true", "compare true");
                                 compareBoolean = true;
                             }
                         } else {
@@ -572,6 +572,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     }
                 });
     }
+
     public void firstLogin() {
         id_value = account.getEmail();
         id_uid = mAuth.getUid();
@@ -596,7 +597,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("첫","첫");
+                        Log.d("첫", "첫");
                     }
                 });
 
@@ -612,7 +613,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("둘","둘");
+                        Log.d("둘", "둘");
                     }
                 });
 
@@ -626,7 +627,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d("셋","셋");
+                        Log.d("셋", "셋");
                     }
                 });
         Intent intent = new Intent(getApplicationContext(), SubActivity.class);
@@ -639,7 +640,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         mBackThread = new BackgroundThread();
         mBackThread.setRunning(true);
         mBackThread.start();
-        if (! MainActivity.this.isFinishing()) {
+        if (!MainActivity.this.isFinishing()) {
             mProgressDialog.dismiss();
         }
         finish();

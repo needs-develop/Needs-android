@@ -14,7 +14,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_application_id" />
@@ -22,21 +21,19 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-
         <activity android:name=".Main.UserInfoActivity" />
         <activity
-            android:name=".Common.SplashActivity"
-            android:theme="@style/SplashTheme" />
-        <activity
-            android:name=".Main.MainActivity"
+            android:name=".Splash.SplashActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Main.MainActivity" />
         <activity android:name=".Main.SubActivity" />
         <activity android:name=".Main.RegisterActivity" />
         <activity android:name=".Main.BoardActivity" />
@@ -65,7 +62,6 @@
             android:name=".Service.MyFirebaseMessagingService"
             android:stopWithTask="false">
             <intent-filter>
-
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
@@ -74,5 +70,4 @@
             android:enabled="true"
             android:exported="true" />
     </application>
-
 </manifest>
