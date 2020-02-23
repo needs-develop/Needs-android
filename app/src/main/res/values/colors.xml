@@ -6,4 +6,8 @@
     <color name="colorGreen">#008577</color>
     <color name="colorGreenDark">#00574B</color>
     <color name="colorAccent2">#D81B60</color>
+    <color name="azure">#21a4fc</color>
+    <color name="pale_sky_blue">#bcefff</color>
+    <color name="ice_blue">#e1f8ff</color>
+    <color name="black">#000000</color>
 </resources>

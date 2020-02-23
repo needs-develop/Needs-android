@@ -177,7 +177,7 @@ public class SettingFragment extends Fragment {
                                     .requestEmail()
                                     .build();
 
-                    googleSignInClient = GoogleSignIn.getClient(getActivity(),gso);
+                    googleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
                 } else if (FacebookAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Facebook");
                     DocumentReference doc = db.collection("user").document(id_uid);
@@ -280,8 +280,8 @@ public class SettingFragment extends Fragment {
         });
         */
         settingAdapter = new SettingAdapter();
-        settingAdapter.addItem(new SettingItem("포인트내역",R.drawable.history));
-        settingAdapter.addItem(new SettingItem("포인트전환",R.drawable.money));
+        settingAdapter.addItem(new SettingItem("포인트내역", R.drawable.history));
+        settingAdapter.addItem(new SettingItem("포인트전환", R.drawable.money));
 
         gridView.setAdapter(settingAdapter);
 
@@ -289,12 +289,10 @@ public class SettingFragment extends Fragment {
             @SuppressLint("RestrictedApi")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0)
-                {
+                if (position == 0) {
                     Intent i = new Intent(getActivity(), PointHistoryActivity.class);
                     startActivity(i);
-                }
-                else if(position==1){
+                } else if (position == 1) {
                     Intent i = new Intent(getActivity(), PointConversionActivity.class);
                     startActivity(i);
                 }
@@ -302,36 +300,33 @@ public class SettingFragment extends Fragment {
         });
 
         settingAdapterInfo = new SettingAdapter();
-        settingAdapterInfo.addItem(new SettingItem("내가쓴글",R.drawable.write));
-        settingAdapterInfo.addItem(new SettingItem("공감한글",R.drawable.w_heart));
-        settingAdapterInfo.addItem(new SettingItem("댓글쓴글",R.drawable.comment));
+        settingAdapterInfo.addItem(new SettingItem("내가쓴글", R.drawable.write));
+        settingAdapterInfo.addItem(new SettingItem("공감한글", R.drawable.w_heart));
+        settingAdapterInfo.addItem(new SettingItem("댓글쓴글", R.drawable.comment));
 
-       gridViewInfo.setAdapter(settingAdapterInfo);
+        gridViewInfo.setAdapter(settingAdapterInfo);
 
-       gridViewInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-           @SuppressLint("RestrictedApi")
-           @Override
-           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               if(position == 0)
-               {
-                   Intent i = new Intent(getActivity(), MyWriteActivity.class);
-                   startActivity(i);
-               }
-               else if(position==1){
-                   Intent i = new Intent(getActivity(), MyLikeActivity.class);
-                   startActivity(i);
-               }
-               else if(position==2){
-                   Intent i = new Intent(getActivity(), MyReplyActivity.class);
-                   startActivity(i);
-               }
-           }
-       });
+        gridViewInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    Intent i = new Intent(getActivity(), MyWriteActivity.class);
+                    startActivity(i);
+                } else if (position == 1) {
+                    Intent i = new Intent(getActivity(), MyLikeActivity.class);
+                    startActivity(i);
+                } else if (position == 2) {
+                    Intent i = new Intent(getActivity(), MyReplyActivity.class);
+                    startActivity(i);
+                }
+            }
+        });
 
-       settingAdapterUser = new SettingAdapter();
-        settingAdapterUser.addItem(new SettingItem("로그아웃",R.drawable.logout));
-        settingAdapterUser.addItem(new SettingItem("계정삭제",R.drawable.userdelete));
-        settingAdapterUser.addItem(new SettingItem("계정설정",R.drawable.user_img));
+        settingAdapterUser = new SettingAdapter();
+        settingAdapterUser.addItem(new SettingItem("로그아웃", R.drawable.logout));
+        settingAdapterUser.addItem(new SettingItem("계정삭제", R.drawable.userdelete));
+        settingAdapterUser.addItem(new SettingItem("계정설정", R.drawable.user_img));
 
         gridViewUser.setAdapter(settingAdapterUser);
 
@@ -339,15 +334,13 @@ public class SettingFragment extends Fragment {
             @SuppressLint("RestrictedApi")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){
+                if (position == 0) {
                     Toast.makeText(getApplicationContext(), "로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
                     signOut();
-                }
-                else if(position==1){
+                } else if (position == 1) {
                     deleteAccountClicked();
-                }
-                else if(position==2){
-                    Intent intent= new Intent(getActivity(), UserInfoActivity.class);
+                } else if (position == 2) {
+                    Intent intent = new Intent(getActivity(), UserInfoActivity.class);
                     startActivity(intent);
                 }
             }
@@ -384,86 +377,86 @@ public class SettingFragment extends Fragment {
         mProgressDialog = ProgressDialog.show(getActivity(), "Loading"
                 , "게정을 삭제하는 중입니다..");
 
-            db.collection("user").document(id_uid).collection("pointDay")
-                    .document(id_value+"pointDay").delete();
+        db.collection("user").document(id_uid).collection("pointDay")
+                .document(id_value + "pointDay").delete();
 
-            db.collection("user").document(id_uid).collection("pointHistory").get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    db.collection("user").document(id_uid).collection("pointHistory")
-                                            .document(document.getId()).delete();
-                                }
-
-                            } else {
-                                Log.d("태그", "Error getting documents: ", task.getException());
+        db.collection("user").document(id_uid).collection("pointHistory").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("user").document(id_uid).collection("pointHistory")
+                                        .document(document.getId()).delete();
                             }
-                        }
-                    });
-            db.collection("user").document(id_uid).collection("myRegion").get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    db.collection("user").document(id_uid).collection("myRegion")
-                                            .document(document.getId()).delete();
-                                }
 
-                            } else {
-                                Log.d("태그", "Error getting documents: ", task.getException());
+                        } else {
+                            Log.d("태그", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        db.collection("user").document(id_uid).collection("myRegion").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("user").document(id_uid).collection("myRegion")
+                                        .document(document.getId()).delete();
                             }
+
+                        } else {
+                            Log.d("태그", "Error getting documents: ", task.getException());
                         }
-                    });
+                    }
+                });
 
-            db.collection("user").document(id_uid).collection("write").get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    db.collection("user").document(id_uid).collection("write")
-                                            .document(document.getId()).delete();
-                                }
-
-                            } else {
-                                Log.d("태그", "Error getting documents: ", task.getException());
+        db.collection("user").document(id_uid).collection("write").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("user").document(id_uid).collection("write")
+                                        .document(document.getId()).delete();
                             }
+
+                        } else {
+                            Log.d("태그", "Error getting documents: ", task.getException());
                         }
-                    });
+                    }
+                });
 
-            db.collection("user").document(id_uid).collection("like").get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    db.collection("user").document(id_uid).collection("like")
-                                            .document(document.getId()).delete();
-                                }
-
-                            } else {
-                                Log.d("태그", "Error getting documents: ", task.getException());
+        db.collection("user").document(id_uid).collection("like").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("user").document(id_uid).collection("like")
+                                        .document(document.getId()).delete();
                             }
-                        }
-                    });
-            db.collection("user").document(id_uid).collection("reply").get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    db.collection("user").document(id_uid).collection("reply")
-                                            .document(document.getId()).delete();
-                                }
 
-                            } else {
-                                Log.d("태그", "Error getting documents: ", task.getException());
-                            }
+                        } else {
+                            Log.d("태그", "Error getting documents: ", task.getException());
                         }
-                    });
+                    }
+                });
+        db.collection("user").document(id_uid).collection("reply").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("user").document(id_uid).collection("reply")
+                                        .document(document.getId()).delete();
+                            }
+
+                        } else {
+                            Log.d("태그", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
         db.collection("user").document(id_uid).collection("favorites").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -477,6 +470,14 @@ public class SettingFragment extends Fragment {
                         } else {
                             Log.d("태그", "Error getting documents: ", task.getException());
                         }
+                    }
+                });
+
+        db.collection("user").document(id_uid).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
                     }
                 });
 
@@ -503,7 +504,7 @@ public class SettingFragment extends Fragment {
                                 }
                             }
                         });
-                Intent intent = new Intent(getActivity(),MainActivity.class);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
 
                 id_value = null;
@@ -516,8 +517,7 @@ public class SettingFragment extends Fragment {
     }
 
 
-
-    class SettingAdapter extends BaseAdapter{
+    class SettingAdapter extends BaseAdapter {
         ArrayList<SettingItem> items = new ArrayList<SettingItem>();
 
         @Override
@@ -525,7 +525,7 @@ public class SettingFragment extends Fragment {
             return items.size();
         }
 
-        public void addItem(SettingItem settingItem){
+        public void addItem(SettingItem settingItem) {
             items.add(settingItem);
         }
 
