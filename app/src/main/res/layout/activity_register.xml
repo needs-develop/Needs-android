@@ -19,6 +19,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:fontFamily="@font/content"
             android:text="회원 가입"
             android:textColor="#ffffff"
             android:textSize="30dp" />
@@ -33,18 +34,23 @@
 
         <EditText
             android:id="@+id/name"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/content"
             android:hint="성명"
             android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/username"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/content"
             android:hint="닉네임" />
 
 
@@ -52,24 +58,35 @@
             android:id="@+id/btn_duplicate"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:background="#F3DCDC"
             android:layout_gravity="center"
-            android:text="중복확인" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button"
+            android:fontFamily="@font/content"
+            android:text="중복확인"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/email"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/content"
             android:hint="email"
             android:inputType="textEmailAddress" />
 
 
         <EditText
             android:id="@+id/password"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/content"
             android:hint="password" />
 
 
@@ -78,6 +95,12 @@
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="가입하기" />
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button"
+            android:fontFamily="@font/content"
+            android:text="가입하기"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>
