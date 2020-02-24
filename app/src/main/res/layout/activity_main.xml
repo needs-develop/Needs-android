@@ -35,6 +35,7 @@
             android:background="@drawable/input_field"
             android:fontFamily="@font/content"
             android:hint="Password"
+            android:inputType="textPassword"
             android:textColorHint="@color/gray" />
 
         <LinearLayout
