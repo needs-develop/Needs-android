@@ -1,6 +1,7 @@
 package com.tester.Needs.Main;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -116,6 +117,7 @@ public class HomeFreeContent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         MultiDex.install(this);
         setContentView(R.layout.activity_free_content);
+        stopService(new Intent(HomeFreeContent.this,MyService.class));
         if(month.length() == 1){
             month = "0" + month;
             fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;

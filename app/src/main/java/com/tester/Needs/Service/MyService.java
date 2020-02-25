@@ -33,6 +33,8 @@ import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.RecordList;
+import com.tester.Needs.Main.HomeContent;
+import com.tester.Needs.Main.HomeFreeContent;
 import com.tester.Needs.Main.SubActivity;
 import com.tester.Needs.R;
 
@@ -52,8 +54,9 @@ public class MyService extends Service {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String uid;
-
     String value;
+
+
     boolean notification = false;
     Timer timer;
 
@@ -135,11 +138,23 @@ public class MyService extends Service {
                                         }
                                         int count = 0;
 
+                                        String document_name = null;
+                                        String data = null;
+                                        String address = null;
+
+
                                         for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
                                             switch (dc.getType()) {
                                                 case ADDED: {
-                                                        value = dc.getDocument().getData().get("writer").toString();
                                                         count++;
+                                                    if(count!=record_count) {
+                                                        value = dc.getDocument().getData().get("writer").toString();
+                                                        document_name = dc.getDocument().getData().get("document_name").toString();
+                                                        data = dc.getDocument().getData().get("data").toString();
+                                                        address = dc.getDocument().getData().get("address").toString();
+                                                        Log.d("test",value+document_name+data+address);
+
+                                                    }
                                                           Log.d("에러가안난다면", String.valueOf(count));
                                                         notification = true;
                                                     break;
@@ -148,29 +163,120 @@ public class MyService extends Service {
                                         }
 
                                         if (notification == true && record_count!=count) {
-                                            NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
-                                                    .setAutoCancel(true);
-                                            builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
-                                            builder.setSmallIcon(R.drawable.appicon);
-                                            builder.setContentTitle("Needs");
-                                            builder.setContentText(value+"님이 게시물에 관심을 가졌습니다");
-                                            builder.setDefaults(Notification.DEFAULT_ALL);
-                                            builder.setWhen(System.currentTimeMillis());
-                                            builder.setAutoCancel(true);
 
-                                            //Class name = getActivity;
+                                            if(data.equals("data"))
+                                            {
+                                                Log.d("test2",value+document_name+data+address);
 
-                                            Intent notificationIntent = new Intent(MyService.this, SubActivity.class);
-                                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
-                                            builder.setContentIntent(pendingIntent);
+                                                DocumentReference docR =  db.collection("data").document("allData")
+                                                        .collection(address).document(document_name);
+                                                docR.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                                manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            DocumentSnapshot document = task.getResult();
+                                                            String title = document.getData().get("title").toString();
+                                                            String content = document.getData().get("content").toString();
+                                                            String day = document.getData().get("day").toString();
+                                                            String write = document.getData().get("write").toString();
+                                                            String good_num = document.getData().get("good_num").toString();
+                                                            String visit_num = document.getData().get("visit_num").toString();
+                                                            String documentName = document.getData().get("document_name").toString();
+
+
+                                                            NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
+                                                                    .setAutoCancel(true);
+                                                            builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
+                                                            builder.setSmallIcon(R.drawable.appicon);
+                                                            builder.setContentTitle("Needs");
+                                                            builder.setContentText(value +"님이 게시물에 관심을 가졌습니다");
+                                                            builder.setDefaults(Notification.DEFAULT_ALL);
+                                                            builder.setWhen(System.currentTimeMillis());
+                                                            builder.setAutoCancel(true);
+
+                                                            //Class name = getActivity;
+
+                                                            Intent notificationIntent = new Intent(MyService.this, HomeContent.class);
+
+                                                            notificationIntent.putExtra("title", title);
+                                                            notificationIntent.putExtra("content", content);
+                                                            notificationIntent.putExtra("day", day);
+                                                            notificationIntent.putExtra("id", write);
+                                                            notificationIntent.putExtra("good", good_num);
+                                                            notificationIntent.putExtra("visitnum", visit_num);
+                                                            notificationIntent.putExtra("documentName", documentName);
+
+                                                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                            PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
+                                                            builder.setContentIntent(pendingIntent);
+
+                                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                                                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                                                manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+                                                            }
+                                                            startForeground(1, builder.build());
+                                                            builder.setAutoCancel(true);
+
+
+                                                        }
+                                                    }
+                                                });
                                             }
-                                            startForeground(1, builder.build());
-                                            builder.setAutoCancel(true);
+                                            else if(data.equals("freedata"))
+                                            {
+                                                DocumentReference docR =  db.collection("freeData").document(document_name);
+                                                docR.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            DocumentSnapshot document = task.getResult();
+                                                            String title = document.getData().get("title").toString();
+                                                            String content = document.getData().get("content").toString();
+                                                            String day = document.getData().get("day").toString();
+                                                            String write = document.getData().get("write").toString();
+                                                            String good_num = document.getData().get("good_num").toString();
+                                                            String visit_num = document.getData().get("visit_num").toString();
+                                                            String documentName = document.getData().get("document_name").toString();
+
+
+                                                            NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
+                                                                    .setAutoCancel(true);
+                                                            builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
+                                                            builder.setSmallIcon(R.drawable.appicon);
+                                                            builder.setContentTitle("Needs");
+                                                            builder.setContentText(value +"님이 게시물에 관심을 가졌습니다");
+                                                            builder.setDefaults(Notification.DEFAULT_ALL);
+                                                            builder.setWhen(System.currentTimeMillis());
+                                                            builder.setAutoCancel(true);
+
+                                                            //Class name = getActivity;
+
+                                                            Intent notificationIntent = new Intent(MyService.this, HomeFreeContent.class);
+
+                                                            notificationIntent.putExtra("title", title);
+                                                            notificationIntent.putExtra("content", content);
+                                                            notificationIntent.putExtra("day", day);
+                                                            notificationIntent.putExtra("id", write);
+                                                            notificationIntent.putExtra("good", good_num);
+                                                            notificationIntent.putExtra("visitnum", visit_num);
+                                                            notificationIntent.putExtra("documentName", documentName);
+
+                                                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                            PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
+                                                            builder.setContentIntent(pendingIntent);
+
+                                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                                                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                                                manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+                                                            }
+                                                            startForeground(1, builder.build());
+                                                            builder.setAutoCancel(true);
+
+                                                        }
+                                                    }
+                                                });
+                                            }
                                         }
                                         else
                                         {
@@ -234,92 +340,3 @@ public class MyService extends Service {
     }
 
 }
-
-
-/*
-db.collection("user").document(uid).collection("action").
-                                        get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-                                {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful())
-                                        {
-                                            int num = 0;
-
-                                            for(QueryDocumentSnapshot documentSnapshot: task.getResult())
-                                            {
-                                                String record_value = documentSnapshot.getData().get("write").toString();
-                                                try {
-                                                    Log.d("에러가안난다면", "0번 값");
-                                                    recordList.get(num).getContext();
-                                                    if (!record_value.equals(recordList.get(num).getContext())) {
-                                                        recordList.add(new RecordList(documentSnapshot.getData().get("write").toString()));
-                                                        value = record_value;
-                                                        Log.d("추가 데이터 rv", "데이터가추가되었습니다"
-                                                                + recordList.get(num).getContext());
-                                                        notification = true;
-                                                    }
-                                                } catch (Exception er) {
-                                                    Log.d("에러캐치", "0번쨰 대입");
-                                                    value = record_value;
-                                                    recordList.add(new RecordList(documentSnapshot.getData().get("write").toString()));
-                                                    notification = true;
-                                                }
-                                                num++;
-                                            }
-
-                                            if (notification == true) {
-                                                NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
-                                                        .setAutoCancel(true);
-                                                builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
-                                                builder.setSmallIcon(R.drawable.appicon);
-                                                builder.setContentTitle("Needs");
-                                                builder.setContentText(value+"님이 게시물에 관심을 가졌습니다");
-                                                builder.setDefaults(Notification.DEFAULT_ALL);
-                                                builder.setWhen(System.currentTimeMillis());
-                                                builder.setAutoCancel(true);
-
-                                                //Class name = getActivity;
-
-                                                Intent notificationIntent = new Intent(MyService.this, SubActivity.class);
-                                                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
-                                                builder.setContentIntent(pendingIntent);
-
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                                    manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
-                                                }
-                                                startForeground(1, builder.build());
-                                                builder.setAutoCancel(true);
-                                            }
-                                            else
-                                            {
-                                                NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
-                                                        .setAutoCancel(true);
-                                                builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
-                                                builder.setSmallIcon(R.drawable.appicon);
-                                                builder.setContentTitle("Needs");
-                                                builder.setContentText("Needs Application이 실행중입니다.");
-                                                builder.setDefaults(Notification.DEFAULT_ALL);
-                                                builder.setWhen(System.currentTimeMillis());
-                                                builder.setAutoCancel(true);
-
-                                                //Class name = getActivity;
-
-                                                Intent notificationIntent = new Intent(MyService.this, SubActivity.class);
-                                                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
-                                                builder.setContentIntent(pendingIntent);
-
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                                    manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
-                                                }
-                                                startForeground(1, builder.build());
-                                                builder.setAutoCancel(true);
-                                            }
-                                        }
-                                    }
-                                });
- */

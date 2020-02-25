@@ -172,6 +172,7 @@ public class RecordActivity extends AppCompatActivity {
                 }catch (Exception e){
                 }
             }
+
         }, 500);
 
         if(recordList.size()==0)
