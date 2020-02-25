@@ -23,7 +23,7 @@ public class Guide4Activity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Guide4Activity.this, SubActivity.class));
+                finish();
             }
         });
     }

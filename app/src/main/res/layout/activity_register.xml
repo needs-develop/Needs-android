@@ -30,6 +30,13 @@
         android:orientation="vertical">
 
 
+        <ImageView
+            android:id="@+id/btnHelp"
+            android:layout_width="100sp"
+            android:layout_height="40sp"
+            android:layout_gravity="right"
+            app:srcCompat="@drawable/help" />
+
         <EditText
             android:id="@+id/name"
             android:layout_width="310dp"
@@ -100,5 +107,6 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp" />
+
     </LinearLayout>
 </LinearLayout>

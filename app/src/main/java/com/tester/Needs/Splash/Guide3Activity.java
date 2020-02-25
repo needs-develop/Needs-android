@@ -21,6 +21,7 @@ public class Guide3Activity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 startActivity(new Intent(Guide3Activity.this, Guide4Activity.class));
             }
         });

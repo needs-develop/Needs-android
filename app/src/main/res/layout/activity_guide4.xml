@@ -17,14 +17,14 @@
         android:layout_marginBottom="520dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="13sp"
+        android:text="시작해볼까요?"
         android:textColor="#000000"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="시작해볼까요?" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,14 +33,14 @@
         android:layout_marginBottom="188dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="7sp"
+        android:text="회원가입 포인트를 지급하였습니다!"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.497"
-        tools:text="회원가입 포인트를 지급하였습니다!" />
+        app:layout_constraintVertical_bias="0.497" />
 
     <TextView
         android:id="@+id/textView11"
@@ -50,13 +50,13 @@
         android:layout_marginBottom="80dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="7sp"
+        android:text="원하는 내용을 작성하고\n다른 사람들의 공감을 기다려보세요!"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="원하는 내용을 작성하고\n다른 사람들의 공감을 기다려보세요!" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
 

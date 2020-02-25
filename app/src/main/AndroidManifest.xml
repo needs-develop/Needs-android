@@ -15,18 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Main.RecordActivity"></activity>
-        <activity
-            android:name=".Splash.Guide4Activity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".Splash.Guide3Activity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".Splash.Guide2Activity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".Splash.Guide1Activity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -78,6 +66,10 @@
         <activity android:name=".Setting.MyReplyActivity" />
         <activity android:name=".Setting.PointConversionActivity" />
         <activity android:name=".Setting.PointHistoryActivity" />
+        <activity android:name=".Splash.Guide4Activity" />
+        <activity android:name=".Splash.Guide3Activity" />
+        <activity android:name=".Splash.Guide2Activity" />
+        <activity android:name=".Splash.Guide1Activity" />
 
         <service
             android:name=".Service.MyFirebaseMessagingService"

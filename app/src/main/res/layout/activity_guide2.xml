@@ -17,14 +17,14 @@
         android:layout_marginBottom="520dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="13sp"
+        android:text="소비자"
         android:textColor="#000000"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="소비자" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,14 +33,14 @@
         android:layout_marginBottom="188dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="7sp"
+        android:text="우리 지역에 있었으면 하는 것을\n작성하고 보상을 받아가세요!"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.497"
-        tools:text="우리 지역에 있었으면 하는 것을\n작성하고 보상을 받아가세요!" />
+        app:layout_constraintVertical_bias="0.497" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -49,13 +49,13 @@
         android:layout_marginBottom="107dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="7sp"
+        android:text="하나하나의 아이디어가 모여\n지역사회가 발전할 수 있습니다!"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="하나하나의 아이디어가 모여\n지역사회가 발전할 수 있습니다!" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/nextButton"

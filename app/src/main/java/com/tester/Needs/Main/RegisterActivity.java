@@ -11,6 +11,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.R;
+import com.tester.Needs.Splash.Guide1Activity;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -81,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText nameTxt, usernameTxt, emailTxt, passwordTxt;
     private Button btn_duplicate;
+    private ImageView btnHelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +184,14 @@ public class RegisterActivity extends AppCompatActivity {
                     usernameTxt.requestFocus();
                 } else
                     customerRegister();
+            }
+        });
+
+        btnHelp = (ImageView) findViewById(R.id.btnHelp);
+        btnHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegisterActivity.this, Guide1Activity.class));
             }
         });
     }

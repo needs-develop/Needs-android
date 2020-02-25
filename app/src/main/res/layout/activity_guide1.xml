@@ -17,6 +17,7 @@
         android:layout_marginBottom="491dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="13sp"
+        android:text="Welcome to Needs"
         android:textColor="#100f0f"
         android:textSize="40sp"
         android:textStyle="bold"
@@ -25,8 +26,7 @@
         app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25"
-        tools:text="Welcome to Needs" />
+        app:layout_constraintVertical_bias="0.25" />
 
     <TextView
         android:id="@+id/textView7"
@@ -37,6 +37,7 @@
         android:layout_marginEnd="82dp"
         android:layout_marginBottom="116dp"
         android:lineSpacingExtra="7sp"
+        android:text="Store:\nConsumer-Entrepreneur\nConnection System"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -45,8 +46,7 @@
         app:layout_constraintHorizontal_bias="0.326"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.651"
-        tools:text="Store:\nConsumer-Entrepreneur\nConnection System" />
+        app:layout_constraintVertical_bias="0.651" />
 
     <ImageView
         android:id="@+id/nextButton"
