@@ -126,7 +126,7 @@ public class SubActivity extends AppCompatActivity {
 
     static String pointLimit = null;
     static String point = null;
-
+    public static int record_count = 0;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -179,6 +179,19 @@ public class SubActivity extends AppCompatActivity {
         ImageView btn_notification;
         btn_notification = findViewById(R.id.btn_notification);
 
+        db.collection("user").document(id_uid).collection("action").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        record_count = 0;
+                        for(DocumentSnapshot documentSnapshot: task.getResult())
+                        {
+                            record_count++;
+                            Log.d("record count", String.valueOf(record_count));
+                        }
+                    }
+                });
+
         btn_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +200,8 @@ public class SubActivity extends AppCompatActivity {
                 SubActivity.this.finish();
             }
         });
+
+
 
 
         //////////////////////포인트 가져오기/////////////////////////////////////////

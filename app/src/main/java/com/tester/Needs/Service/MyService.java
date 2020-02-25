@@ -39,7 +39,8 @@ import com.tester.Needs.R;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.tester.Needs.Main.RecordActivity.recordList;
+import static com.tester.Needs.Main.SubActivity.record_count;
+//import static com.tester.Needs.Main.RecordActivity.recordList;
 
 
 //import static com.tester.Needs.Main.SubActivity.getActivity;
@@ -55,6 +56,7 @@ public class MyService extends Service {
     String value;
     boolean notification = false;
     Timer timer;
+
 
     public MyService() {
     }
@@ -117,45 +119,35 @@ public class MyService extends Service {
                 public void run() {
                     handler.post(new Runnable() {
                         @Override
+
                         public void run() {
                             try {
                                 DocumentReference docRef = db.collection("user").document(uid)
                                         .collection("action").document("write");
                                 Log.d("임의의실행","성공일떄의");
-
-                                db.collection("user").document(uid).collection("action")
-                                .whereEqualTo("value","data").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                db.collection(  "user").document(uid).collection("action")
+                                        .whereEqualTo("value","data").addSnapshotListener(new EventListener<QuerySnapshot>() {
                                     @Override
                                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                                         if (e != null) {
                                             Log.w("에러일때", "listen:error", e);
                                             return;
                                         }
-                                        int num = 0;
+                                        int count = 0;
+
                                         for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
                                             switch (dc.getType()) {
-                                                case ADDED:
-                                                    String record_value = dc.getDocument().getData().get("write").toString();
-                                                    try {
-                                                        Log.d("에러가안난다면", "0번 값");
-                                                        value = record_value;
-                                                        recordList.get(num).getContext();
-                                                        if (!record_value.equals(recordList.get(num).getContext())) {
-                                                            recordList.add(new RecordList(dc.getDocument().getData().get("write").toString()));
-                                                            Log.d("추가 데이터 rv", "데이터가추가되었습니다"
-                                                                    + recordList.get(num).getContext());
-                                                            notification = true;
-                                                        }
-                                                    } catch (Exception er) {
-                                                        Log.d("에러캐치", "0번쨰 대입");
-                                                        recordList.add(new RecordList(dc.getDocument().getData().get("write").toString()));
+                                                case ADDED: {
+                                                        value = dc.getDocument().getData().get("writer").toString();
+                                                        count++;
+                                                          Log.d("에러가안난다면", String.valueOf(count));
                                                         notification = true;
-                                                    }
-                                                    num++;
                                                     break;
+                                                }
                                             }
                                         }
-                                        if (notification == true) {
+
+                                        if (notification == true && record_count!=count) {
                                             NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
                                                     .setAutoCancel(true);
                                             builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
@@ -242,3 +234,92 @@ public class MyService extends Service {
     }
 
 }
+
+
+/*
+db.collection("user").document(uid).collection("action").
+                                        get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                                {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if(task.isSuccessful())
+                                        {
+                                            int num = 0;
+
+                                            for(QueryDocumentSnapshot documentSnapshot: task.getResult())
+                                            {
+                                                String record_value = documentSnapshot.getData().get("write").toString();
+                                                try {
+                                                    Log.d("에러가안난다면", "0번 값");
+                                                    recordList.get(num).getContext();
+                                                    if (!record_value.equals(recordList.get(num).getContext())) {
+                                                        recordList.add(new RecordList(documentSnapshot.getData().get("write").toString()));
+                                                        value = record_value;
+                                                        Log.d("추가 데이터 rv", "데이터가추가되었습니다"
+                                                                + recordList.get(num).getContext());
+                                                        notification = true;
+                                                    }
+                                                } catch (Exception er) {
+                                                    Log.d("에러캐치", "0번쨰 대입");
+                                                    value = record_value;
+                                                    recordList.add(new RecordList(documentSnapshot.getData().get("write").toString()));
+                                                    notification = true;
+                                                }
+                                                num++;
+                                            }
+
+                                            if (notification == true) {
+                                                NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
+                                                        .setAutoCancel(true);
+                                                builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
+                                                builder.setSmallIcon(R.drawable.appicon);
+                                                builder.setContentTitle("Needs");
+                                                builder.setContentText(value+"님이 게시물에 관심을 가졌습니다");
+                                                builder.setDefaults(Notification.DEFAULT_ALL);
+                                                builder.setWhen(System.currentTimeMillis());
+                                                builder.setAutoCancel(true);
+
+                                                //Class name = getActivity;
+
+                                                Intent notificationIntent = new Intent(MyService.this, SubActivity.class);
+                                                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
+                                                builder.setContentIntent(pendingIntent);
+
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                                    manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+                                                }
+                                                startForeground(1, builder.build());
+                                                builder.setAutoCancel(true);
+                                            }
+                                            else
+                                            {
+                                                NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
+                                                        .setAutoCancel(true);
+                                                builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
+                                                builder.setSmallIcon(R.drawable.appicon);
+                                                builder.setContentTitle("Needs");
+                                                builder.setContentText("Needs Application이 실행중입니다.");
+                                                builder.setDefaults(Notification.DEFAULT_ALL);
+                                                builder.setWhen(System.currentTimeMillis());
+                                                builder.setAutoCancel(true);
+
+                                                //Class name = getActivity;
+
+                                                Intent notificationIntent = new Intent(MyService.this, SubActivity.class);
+                                                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
+                                                builder.setContentIntent(pendingIntent);
+
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                                    manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+                                                }
+                                                startForeground(1, builder.build());
+                                                builder.setAutoCancel(true);
+                                            }
+                                        }
+                                    }
+                                });
+ */

@@ -73,6 +73,7 @@ public class FreeContent extends AppCompatActivity {
     String visitNum;
     String documentName;
     String r_documentName;
+    String writer_uid;
 
     ListView list_reply;
     ReplyListAdapter replyListAdapter;
@@ -172,6 +173,18 @@ public class FreeContent extends AppCompatActivity {
         list_reply = (ListView) findViewById(R.id.list_free_reply);
         list_replyArrayList = new ArrayList<ReplyList>();
 
+        db.collection("user").whereEqualTo("id_nickName", conId)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        writer_uid = document.getData().get("id_uid").toString();
+                        Log.d("writer_uid체크",writer_uid);
+                    }
+                }
+            }
+        });
 
         //좋아요 버튼을 누르는것에 대한 data를 boolean을 이용해서 세팅해준다.
         final DocumentReference docRef = db.collection("freeData").document(documentName)
@@ -405,6 +418,23 @@ public class FreeContent extends AppCompatActivity {
                                 public void onFailure(@NonNull Exception e) {
                                 }
                             });
+
+                    Map<String, Object> toUserInfo = new HashMap<>();
+                    toUserInfo.put("data", "data");
+                    toUserInfo.put("value", "freedata");
+                    toUserInfo.put("document_name", documentName);
+                    toUserInfo.put("day", fullDay);
+                    toUserInfo.put("writer",id_nickName);
+
+
+                    db.collection("user").document(writer_uid).collection("action")
+                            .add(toUserInfo)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+
+                                }
+                            });
                     ///////////////user로 데이터 쏴주기/////////////////////////////////////////////
 
 
@@ -482,6 +512,23 @@ public class FreeContent extends AppCompatActivity {
                         user.put("timeReply", fullDay);
                         user.put("data_doc", documentName);
 
+
+                        Map<String, Object> toUserInfo = new HashMap<>();
+                        toUserInfo.put("data", "data");
+                        toUserInfo.put("value", "freedata");
+                        toUserInfo.put("document_name", documentName);
+                        toUserInfo.put("day", fullDay);
+                        toUserInfo.put("writer",id_nickName);
+
+                        db.collection("user").document(writer_uid).collection("action")
+                                .add(toUserInfo)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+
+                                    }
+                                });
+
                         //try {
                         db.collection("freeData").document(documentName)
                                 .collection("reply")
@@ -493,6 +540,7 @@ public class FreeContent extends AppCompatActivity {
                                         execute();
                                     }
                                 });
+
                         mProgressDialog = ProgressDialog.show(FreeContent.this, "Loading"
                                 , "댓글작성중입니다..");
 

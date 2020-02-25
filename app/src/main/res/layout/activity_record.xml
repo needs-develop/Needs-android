@@ -4,7 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main.RecordActivity">
+    tools:context=".Main.RecordActivity"
+    android:orientation="horizontal">
+    <TextView
+        android:id="@+id/record_no_list"
+        android:textSize="30dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:fontFamily="@font/cookierunbold"
+        android:textColor="#A7D2F3"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="게시물을 가져오는중입니다"
+        >
+    </TextView>
     <ListView
         android:id="@+id/record_listview"
         android:layout_width="match_parent"

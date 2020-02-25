@@ -73,6 +73,7 @@ public class BoardContent extends AppCompatActivity {
     String visitNum;
     String documentName;
     String r_documentName;
+    String writer_uid;
 
     ListView list_reply;
     ReplyListAdapter replyListAdapter;
@@ -173,6 +174,20 @@ public class BoardContent extends AppCompatActivity {
 
         Intent intent2 = getIntent();
         boolean forbtn;
+
+        db.collection("user").whereEqualTo("id_nickName", conId)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                            writer_uid = document.getData().get("id_uid").toString();
+                                Log.d("writer_uid체크",writer_uid);
+                            }
+                        }
+                    }
+                });
+
 
         //좋아요 버튼을 누르는것에 대한 data를 boolean을 이용해서 세팅해준다.
         DocumentReference docRef = db.collection("data").document("allData").collection(address)
@@ -300,6 +315,7 @@ public class BoardContent extends AppCompatActivity {
                                 public void onFailure(@NonNull Exception e) {
                                 }
                             });
+
                     ///////////////////////////////////////data delete by user/////////////////////////////////////
                 } else {
                     int numCompare = Integer.parseInt(pointLimit);
@@ -407,6 +423,22 @@ public class BoardContent extends AppCompatActivity {
                                 public void onFailure(@NonNull Exception e) {
                                 }
                             });
+                    Map<String, Object> toUserInfo = new HashMap<>();
+                    toUserInfo.put("data", "data");
+                    toUserInfo.put("value", "data");
+                    toUserInfo.put("document_name", documentName);
+                    toUserInfo.put("address", address);
+                    toUserInfo.put("day", fullDay);
+                    toUserInfo.put("writer",id_nickName);
+
+                    db.collection("user").document(writer_uid).collection("action")
+                            .add(toUserInfo)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+
+                                }
+                            });
                     /////////////////////////////user로 전송////////////////////////////////////////////////
                 }
 
@@ -480,6 +512,23 @@ public class BoardContent extends AppCompatActivity {
                         user.put("writerReply", id_nickName);
                         user.put("timeReply", fullDay);
                         user.put("data_doc", documentName);
+
+                        Map<String, Object> toUserInfo = new HashMap<>();
+                        toUserInfo.put("data", "data");
+                        toUserInfo.put("value", "data");
+                        toUserInfo.put("document_name", documentName);
+                        toUserInfo.put("address", address);
+                        toUserInfo.put("day", fullDay);
+                        toUserInfo.put("writer",id_nickName);
+
+                        db.collection("user").document(writer_uid).collection("action")
+                                .add(toUserInfo)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+
+                                    }
+                                });
 
                         //try {
                         db.collection("data").document("allData").collection(address)

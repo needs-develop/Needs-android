@@ -21,6 +21,7 @@ public class RecordListAdapter extends BaseAdapter {
         this.context = context;
         this.sample = data;
         layoutInflater = LayoutInflater.from(context);
+        notifyDataSetChanged();
     }
     @Override
     public int getCount() {
@@ -42,9 +43,10 @@ public class RecordListAdapter extends BaseAdapter {
         View view = layoutInflater.inflate(R.layout.activity_itemrecord,null);
 
         TextView text = view.findViewById(R.id.record_text);
+        TextView day = view.findViewById(R.id.record_day);
 
-        text.setText(sample.get(position).getContext());
-
+        text.setText(sample.get(position).getWriter()+"님이 게시물에 관심을 가졌습니다");
+        day.setText(sample.get(position).getDay());
         return view;
     }
 }
