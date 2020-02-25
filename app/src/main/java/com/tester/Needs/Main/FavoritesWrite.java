@@ -123,7 +123,7 @@ public class FavoritesWrite extends AppCompatActivity {
                     content = free_content_write.getText().toString();
 
                     if (title.isEmpty()) {
-                        free_title_write.setError("Title is required");
+                        free_title_write.setError("제목이 필요합니다");
                         free_title_write.requestFocus();
                     } else {
                         registerStart();

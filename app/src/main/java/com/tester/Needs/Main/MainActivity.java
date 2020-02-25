@@ -409,19 +409,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         String password = pwTxt.getText().toString();
 
         if (email.isEmpty()) {
-            emailTxt.setError("Email is required");
+            emailTxt.setError("이메일이 필요합니다");
             emailTxt.requestFocus();
             return;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailTxt.setError("Enter a valid email");
+            emailTxt.setError("유효한 이메일을 입력하십시오");
             emailTxt.requestFocus();
             return;
         }
 
         if (password.isEmpty()) {
-            pwTxt.setError("Password is required");
+            pwTxt.setError("비밀번호가 필요합니다");
             pwTxt.requestFocus();
             return;
         }

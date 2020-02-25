@@ -80,6 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
     int compnum = 2;
 
     private EditText nameTxt, usernameTxt, emailTxt, passwordTxt;
+    private Button btn_duplicate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
         emailTxt = (EditText) findViewById(R.id.email);
         passwordTxt = (EditText) findViewById(R.id.password);// 비밀번호
 
-        final Button btn_duplicate = findViewById(R.id.btn_duplicate);
+        btn_duplicate = findViewById(R.id.btn_duplicate);
         btn_duplicate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -143,12 +144,18 @@ public class RegisterActivity extends AppCompatActivity {
                                     Log.d("태그", "Error getting documents: ", task.getException());
                                 }
                                 //////////////////////////중복확인 toast////////////////////////////////
-                                if (compnum == 2) {
-                                    Log.d("확인을 위한 num", "중복일시");
+                                if (dupName.isEmpty()) {
+                                    usernameTxt.setError("닉네임이 필요합니다");
+                                    usernameTxt.requestFocus();
+                                } else if (dupName.length() < 2) {
+                                    usernameTxt.setError("닉네임은 2 자 이상이어야합니다");
+                                    usernameTxt.requestFocus();
+                                } else if (compnum == 2) {
+                                    // Log.d("확인을 위한 num", "중복일시");
                                     usernameTxt.setError("중복된 닉네임");
                                     usernameTxt.requestFocus();
                                 } else if (compnum == 1) {
-                                    Log.d("확인을 위한 num", "중복이 아닐시");
+                                    // Log.d("확인을 위한 num", "중복이 아닐시");
                                     showAlert();
                                 }
                             }
@@ -190,6 +197,7 @@ public class RegisterActivity extends AppCompatActivity {
                 usernameTxt.setClickable(false);
                 usernameTxt.setFocusable(false);
                 changeDupName = usernameTxt.getText().toString();
+                btn_duplicate.setEnabled(false);
             }
         });
 
@@ -210,13 +218,13 @@ public class RegisterActivity extends AppCompatActivity {
         String password = passwordTxt.getText().toString();
 
         if (name.isEmpty()) {
-            nameTxt.setError("Name is required");
+            nameTxt.setError("이름이 필요합니다");
             nameTxt.requestFocus();
             return;
         }
 
-        if (name.length() < 3) {
-            nameTxt.setError("Name should be at least 3 character long");
+        if (name.length() < 2) {
+            nameTxt.setError("이름은 2 자 이상이어야합니다");
             nameTxt.requestFocus();
             return;
         }
@@ -227,32 +235,20 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        if (username.isEmpty()) {
-            usernameTxt.setError("Username is required");
-            usernameTxt.requestFocus();
-            return;
-        }
-
-        if (username.length() < 2) {
-            usernameTxt.setError("Username should be at least 2 character long");
-            usernameTxt.requestFocus();
-            return;
-        }
-
         if (email.isEmpty()) {
-            emailTxt.setError("Email is required");
+            emailTxt.setError("이메일이 필요합니다");
             emailTxt.requestFocus();
             return;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailTxt.setError("Enter a valid email");
+            emailTxt.setError("유효한 이메일을 입력하십시오");
             emailTxt.requestFocus();
             return;
         }
 
         if (password.isEmpty()) {
-            passwordTxt.setError("Password is required");
+            passwordTxt.setError("비밀번호가 필요합니다");
             passwordTxt.requestFocus();
             return;
         }
@@ -350,7 +346,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 emailTxt.requestFocus();
                                 // Toast.makeText(RegisterActivity.this, "email 형식에 맞지 않습니다.", Toast.LENGTH_SHORT).show();
                             } catch (FirebaseAuthUserCollisionException e) {
-                                emailTxt.setError("사용할 수 없는 이메일입니다");
+                                emailTxt.setError("유효한 이메일을 입력하십시오");
                                 emailTxt.requestFocus();
                                 // Toast.makeText(RegisterActivity.this, "이미 존재하는 email 입니다.", Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {

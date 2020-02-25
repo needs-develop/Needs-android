@@ -142,6 +142,8 @@
                 android:id="@+id/free_btn"
                 android:layout_width="70dp"
                 android:layout_height="37dp"
+                android:background="@drawable/button"
+                android:textColor="@color/white"
                 android:text="검색" />
 
             <ImageView

@@ -124,7 +124,7 @@ public class BoardWrite extends AppCompatActivity {
                     content = btn_content_write.getText().toString();
 
                     if (title.isEmpty()) {
-                        btn_title_write.setError("Title is required");
+                        btn_title_write.setError("제목이 필요합니다");
                         btn_title_write.requestFocus();
                     } else
                         registerStart();

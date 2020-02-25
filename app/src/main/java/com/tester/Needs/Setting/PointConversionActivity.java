@@ -134,6 +134,12 @@ public class PointConversionActivity extends AppCompatActivity {
         builder.setPositiveButton("전환하기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                String EditText = editText.getText().toString();
+                if (EditText.isEmpty()) {
+                    editText.setError("금액을 입력해주세요");
+                    editText.requestFocus();
+                    return;
+                }
                 int curPoint = Integer.parseInt(point);
                 int conPoint = Integer.parseInt(editText.getText().toString());
                 curPoint = curPoint - conPoint;
@@ -148,7 +154,7 @@ public class PointConversionActivity extends AppCompatActivity {
                     Map<String, Object> member = new HashMap<>();
                     member.put("day", fullDay);
                     member.put("point", "-" + editText.getText().toString());
-                    member.put("type", "사용");
+                    member.put("type", "포인트 전환");
 
                     db.collection("user").document(uid).collection("pointHistory")
                             .add(member)

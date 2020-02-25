@@ -65,6 +65,8 @@
                     android:id="@+id/user_nickName_change"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/button"
+                    android:textColor="@color/white"
                     android:text="닉네임변경"
                     />
             </LinearLayout>

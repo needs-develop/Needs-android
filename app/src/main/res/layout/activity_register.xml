@@ -9,7 +9,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:orientation="vertical"
         tools:context=".Authentication.RegisterActivity">
 
@@ -21,7 +20,6 @@
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/content"
             android:text="회원 가입"
-            android:textColor="#ffffff"
             android:textSize="30dp" />
 
     </LinearLayout>
@@ -40,7 +38,7 @@
             android:layout_marginTop="50dp"
             android:background="@drawable/input_field"
             android:fontFamily="@font/content"
-            android:hint="성명"
+            android:hint="이름"
             android:inputType="textPersonName" />
 
         <EditText
@@ -75,7 +73,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/input_field"
             android:fontFamily="@font/content"
-            android:hint="email"
+            android:hint="Email Address"
             android:inputType="textEmailAddress" />
 
 
@@ -87,7 +85,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/input_field"
             android:fontFamily="@font/content"
-            android:hint="password" />
+            android:hint="Password" />
 
 
         <Button
