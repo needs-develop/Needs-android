@@ -75,16 +75,18 @@
                 />
         </LinearLayout>
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_button"
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btn_google"
             android:layout_width="310dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
-            android:textSize="20sp" />
+            android:textSize="20sp" >
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/btn_google"
+        </com.google.android.gms.common.SignInButton>
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
             android:layout_width="310dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"

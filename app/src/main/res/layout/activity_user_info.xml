@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@raw/ne" />
+        android:src="@drawable/needs2" />
 
     <LinearLayout
         android:layout_width="match_parent"
