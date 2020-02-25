@@ -23,6 +23,8 @@ android {
 
 dependencies {
     //noinspection GradleCompatible
+    implementation 'com.etebarian:meow-bottom-navigation-java:1.2.0'
+
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.android.support:appcompat-v7:29.0.0'
     implementation 'com.facebook.android:facebook-login:4.42.0'
