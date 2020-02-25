@@ -178,7 +178,8 @@ public class BoardActivity extends AppCompatActivity {
                                 builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")),start,length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                                 list_itemArrayList.add(new BoardList(number, document.getData().get("title").toString(),
-                                        document.getData().get("content").toString(), document.getData().get("write").toString(),
+                                        document.getData().get("content").toString(), document.getData().get("id_nickName").toString(),
+                                        //write 수정
                                         document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
                                         document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
                                 ,builder));
@@ -222,6 +223,7 @@ public class BoardActivity extends AppCompatActivity {
                                     intent2.putExtra("good", goodNum);
                                     intent2.putExtra("visitnum", visitString);
                                     intent2.putExtra("documentName", document_name);
+                                    BoardActivity.this.finish();
                                     startActivity(intent2);
                                 }
                             });
@@ -254,6 +256,7 @@ public class BoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BoardActivity.this, BoardWrite.class);
+                BoardActivity.this.finish();
                 startActivity(intent);
             }
         });

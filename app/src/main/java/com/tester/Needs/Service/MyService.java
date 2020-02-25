@@ -179,10 +179,14 @@ public class MyService extends Service {
                                                             String title = document.getData().get("title").toString();
                                                             String content = document.getData().get("content").toString();
                                                             String day = document.getData().get("day").toString();
-                                                            String write = document.getData().get("write").toString();
+                                                            String write = document.getData().get("id_nickName").toString();
                                                             String good_num = document.getData().get("good_num").toString();
                                                             String visit_num = document.getData().get("visit_num").toString();
                                                             String documentName = document.getData().get("document_name").toString();
+
+                                                            int visitInt = Integer.parseInt(visit_num);
+                                                            visitInt = visitInt + 1;
+                                                            visit_num = Integer.toString(visitInt);
 
 
                                                             NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
@@ -234,10 +238,14 @@ public class MyService extends Service {
                                                             String title = document.getData().get("title").toString();
                                                             String content = document.getData().get("content").toString();
                                                             String day = document.getData().get("day").toString();
-                                                            String write = document.getData().get("write").toString();
+                                                            String write = document.getData().get("id_nickName").toString();
                                                             String good_num = document.getData().get("good_num").toString();
                                                             String visit_num = document.getData().get("visit_num").toString();
                                                             String documentName = document.getData().get("document_name").toString();
+
+                                                            int visitInt = Integer.parseInt(visit_num);
+                                                            visitInt = visitInt + 1;
+                                                            visit_num = Integer.toString(visitInt);
 
 
                                                             NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")

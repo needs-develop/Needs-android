@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment {
                                                     Log.d("태그", document.getId() + " => " + document.getData().get("title")
                                                     );
                                                     list_itemArrayList.add(new FavoritesList(number, document.getData().get("title").toString(),
-                                                            document.getData().get("content").toString(), document.getData().get("write").toString(),
+                                                            document.getData().get("content").toString(), document.getData().get("id_nickName").toString(),
                                                             document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
                                                             document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
                                                             , builder));
@@ -427,7 +427,7 @@ public class HomeFragment extends Fragment {
                                 builder.setSpan(new StyleSpan(Typeface.BOLD),start,length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")),start,length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 list_itemArrayList1.add(new FavoritesList(number, document.getData().get("title").toString(),
-                                        document.getData().get("content").toString(), document.getData().get("write").toString(),
+                                        document.getData().get("content").toString(), document.getData().get("id_nickName").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
                                         document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
                                 ,builder));

@@ -99,7 +99,7 @@
         <TextView
             android:id="@+id/freeText_visible"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="450dp"
             android:fontFamily="@font/cookierunbold"
             android:visibility="gone"
             android:gravity="center"

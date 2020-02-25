@@ -79,6 +79,7 @@ public class FavoritesWrite extends AppCompatActivity {
         MultiDex.install(this);
         setContentView(R.layout.activity_favorites_write);
 
+        stopService(new Intent(FavoritesWrite.this,MyService.class));
        // getActivity = FavoritesWrite.class;
 
         fragmentNumber = 1;
@@ -163,11 +164,11 @@ public class FavoritesWrite extends AppCompatActivity {
         Map<String, Object> user = new HashMap<>();
         user.put("title", title);
         user.put("content", content);
-        user.put("writer", id_value);
+        user.put("id_email", id_value);
         user.put("day", fullDay);
         user.put("visit_num", 0);
         user.put("good_num", 0);
-        user.put("write", id_nickName);
+        user.put("id_nickName", id_nickName);
 
 
         //try {

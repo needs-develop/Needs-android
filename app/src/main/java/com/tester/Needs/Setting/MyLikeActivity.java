@@ -25,6 +25,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.BoardList;
 import com.tester.Needs.Main.BoardListAdapter;
+import com.tester.Needs.Main.FreeContent;
 import com.tester.Needs.Main.SubActivity;
 import com.tester.Needs.Main.UserInfoActivity;
 import com.tester.Needs.R;
@@ -50,8 +51,8 @@ public class MyLikeActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylike);
-
-        //getActivity = MyLikeActivity.class;
+        stopService(new Intent(MyLikeActivity.this,MyService.class));
+        //getActivity = MyLikeActivity.class;FreeContent
 
         //fragmentNumber = 0;
 

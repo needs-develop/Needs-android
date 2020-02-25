@@ -48,7 +48,7 @@ public class MyWriteActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mywrite);
-
+        stopService(new Intent(MyWriteActivity.this,MyService.class));
        // getActivity = MyWriteActivity.class;
 
         //fragmentNumber = 0;

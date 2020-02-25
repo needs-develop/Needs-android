@@ -111,7 +111,7 @@ public class RecordActivity extends AppCompatActivity {
                                                             documentName =  document.getData().get("document_name").toString();
                                                             goodNum =  document.getData().get("good_num").toString();
                                                             visitString =  document.getData().get("visit_num").toString();
-                                                            conId =  document.getData().get("write").toString();
+                                                            conId =  document.getData().get("id_nickName").toString();
 
                                                             int visitInt = Integer.parseInt(visitString);
                                                             visitInt = visitInt + 1;
@@ -145,7 +145,7 @@ public class RecordActivity extends AppCompatActivity {
                                                             documentName =  document.getData().get("document_name").toString();
                                                             goodNum =  document.getData().get("good_num").toString();
                                                             visitString =  document.getData().get("visit_num").toString();
-                                                            conId =  document.getData().get("write").toString();
+                                                            conId =  document.getData().get("id_nickName").toString();
 
                                                             int visitInt = Integer.parseInt(visitString);
                                                             visitInt = visitInt + 1;

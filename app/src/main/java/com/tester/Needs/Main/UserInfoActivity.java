@@ -24,6 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Service.MyService;
 import com.tester.Needs.R;
+import com.tester.Needs.Setting.MyLikeActivity;
 
 import static com.tester.Needs.Main.MainActivity.id_name;
 import static com.tester.Needs.Main.MainActivity.id_nickName;
@@ -46,7 +47,7 @@ public class UserInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-
+        stopService(new Intent(UserInfoActivity.this,MyService.class));
         //fragmentNumber = 0;
 
         //getActivity = UserInfoActivity.class;

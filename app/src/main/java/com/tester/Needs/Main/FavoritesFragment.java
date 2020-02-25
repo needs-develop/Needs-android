@@ -37,6 +37,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.FavoritesList;
 import com.tester.Needs.R;
+import com.tester.Needs.Service.MyService;
 
 import org.w3c.dom.Text;
 
@@ -81,7 +82,6 @@ public class FavoritesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_dashboard, container, false);
         MultiDex.install(getActivity());
-
 
         spinner = v.findViewById(R.id.free_spinner);
         spinnerView = v.findViewById(R.id.free_spinner_text);
@@ -185,7 +185,7 @@ public class FavoritesFragment extends Fragment {
                                 builder.setSpan(new StyleSpan(Typeface.BOLD),start,length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")),start,length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 list_itemArrayList.add(new FavoritesList(number, document.getData().get("title").toString(),
-                                        document.getData().get("content").toString(), document.getData().get("write").toString(),
+                                        document.getData().get("content").toString(), document.getData().get("id_nickName").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
                                         document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
                                 ,builder));

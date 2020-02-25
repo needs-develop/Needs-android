@@ -49,7 +49,7 @@ public class MyReplyActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myreply);
-
+        stopService(new Intent(MyReplyActivity.this,MyService.class));
         //getActivity = MyReplyActivity.class;
 
         fragmentNumber = 0;

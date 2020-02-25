@@ -1,5 +1,6 @@
 package com.tester.Needs.Setting;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -67,7 +68,7 @@ public class PointConversionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_point_conversion);
-
+        stopService(new Intent(PointConversionActivity.this,MyService.class));
        // getActivity = PointConversionActivity.class;
 
        // fragmentNumber = 0;

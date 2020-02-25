@@ -115,6 +115,7 @@ public class FreeContent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         MultiDex.install(this);
         setContentView(R.layout.activity_free_content);
+        stopService(new Intent(FreeContent.this,MyService.class));
 
         if(month.length() == 1){
             month = "0" + month;
