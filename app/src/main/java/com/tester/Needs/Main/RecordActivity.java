@@ -68,7 +68,7 @@ public class RecordActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     for (QueryDocumentSnapshot document : task.getResult())
                                     {
-                                        if(document.getData().get("data").toString().equals("data"))
+                                        if(document.getData().get("value").toString().equals("data"))
                                         {
                                             findViewById(R.id.record_no_list).setVisibility(View.GONE);
                                             recordList.add(new RecordList(document.getData().get("data").toString(),
@@ -76,7 +76,7 @@ public class RecordActivity extends AppCompatActivity {
                                                     document.getData().get("writer").toString(),document.getData().get("day").toString()));
                                             Log.d("test",document.getData().get("day").toString());
                                         }
-                                        else if(document.getData().get("data").toString().equals("freedata"))
+                                        else if(document.getData().get("value").toString().equals("freedata"))
                                         {
                                             findViewById(R.id.record_no_list).setVisibility(View.GONE);
                                             recordList.add(new RecordList(document.getData().get("data").toString(),
