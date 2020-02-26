@@ -172,7 +172,7 @@ public class MyService extends Service {
                                                     if(count>record_count) {
                                                         value = dc.getDocument().getData().get("writer").toString();
                                                         document_name = dc.getDocument().getData().get("document_name").toString();
-                                                        data = dc.getDocument().getData().get("data").toString();
+                                                        data = dc.getDocument().getData().get("value").toString();
                                                         try {
                                                             address = dc.getDocument().getData().get("address").toString();
                                                         }catch (Exception errorCase){
