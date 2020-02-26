@@ -129,12 +129,34 @@ public class MyService extends Service {
                                         .collection("action").document("write");
                                 Log.d("임의의실행","성공일떄의");
                                 db.collection(  "user").document(uid).collection("action")
-                                        .whereEqualTo("value","data").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        .whereEqualTo("data","data").addSnapshotListener(new EventListener<QuerySnapshot>() {
                                     @Override
                                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                                         if (e != null) {
                                             Log.w("에러일때", "listen:error", e);
-                                            return;
+                                            NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
+                                                    .setAutoCancel(true);
+                                            builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
+                                            builder.setSmallIcon(R.drawable.appicon);
+                                            builder.setContentTitle("Needs");
+                                            builder.setContentText("Needs Application이 실행중입니다.");
+                                            builder.setDefaults(Notification.DEFAULT_ALL);
+                                            builder.setWhen(System.currentTimeMillis());
+                                            builder.setAutoCancel(true);
+
+                                            //Class name = getActivity;
+
+                                            Intent notificationIntent = new Intent(MyService.this, SubActivity.class);
+                                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
+                                            builder.setContentIntent(pendingIntent);
+
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                                manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+                                            }
+                                            startForeground(1, builder.build());
+                                            builder.setAutoCancel(true);
                                         }
                                         int count = 0;
 
@@ -147,11 +169,15 @@ public class MyService extends Service {
                                             switch (dc.getType()) {
                                                 case ADDED: {
                                                         count++;
-                                                    if(count!=record_count) {
+                                                    if(count>record_count) {
                                                         value = dc.getDocument().getData().get("writer").toString();
                                                         document_name = dc.getDocument().getData().get("document_name").toString();
                                                         data = dc.getDocument().getData().get("data").toString();
-                                                        address = dc.getDocument().getData().get("address").toString();
+                                                        try {
+                                                            address = dc.getDocument().getData().get("address").toString();
+                                                        }catch (Exception errorCase){
+
+                                                        }
                                                         Log.d("test",value+document_name+data+address);
 
                                                     }
@@ -162,7 +188,7 @@ public class MyService extends Service {
                                             }
                                         }
 
-                                        if (notification == true && record_count!=count) {
+                                        if (notification == true && record_count<count) {
 
                                             if(data.equals("data"))
                                             {
