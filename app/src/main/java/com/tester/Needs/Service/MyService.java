@@ -192,8 +192,6 @@ public class MyService extends Service {
 
                                             if(data.equals("data"))
                                             {
-                                                Log.d("test2",value+document_name+data+address);
-
                                                 DocumentReference docR =  db.collection("data").document("allData")
                                                         .collection(address).document(document_name);
                                                 docR.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -314,6 +312,7 @@ public class MyService extends Service {
                                         }
                                         else
                                         {
+
                                             NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
                                                     .setAutoCancel(true);
                                             builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));

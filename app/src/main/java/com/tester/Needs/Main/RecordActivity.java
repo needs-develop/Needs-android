@@ -71,7 +71,7 @@ public class RecordActivity extends AppCompatActivity {
                                         if(document.getData().get("value").toString().equals("data"))
                                         {
                                             findViewById(R.id.record_no_list).setVisibility(View.GONE);
-                                            recordList.add(new RecordList(document.getData().get("data").toString(),
+                                            recordList.add(new RecordList(document.getData().get("value").toString(),
                                                     document.getData().get("address").toString(),document.getData().get("document_name").toString(),
                                                     document.getData().get("writer").toString(),document.getData().get("day").toString()));
                                             Log.d("test",document.getData().get("day").toString());
@@ -79,7 +79,7 @@ public class RecordActivity extends AppCompatActivity {
                                         else if(document.getData().get("value").toString().equals("freedata"))
                                         {
                                             findViewById(R.id.record_no_list).setVisibility(View.GONE);
-                                            recordList.add(new RecordList(document.getData().get("data").toString(),
+                                            recordList.add(new RecordList(document.getData().get("value").toString(),
                                                     "",document.getData().get("document_name").toString(),
                                                     document.getData().get("writer").toString(),document.getData().get("day").toString()));
                                             Log.d("test",document.getData().get("day").toString());
@@ -129,7 +129,7 @@ public class RecordActivity extends AppCompatActivity {
                                                     }
                                                 });
                                             }
-                                            else if(recordList.get(position).getData().equals("freeData"))
+                                            else if(recordList.get(position).getData().equals("freedata"))
                                             {
                                                 db.collection("freeData").document(recordList.get(position).getDocument_name())
                                                         .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
