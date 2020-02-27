@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Main.RecordActivity"></activity>
+        <activity android:name=".Main.RecordActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -28,6 +28,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1543630224731130~6261268123" />
 
 
         <activity android:name=".Main.UserInfoActivity" />
