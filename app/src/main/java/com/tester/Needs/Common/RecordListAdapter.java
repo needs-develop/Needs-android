@@ -40,13 +40,27 @@ public class RecordListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = layoutInflater.inflate(R.layout.activity_itemrecord,null);
+        ViewHolder holder;
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView =
+                    LayoutInflater.from(context).inflate(R.layout.activity_itemrecord, null);
+            holder.text = (TextView) convertView.findViewById(R.id.record_text);
+            holder.day = (TextView) convertView.findViewById(R.id.record_day);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
-        TextView text = view.findViewById(R.id.record_text);
-        TextView day = view.findViewById(R.id.record_day);
+        holder.text.setText(sample.get(position).getWriter()+"님이 게시물에 관심을 가졌습니다");
+        holder.day.setText(sample.get(position).getDay());
 
-        text.setText(sample.get(position).getWriter()+"님이 게시물에 관심을 가졌습니다");
-        day.setText(sample.get(position).getDay());
-        return view;
+        return convertView;
+    }
+
+    public class ViewHolder {
+        TextView text;
+        TextView day;
     }
 }
+
