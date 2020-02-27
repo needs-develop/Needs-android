@@ -74,6 +74,7 @@ public class HomeContent extends AppCompatActivity {
     String documentName;
     String r_documentName;
     String writer_uid;
+    String content_reply;
 
     ListView list_reply;
     ReplyListAdapter replyListAdapter;
@@ -528,6 +529,8 @@ public class HomeContent extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String comment_reply = edit_reply.getText().toString().trim();
+                        content_reply = comment_reply;
+
                         Map<String, Object> user = new HashMap<>();
                         user.put("contentReply", comment_reply);
                         user.put("writerReply", id_nickName);
@@ -733,19 +736,16 @@ public class HomeContent extends AppCompatActivity {
     public void execute() {
         CollectionReference userInfo = db.collection("user");
         Map<String, Object> toUser = new HashMap<>();
-        toUser.put("title", title);
-        toUser.put("content", content);
-        toUser.put("id", conId);
-        toUser.put("day", day);
-        toUser.put("visitnum", visitNum);
-        toUser.put("good", goodNum);
+
+        toUser.put("contentReply", content_reply);
+        toUser.put("timeReply", fullDay);
         toUser.put("documentName", documentName);
 
-        userInfo.document(id_uid).collection("reply").document(documentName)
+        userInfo.document(id_uid).collection("reply").document(r_documentName)
                 .set(toUser);
 
         db.collection("user").document(id_uid).collection("reply")
-                .document(documentName)
+                .document(r_documentName)
                 .set(toUser)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -764,7 +764,7 @@ public class HomeContent extends AppCompatActivity {
                         "reply_doc", r_documentName
                 );
         db.collection("user").document(id_uid)
-                .collection("reply").document(documentName)
+                .collection("reply").document(r_documentName)
                 .update(
                         "reply_doc", r_documentName
                 );

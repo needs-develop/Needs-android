@@ -209,12 +209,12 @@ public class FavoritesWrite extends AppCompatActivity {
         toUser.put("content", content);
         toUser.put("id_value", id_value);
         toUser.put("day", fullDay);
-        toUser.put("visitnum", "0");
-        toUser.put("good", "0");
+        toUser.put("visitnum", 0);
+        toUser.put("good", 0);
         toUser.put("documentName", documentName);
         toUser.put("id", id_nickName);
 
-        db.collection("user").document(id_uid).collection("write").document(title + content)
+        db.collection("user").document(id_uid).collection("write").document(documentName)
                 .set(toUser)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
