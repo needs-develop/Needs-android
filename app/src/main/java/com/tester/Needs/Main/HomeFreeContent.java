@@ -670,24 +670,28 @@ public class HomeFreeContent extends AppCompatActivity {
                 if (id_nickName.equals(conId)) {
                     Log.d("성공 id값", id_value);
                     Log.d("성공 conId값", conId);
+                    mProgressDialog = ProgressDialog.show(HomeFreeContent.this, "Loading"
+                            , "게시물을 삭제하는 중입니다..");
                     db.collection("freeData").document(documentName)
-                            .delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    fragmentNumber = 1;
-                                    Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(HomeFreeContent.this, SubActivity.class);
-                                    startActivity(intent);
-                                }
-                            })
-
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-                                }
-                            });
+                            .collection("reply").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("freeData").document(documentName)
+                                        .collection("reply").document(document.getId()).delete();
+                            }
+                        }
+                    });
+                    db.collection("freeData").document(documentName)
+                            .collection("like").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("freeData").document(documentName)
+                                        .collection("like").document(document.getId()).delete();
+                            }
+                        }
+                    });
 
                     /////////////////////////////////////////////////////////////////////////////////////////////
                     db.collection("user").document(id_uid).collection("reply").document(documentName)
@@ -696,12 +700,24 @@ public class HomeFreeContent extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                }
                             });
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            db.collection("freeData").document(documentName)
+                                    .delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(HomeFreeContent.this, SubActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    });
+                            mProgressDialog.dismiss();
+                        }
+                    }, 1000);
                     ///////////////////////////////////user쪽에서 reply삭제///////////////////////////////
                 } else {
                     Log.d("실패 id값", id_value);

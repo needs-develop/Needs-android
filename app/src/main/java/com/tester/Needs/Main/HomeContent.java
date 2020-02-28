@@ -685,23 +685,31 @@ public class HomeContent extends AppCompatActivity {
                 if (id_nickName.equals(conId)) {
                     Log.d("성공 id값", id_value);
                     Log.d("성공 conId값", conId);
-                    db.collection("data").document("allData").collection(address).document(documentName)
-                            .delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(HomeContent.this, SubActivity.class);
-                                    HomeContent.this.finish();
-                                    startActivity(intent);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
 
-                                }
-                            });
+                    mProgressDialog = ProgressDialog.show(HomeContent.this, "Loading"
+                            , "게시물을 삭제하는 중입니다..");
+
+                    db.collection("data").document("allData").collection(address).document(documentName)
+                            .collection("reply").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("data").document("allData").collection(address).document(documentName)
+                                        .collection("reply").document(document.getId()).delete();
+                            }
+                        }
+                    });
+                    db.collection("data").document("allData").collection(address).document(documentName)
+                            .collection("like").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("data").document("allData").collection(address).document(documentName)
+                                        .collection("like").document(document.getId()).delete();
+                            }
+                        }
+                    });
+
                     /////////////////////////////////////////////////////////////////////////////////////////////
                     db.collection("user").document(id_uid).collection("reply").document(conId + title + content)
                             .delete()
@@ -709,12 +717,31 @@ public class HomeContent extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                }
                             });
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+
+                            db.collection("data").document("allData").collection(address).document(documentName)
+                                    .delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(HomeContent.this, SubActivity.class);
+                                            HomeContent.this.finish();
+                                            startActivity(intent);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                        }
+                                    });
+                            mProgressDialog.dismiss();
+                        }
+                    }, 1000);
                     ///////////////////////////////////user쪽에서 reply삭제///////////////////////////////
                 } else {
                     Log.d("실패 id값", id_value);
