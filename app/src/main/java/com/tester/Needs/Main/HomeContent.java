@@ -682,7 +682,7 @@ public class HomeContent extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                if (id_nickName.equals(conId)) {
+                if (id_uid.equals(writer_uid)) {
                     Log.d("성공 id값", id_value);
                     Log.d("성공 conId값", conId);
 

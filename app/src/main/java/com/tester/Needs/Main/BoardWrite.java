@@ -160,7 +160,7 @@ public class BoardWrite extends AppCompatActivity {
         Map<String, Object> user = new HashMap<>();
         user.put("title", title);
         user.put("content", content);
-        user.put("id_email", id_value);
+        user.put("id_uid", id_uid);
         user.put("day", fullDay);
         user.put("visit_num", 0);
         user.put("good_num", 0);
