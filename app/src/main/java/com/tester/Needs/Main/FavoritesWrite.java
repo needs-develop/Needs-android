@@ -79,8 +79,8 @@ public class FavoritesWrite extends AppCompatActivity {
         MultiDex.install(this);
         setContentView(R.layout.activity_favorites_write);
 
-        stopService(new Intent(FavoritesWrite.this,MyService.class));
-       // getActivity = FavoritesWrite.class;
+        stopService(new Intent(FavoritesWrite.this, MyService.class));
+        // getActivity = FavoritesWrite.class;
 
         fragmentNumber = 1;
 
@@ -253,7 +253,6 @@ public class FavoritesWrite extends AppCompatActivity {
         }
     }
      */
-
 
 
     public class BackgroundThread extends Thread {
