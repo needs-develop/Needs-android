@@ -404,13 +404,11 @@ public class HomeContent extends AppCompatActivity {
 
                     CollectionReference userInfo = db.collection("user");
                     Map<String, Object> toUser = new HashMap<>();
-                    toUser.put("title", title);
-                    toUser.put("content", content);
-                    toUser.put("id", conId);
-                    toUser.put("day", day);
-                    toUser.put("visitnum", visitNum);
-                    toUser.put("good", goodNum);
-                    toUser.put("documentName", documentName);
+
+                    toUser.put("data", "data");
+                    toUser.put("address", address);
+                    toUser.put("document_name", documentName);
+
                     userInfo.document(id_uid).collection("like").document(documentName)
                             .set(toUser);
 
@@ -435,14 +433,16 @@ public class HomeContent extends AppCompatActivity {
                     toUserInfo.put("day", fullDay);
                     toUserInfo.put("writer",id_nickName);
 
-                    db.collection("user").document(writer_uid).collection("action")
-                            .add(toUserInfo)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
+                    if(!writer_uid.equals(id_uid)) {
+                        db.collection("user").document(writer_uid).collection("action")
+                                .add(toUserInfo)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
 
-                                }
-                            });
+                                    }
+                                });
+                    }
                     /////////////////////////////user로 전송////////////////////////////////////////////////
                 }
 
@@ -545,16 +545,17 @@ public class HomeContent extends AppCompatActivity {
                         toUserInfo.put("day", fullDay);
                         toUserInfo.put("writer",id_nickName);
 
-                        db.collection("user").document(writer_uid).collection("action")
-                                .add(toUserInfo)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
+                        if(!writer_uid.equals(id_uid)) {
+                            db.collection("user").document(writer_uid).collection("action")
+                                    .add(toUserInfo)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
 
-                                    }
-                                });
+                                        }
+                                    });
 
-
+                        }
                         //try {
                         db.collection("data").document("allData").collection(address)
                                 .document(documentName).collection("reply")
@@ -739,7 +740,9 @@ public class HomeContent extends AppCompatActivity {
 
         toUser.put("contentReply", content_reply);
         toUser.put("timeReply", fullDay);
-        toUser.put("documentName", documentName);
+        toUser.put("document_name", documentName);
+        toUser.put("data","data");
+        toUser.put("address",address);
 
         userInfo.document(id_uid).collection("reply").document(r_documentName)
                 .set(toUser);

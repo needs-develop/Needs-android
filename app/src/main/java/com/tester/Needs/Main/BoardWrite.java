@@ -208,14 +208,10 @@ public class BoardWrite extends AppCompatActivity {
 
         Log.d("docName출력 4번테스트", "docName출력 4번테스트");
         Map<String, Object> toUser = new HashMap<>();
-        toUser.put("title", title);
-        toUser.put("content", content);
-        toUser.put("id_value", id_value);
-        toUser.put("day", fullDay);
-        toUser.put("visitnum", 0);
-        toUser.put("good", 0);
-        toUser.put("documentName", docName);
-        toUser.put("id", id_nickName);
+
+        toUser.put("data", "data");
+        toUser.put("address",address);
+        toUser.put("document_name", docName);
 
 
         db.collection("user").document(id_uid).collection("write").document(docName)

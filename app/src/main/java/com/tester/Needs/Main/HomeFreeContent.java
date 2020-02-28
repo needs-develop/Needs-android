@@ -396,13 +396,9 @@ public class HomeFreeContent extends AppCompatActivity {
 
                     CollectionReference userInfo = db.collection("user");
                     Map<String, Object> toUser = new HashMap<>();
-                    toUser.put("title", title);
-                    toUser.put("content", content);
-                    toUser.put("id", conId);
-                    toUser.put("day", day);
-                    toUser.put("visitnum", visitNum);
-                    toUser.put("good", goodNum);
-                    toUser.put("documentName", documentName);
+
+                    toUser.put("data", "freedata");
+                    toUser.put("document_name", documentName);
 
                     userInfo.document(id_uid).collection("like").document(documentName)
                             .set(toUser);
@@ -430,15 +426,16 @@ public class HomeFreeContent extends AppCompatActivity {
                     toUserInfo.put("day", fullDay);
                     toUserInfo.put("writer",id_nickName);
 
-                    db.collection("user").document(writer_uid).collection("action")
-                            .add(toUserInfo)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
+                    if(!writer_uid.equals(id_uid)) {
+                        db.collection("user").document(writer_uid).collection("action")
+                                .add(toUserInfo)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
 
-                                }
-                            });
-
+                                    }
+                                });
+                    }
                     ///////////////user로 데이터 쏴주기/////////////////////////////////////////////
 
 
@@ -538,15 +535,16 @@ public class HomeFreeContent extends AppCompatActivity {
                         toUserInfo.put("day", fullDay);
                         toUserInfo.put("writer",id_nickName);
 
-                        db.collection("user").document(writer_uid).collection("action")
-                                .add(toUserInfo)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
+                        if(!writer_uid.equals(id_uid)) {
+                            db.collection("user").document(writer_uid).collection("action")
+                                    .add(toUserInfo)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
 
-                                    }
-                                });
-
+                                        }
+                                    });
+                        }
                         //try {
                         db.collection("freeData").document(documentName).collection("reply")
                                 .add(user)
@@ -729,7 +727,8 @@ public class HomeFreeContent extends AppCompatActivity {
 
         toUser.put("contentReply", content_reply);
         toUser.put("timeReply", fullDay);
-        toUser.put("documentName", documentName);
+        toUser.put("document_name", documentName);
+        toUser.put("data","freedata");
 
         userInfo.document(id_uid).collection("reply").document(r_documentName)
                 .set(toUser);

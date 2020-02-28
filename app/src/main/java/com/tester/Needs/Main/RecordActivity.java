@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.RecordList;
@@ -62,7 +63,8 @@ public class RecordActivity extends AppCompatActivity {
             public void run() {
 
                 try{
-                    db.collection("user").document(uid).collection("action").get()
+                    db.collection("user").document(uid).collection("action").
+                            orderBy("day", Query.Direction.DESCENDING).get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -84,11 +86,13 @@ public class RecordActivity extends AppCompatActivity {
                                                     document.getData().get("writer").toString(),document.getData().get("day").toString()));
                                             Log.d("test",document.getData().get("day").toString());
                                         }
+                                        Log.d("사이즈 테스트", String.valueOf(recordList.size()));
                                     }
 
                                     listView = findViewById(R.id.record_listview);
                                     recordListAdapter = new RecordListAdapter(RecordActivity.this,recordList);
                                     listView.setAdapter(recordListAdapter);
+
                                     //recordListAdapter.notifyDataSetChanged();
                                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                         @Override
@@ -181,7 +185,6 @@ public class RecordActivity extends AppCompatActivity {
         }
 
     }
-
 
     @Override
     public void onBackPressed() {

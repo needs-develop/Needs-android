@@ -72,22 +72,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
+        <TextView
+            android:id="@+id/mylike_no_list"
+            android:textSize="30dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/cookierunbold"
+            android:textColor="#A7D2F3"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="게시물을 가져오는중입니다"
+            />
+
         <ListView
-            android:id="@android:id/list"
+            android:id="@+id/mylike_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:id="@android:id/empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="공감한 글이 없습니다" />
-
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
