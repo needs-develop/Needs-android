@@ -47,11 +47,20 @@ public class RecordListAdapter extends BaseAdapter {
                     LayoutInflater.from(context).inflate(R.layout.activity_itemrecord, null);
             holder.text = (TextView) convertView.findViewById(R.id.record_text);
             holder.day = (TextView) convertView.findViewById(R.id.record_day);
+            holder.data = (TextView) convertView.findViewById(R.id.record_data);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        if(sample.get(position).getData().equals("data"))
+        {
+            holder.data.setText(sample.get(position).getAddress()+"게시판");
+        }
+        else if(sample.get(position).getData().equals("freedata"))
+        {
+            holder.data.setText("자유게시판");
+        }
         holder.text.setText(sample.get(position).getWriter()+"님이 게시물에 관심을 가졌습니다");
         holder.day.setText(sample.get(position).getDay());
 
@@ -61,6 +70,7 @@ public class RecordListAdapter extends BaseAdapter {
     public class ViewHolder {
         TextView text;
         TextView day;
+        TextView data;
     }
 }
 
