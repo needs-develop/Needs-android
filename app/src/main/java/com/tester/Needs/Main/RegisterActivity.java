@@ -279,6 +279,12 @@ public class RegisterActivity extends AppCompatActivity {
             passwordTxt.requestFocus();
             return;
         }
+
+        if (password.length() < 6) {
+            passwordTxt.setError("비밀번호는 6 자 이상이어야합니다");
+            passwordTxt.requestFocus();
+            return;
+        }
         registerStart(email, name, password, username);
     }
 

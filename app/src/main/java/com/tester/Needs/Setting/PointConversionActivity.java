@@ -68,10 +68,10 @@ public class PointConversionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_point_conversion);
-        stopService(new Intent(PointConversionActivity.this,MyService.class));
-       // getActivity = PointConversionActivity.class;
+        stopService(new Intent(PointConversionActivity.this, MyService.class));
+        // getActivity = PointConversionActivity.class;
 
-       // fragmentNumber = 0;
+        // fragmentNumber = 0;
 
         if (month.length() == 1) {
             month = "0" + month;
@@ -144,7 +144,11 @@ public class PointConversionActivity extends AppCompatActivity {
                 int curPoint = Integer.parseInt(point);
                 int conPoint = Integer.parseInt(editText.getText().toString());
                 curPoint = curPoint - conPoint;
-                if (curPoint >= 0) {
+                if (conPoint == 0) {
+                    editText.setError("금액을 입력해주세요");
+                    editText.requestFocus();
+                    return;
+                } else if (curPoint >= 0) {
                     point = Integer.toString(curPoint);
 
                     db.collection("user").document(uid)
@@ -185,6 +189,7 @@ public class PointConversionActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
