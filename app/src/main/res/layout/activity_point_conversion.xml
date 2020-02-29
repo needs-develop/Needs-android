@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="전환 가능 포인트"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/curPoint"
@@ -35,7 +35,7 @@
                 android:layout_margin="4dp"
                 android:text="0"
                 android:textColor="#FA070707"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -55,16 +55,16 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="전환할 포인트"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/editText"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="금액을 입력해주세요"
-                android:inputType="textPersonName" />
+                android:inputType="number" />
 
         </LinearLayout>
 

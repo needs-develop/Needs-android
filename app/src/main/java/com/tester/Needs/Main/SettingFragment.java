@@ -351,7 +351,6 @@ public class SettingFragment extends Fragment {
 
     private void signOut() {
         FirebaseAuth.getInstance().signOut();
-        mAuth.getInstance().signOut();
         Intent i = new Intent(getContext(), MainActivity.class);
         startActivity(i);
     }
