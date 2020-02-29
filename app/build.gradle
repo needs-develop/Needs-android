@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.firebase.firebase-perf'
+//apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 29
@@ -57,5 +57,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-ads:18.3.0'
     implementation 'com.google.firebase:firebase-perf:19.0.5'
 }
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
 googleServices.disableVersionCheck = true

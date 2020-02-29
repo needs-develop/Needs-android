@@ -603,7 +603,7 @@ public class FreeContent extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                         }
                                     });
-                            
+
                             db.collection("freeData").document(documentName)
                                     .collection("reply").document(r_docName)
                                     .delete()

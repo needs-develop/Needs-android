@@ -179,18 +179,22 @@ public class SubActivity extends AppCompatActivity {
         ImageView btn_notification;
         btn_notification = findViewById(R.id.btn_notification);
 
-        db.collection("user").document(id_uid).collection("action").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        record_count = 0;
-                        for(DocumentSnapshot documentSnapshot: task.getResult())
-                        {
-                            record_count++;
-                            Log.d("record count", String.valueOf(record_count));
+        try {
+            db.collection("user").document(id_uid).collection("action").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            record_count = 0;
+                            for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                record_count++;
+                                Log.d("record count", String.valueOf(record_count));
+                            }
                         }
-                    }
-                });
+                    });
+        }catch (Exception e)
+        {
+            record_count = 0;
+        }
 
         btn_notification.setOnClickListener(new View.OnClickListener() {
             @Override
