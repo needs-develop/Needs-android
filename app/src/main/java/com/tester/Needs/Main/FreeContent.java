@@ -353,6 +353,7 @@ public class FreeContent extends AppCompatActivity {
 
 
                     user.put("goodBoolean", true);
+                    user.put("id_uid",id_uid);
                     content_heart.setImageResource(R.raw.heart);
                     num = Integer.parseInt(goodNum);
                     num = num + 1;
@@ -514,6 +515,7 @@ public class FreeContent extends AppCompatActivity {
                         user.put("writerReply", id_nickName);
                         user.put("timeReply", fullDay);
                         user.put("data_doc", documentName);
+                        user.put("id_uid",id_uid);
 
 
                         Map<String, Object> toUserInfo = new HashMap<>();
@@ -522,6 +524,7 @@ public class FreeContent extends AppCompatActivity {
                         toUserInfo.put("document_name", documentName);
                         toUserInfo.put("day", fullDay);
                         toUserInfo.put("writer",id_nickName);
+
 
                         if(!writer_uid.equals(id_uid)) {
                             db.collection("user").document(writer_uid).collection("action")
@@ -592,6 +595,15 @@ public class FreeContent extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if (r_writer.equals(id_nickName)) {
+
+                            db.collection("user").document(id_uid).collection("reply").document(conId + title + content)
+                                    .delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                        }
+                                    });
+                            
                             db.collection("freeData").document(documentName)
                                     .collection("reply").document(r_docName)
                                     .delete()
@@ -610,26 +622,8 @@ public class FreeContent extends AppCompatActivity {
                                             intent.putExtra("documentName", documentName);
                                             startActivity(intent);
                                         }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-
-                                        }
                                     });
                             /////////////////////////////////////////////////////////////////////////////////////////////
-                            db.collection("user").document(id_uid).collection("reply").document(conId + title + content)
-                                    .delete()
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                        }
-                                    });
                             ///////////////////////////////////user쪽에서 reply삭제///////////////////////////////
                         } else {
                             Toast.makeText(getApplicationContext(), "권한이 없습니다", Toast.LENGTH_SHORT).show();
@@ -670,6 +664,8 @@ public class FreeContent extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                String delete_uid = document.getData().get("id_uid").toString();
+                                db.collection("user").document(delete_uid).collection("reply").document(document.getId()).delete();
                                 db.collection("freeData").document(documentName)
                                         .collection("reply").document(document.getId()).delete();
                             }
@@ -680,6 +676,8 @@ public class FreeContent extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                String delete_uid = document.getData().get("id_uid").toString();
+                                db.collection("user").document(delete_uid).collection("like").document(documentName).delete();
                                 db.collection("freeData").document(documentName)
                                         .collection("like").document(document.getId()).delete();
                             }
@@ -687,7 +685,7 @@ public class FreeContent extends AppCompatActivity {
                     });
 
                     /////////////////////////////////////////////////////////////////////////////////////////////
-                    db.collection("user").document(id_uid).collection("reply").document(documentName)
+                    db.collection("user").document(id_uid).collection("write").document(documentName)
                             .delete()
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
