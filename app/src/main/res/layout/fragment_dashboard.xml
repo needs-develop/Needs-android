@@ -47,7 +47,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:orientation="vertical">
 
@@ -99,22 +99,26 @@
         <TextView
             android:id="@+id/freeText_visible"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="0dp"
             android:fontFamily="@font/cookierunbold"
             android:visibility="gone"
             android:gravity="center"
+            android:layout_weight="1"
             android:text="자유게시판에 게시된 글이 없습니다"
             android:textSize="15sp" />
+
         <ListView
             android:id="@+id/free_list"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:textFilterEnabled="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <Spinner

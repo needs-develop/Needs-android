@@ -44,7 +44,7 @@
     <ExpandableListView
         android:id="@+id/good_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ExpandableListView>
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,11 +52,10 @@
         android:layout_gravity="center"
         android:fontFamily="@font/cookierunbold"
         android:text="지역선택"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 
     <ExpandableListView
         android:id="@+id/draw_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"></ExpandableListView>
+        android:layout_height="match_parent" />
 </LinearLayout>

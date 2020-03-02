@@ -40,7 +40,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:orientation="vertical">
 
@@ -97,7 +97,8 @@
         <TextView
             android:id="@+id/boardText_visible"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_weight="1"
+            android:layout_height="0dp"
             android:fontFamily="@font/cookierunbold"
             android:visibility="gone"
             android:gravity="center"
@@ -106,13 +107,15 @@
         <ListView
             android:id="@+id/_listView"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:textFilterEnabled="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <Spinner
@@ -126,7 +129,7 @@
                 android:id="@+id/spinner_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="항목선택"></TextView>
+                android:hint="항목선택"/>
             <!--android:entries="@array/test"-->
             <EditText
                 android:id="@+id/edit_board"

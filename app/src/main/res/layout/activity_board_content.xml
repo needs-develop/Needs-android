@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/content"
             android:text="제목"
-            android:textSize="15dp"/>
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/content_title"
@@ -29,7 +29,7 @@
             android:background="@drawable/corner_shape"
             android:fontFamily="@font/content"
             android:text="제목입니다"
-            android:textSize="15dp"/>
+            android:textSize="15dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/content"
             android:text="작성자:"
-            android:textSize="15dp"/>
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/content_id"
@@ -53,7 +53,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/content"
             android:text="작성자입니다"
-            android:textSize="15dp"/>
+            android:textSize="15dp" />
 
     </LinearLayout>
 
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/content"
             android:text="내용:"
-            android:textSize="15dp"/>
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/content_content"
@@ -79,7 +79,7 @@
             android:background="@drawable/corner_shape"
             android:fontFamily="@font/content"
             android:text="내용입니다"
-            android:textSize="15dp"/>
+            android:textSize="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,26 +91,27 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/content"
                 android:text="작성일시:"
-                android:textSize="15dp"/>
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/content_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:fontFamily="@font/content"
                 android:text="작성일입니다"
-                android:textSize="15dp"/>
+                android:textSize="15dp" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="85dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
                 android:background="@drawable/button"
                 android:fontFamily="@font/content"
                 android:onClick="OnClickHandler"
                 android:text="삭제하기"
-                android:textColor="#ffffff"/>
+                android:textColor="#ffffff" />
         </LinearLayout>
 
 
@@ -166,8 +167,9 @@
 
             <EditText
                 android:id="@+id/edit_reply"
-                android:layout_width="290dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:fontFamily="@font/content"
                 android:hint="댓글을 입력하세요"
                 android:inputType="text|textMultiLine"
@@ -179,6 +181,7 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
                 android:background="@drawable/button"
                 android:fontFamily="@font/content"
                 android:gravity="center"
