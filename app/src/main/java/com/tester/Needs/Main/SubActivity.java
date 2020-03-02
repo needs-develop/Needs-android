@@ -206,7 +206,19 @@ public class SubActivity extends AppCompatActivity {
         });
 
 
-
+        id_uid = mAuth.getCurrentUser().getUid();
+        id_value = mAuth.getCurrentUser().getEmail();
+        db.collection("user").document(id_uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    DocumentSnapshot document = task.getResult();
+                    id_name = document.getData().get("id_name").toString();
+                    id_nickName = document.getData().get("id_nickName").toString();
+                }
+            }
+        });
 
         //////////////////////포인트 가져오기/////////////////////////////////////////
 
@@ -585,6 +597,7 @@ public class SubActivity extends AppCompatActivity {
 
     public void onBackPressed() {
         super.onBackPressed();
+
         Intent intent = new Intent(SubActivity.this, MyService.class);
         intent.setAction("startForeground");
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){

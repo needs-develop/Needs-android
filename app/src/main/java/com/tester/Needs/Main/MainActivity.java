@@ -481,8 +481,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
+        // && id_value != null
         currentUser = mAuth.getCurrentUser();
-        if (currentUser != null && id_value != null) {
+        if (currentUser != null) {
             startActivity(new Intent(MainActivity.this, SubActivity.class));
             finish();
         }
