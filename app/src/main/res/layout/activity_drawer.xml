@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer"
     android:layout_width="200dp"
-    android:layout_height="732dp"
+    android:layout_height="match_parent"
     android:layout_gravity="start"
     android:background="#7AC7EB"
     android:orientation="vertical">
@@ -44,7 +44,7 @@
     <ExpandableListView
         android:id="@+id/good_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="wrap_content"

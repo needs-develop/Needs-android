@@ -101,7 +101,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/content"
                 android:text="작성일입니다"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -187,7 +187,7 @@
                 android:fontFamily="@font/content"
                 android:gravity="center"
                 android:text="등록"
-                android:textColor="#ffffff"/>
+                android:textColor="#ffffff" />
         </LinearLayout>
     </LinearLayout>
 
@@ -202,6 +202,6 @@
             android:id="@+id/list_home_reply"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/content"/>
+            android:fontFamily="@font/content" />
     </LinearLayout>
 </LinearLayout>
