@@ -16,9 +16,11 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -41,6 +43,7 @@ public class UserInfoActivity extends AppCompatActivity {
     String change_nickname;
     int compnum = 0;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -52,15 +55,19 @@ public class UserInfoActivity extends AppCompatActivity {
 
         //getActivity = UserInfoActivity.class;
 
+
+        /*
         Switch foreGroundSwitch = findViewById(R.id.foreSwitch);
         foreGroundSwitch.setOnCheckedChangeListener(new foreGroundSwitchListener());
-
+        */
         TextView userInfo_name = findViewById(R.id.userInfo_name);
         TextView userInfo_nickName = findViewById(R.id.userInfo_nickName);
         TextView userInfo_email = findViewById(R.id.userInfo_email);
 
         TextView userInfo_point = findViewById(R.id.userInfo_point);
         TextView userInfo_limit_point = findViewById(R.id.userInfo_limit_point);
+
+
 
         final EditText userInfo_edit = findViewById(R.id.userInfo_edit);
 
@@ -74,6 +81,32 @@ public class UserInfoActivity extends AppCompatActivity {
 
         userInfo_point.setText(point);
         userInfo_limit_point.setText(pointLimit);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        Button password_btn = findViewById(R.id.password_btn);
+        password_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //비밀번호 재설정 이메일 보내기
+                firebaseAuth.sendPasswordResetEmail(id_value)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(UserInfoActivity.this, "이메일을 보냈습니다.", Toast.LENGTH_LONG).show();
+                                    Log.d("성공","이메일전송 성공");
+
+                                } else {
+                                    Toast.makeText(UserInfoActivity.this, "메일 보내기 실패!", Toast.LENGTH_LONG).show();
+                                    Log.d("실패","이메일전송 실패");
+                                }
+
+                            }
+                        });
+
+            }
+
+        });
 
 
         userInfo_change_btn.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +230,7 @@ public class UserInfoActivity extends AppCompatActivity {
         });
 
     }
-
+    /*
     class foreGroundSwitchListener implements CompoundButton.OnCheckedChangeListener{
 
         @Override
@@ -219,7 +252,7 @@ public class UserInfoActivity extends AppCompatActivity {
             }
 
         }
-    }
+    }*/
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBackPressed() {
