@@ -1,13 +1,20 @@
 package com.tester.Needs.Common;
 
 public class RecordList {
+    private String profile;
     private String data;
     private  String address;
     private String document_name;
     private String writer;
     private String day;
 
+    public String getProfile() {
+        return profile;
+    }
 
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
     public String getData() {
         return data;
     }
@@ -47,7 +54,8 @@ public class RecordList {
     {
         this.writer = context;
     }
-    public RecordList(String data, String address, String document_name, String writer, String day) {
+    public RecordList(String profile, String data, String address, String document_name, String writer, String day) {
+        this.profile = profile;
         this.data = data;
         this.address = address;
         this.document_name = document_name;

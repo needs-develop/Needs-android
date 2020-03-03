@@ -50,6 +50,7 @@ public class RecordActivity extends AppCompatActivity {
     String documentName;
     ListView listView ;
     RecordListAdapter recordListAdapter ;
+    String profile_url = "no";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,20 +74,22 @@ public class RecordActivity extends AppCompatActivity {
                                         if(document.getData().get("value").toString().equals("data"))
                                         {
                                             findViewById(R.id.record_no_list).setVisibility(View.GONE);
-                                            recordList.add(new RecordList(document.getData().get("value").toString(),
+                                            recordList.add(new RecordList(profile_url, document.getData().get("value").toString(),
                                                     document.getData().get("address").toString(),document.getData().get("document_name").toString(),
                                                     document.getData().get("writer").toString(),document.getData().get("day").toString()));
                                             Log.d("test",document.getData().get("day").toString());
+                                            profile_url = "no";
                                         }
                                         else if(document.getData().get("value").toString().equals("freedata"))
                                         {
                                             findViewById(R.id.record_no_list).setVisibility(View.GONE);
-                                            recordList.add(new RecordList(document.getData().get("value").toString(),
+                                            recordList.add(new RecordList(profile_url, document.getData().get("value").toString(),
                                                     "",document.getData().get("document_name").toString(),
                                                     document.getData().get("writer").toString(),document.getData().get("day").toString()));
                                             Log.d("test",document.getData().get("day").toString());
                                         }
                                         Log.d("사이즈 테스트", String.valueOf(recordList.size()));
+                                        profile_url = "no";
                                     }
 
                                     listView = findViewById(R.id.record_listview);

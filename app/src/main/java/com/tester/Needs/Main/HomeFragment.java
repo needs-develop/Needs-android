@@ -97,8 +97,8 @@ public class HomeFragment extends Fragment {
                 if(task.isSuccessful())
                 {
                     try {
-                        if (task.getResult().get("positionName").toString() != null && task.getResult().get("positionName").toString() != "") {
-                            positionName = task.getResult().get("positionName").toString();
+                        if (task.getResult().get("regionName").toString() != null && task.getResult().get("regionName").toString() != "") {
+                            positionName = task.getResult().get("regionName").toString();
                             Log.d("포지션 네임 first", positionName);
                             address = positionName;
 
@@ -310,7 +310,7 @@ public class HomeFragment extends Fragment {
 
                             CollectionReference title_content = db.collection("user").document(id_uid).collection("myRegion");
                             Map<String, Object> user = new HashMap<>();
-                            user.put("positionName", positionName);
+                            user.put("regionName", positionName);
 
                             title_content.document(id_value + "myRegion").set(user);
 
@@ -335,13 +335,13 @@ public class HomeFragment extends Fragment {
                                 db.collection("user").document(id_uid).collection("myRegion")
                                         .document(id_value + "myRegion")
                                         .update(
-                                                "positionName", positionName
+                                                "regionName", positionName
                                         );
                             } else {
                                 db.collection("user").document(id_uid).collection("myRegion")
                                         .document(id_value + "myRegion")
                                         .update(
-                                                "positionName", positionName
+                                                "regionName", positionName
                                         );
                             }
                         }

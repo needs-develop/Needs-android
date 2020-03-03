@@ -266,9 +266,7 @@ public class SubActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    id_name = document.getData().get("id_name").toString();
                     point = document.getData().get("id_point").toString();
-                    id_nickName = document.getData().get("id_nickName").toString();
                     Log.d("포인트 출력", id_nickName + point);
                 }
             }
@@ -528,6 +526,7 @@ public class SubActivity extends AppCompatActivity {
         firstGroups.add("강북구");
         firstGroups.add("강서구");
 
+        gangone.add(new SubList("청담동"));
         gangone.add(new SubList("xx동"));
         gangone.add(new SubList("yy동"));
         gangone.add(new SubList("zz동"));

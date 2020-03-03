@@ -181,36 +181,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         firebaseAuth = firebaseAuth.getInstance();//객체 초기화
         auth = FirebaseAuth.getInstance();//파이어베이스 인증객체 초기화
 
-        /*만약 email인증을 해야된다면 이런예시로 구현할 예정
-        Button buttonFind = (Button) findViewById(R.id.buttonFind);
-
-        buttonFind.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //비밀번호 재설정 이메일 보내기
-
-                firebaseAuth.sendPasswordResetEmail("oss5824@naver.com")
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(MainActivity.this, "이메일을 보냈습니다.", Toast.LENGTH_LONG).show();
-                                    Log.d("성공","이메일전송 성공");
-
-                                } else {
-                                    Toast.makeText(MainActivity.this, "메일 보내기 실패!", Toast.LENGTH_LONG).show();
-                                    Log.d("실패","이메일전송 실패");
-                                }
-
-                            }
-                        });
-
-            }
-
-        });
-        */
-
-
         btn_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,7 +229,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             public void onSuccess(LoginResult loginResult) {
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
-
             @Override
             public void onCancel() {
             }
@@ -497,9 +466,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         callbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_SIGN_GOOGLE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {//인증결과 성공시
-                account = result.getSignInAccount();//구글로그인정보를 담고있음
-                resultLogin(account);//로그인 결과 값 출력 수행
+            if (result.isSuccess()) {
+                account = result.getSignInAccount();
+                resultLogin(account);
             }
         }
     }
@@ -532,7 +501,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         if (task.isSuccessful()) {
                                             Log.d("compare false", "compare false");
                                             try {
-                                                String value = task.getResult().get("id_email").toString();
                                                 id_value = task.getResult().get("id_email").toString();
                                                 id_uid = task.getResult().get("id_uid").toString();
                                                 id_name = task.getResult().get("id_name").toString();
@@ -609,7 +577,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         user1.put("pointLimit", pointLimit);
 
         pointDay.document(id_uid).collection("pointDay").document(id_value + "pointDay").set(user1);
-        Log.d("유저정보 id로그인 uid 확인", id_uid);
         db.collection("user").document(id_uid).collection("pointDay").document(id_value + "pointDay")
                 .set(user1)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

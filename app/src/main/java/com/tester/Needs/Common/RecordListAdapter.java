@@ -5,8 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.tester.Needs.Main.RecordActivity;
 import com.tester.Needs.R;
 
 import java.util.ArrayList;
@@ -16,6 +27,7 @@ public class RecordListAdapter extends BaseAdapter {
     Context context = null;
     LayoutInflater layoutInflater = null;
     ArrayList<RecordList> sample;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public RecordListAdapter(Context context,ArrayList<RecordList>data){
         this.context = context;
@@ -40,7 +52,7 @@ public class RecordListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView =
@@ -48,11 +60,13 @@ public class RecordListAdapter extends BaseAdapter {
             holder.text = (TextView) convertView.findViewById(R.id.record_text);
             holder.day = (TextView) convertView.findViewById(R.id.record_day);
             holder.data = (TextView) convertView.findViewById(R.id.record_data);
+            holder.profile = (ImageView) convertView.findViewById(R.id.record_profile);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
+        if(sample.get(position).getProfile().equals("no")){
+        }
         if(sample.get(position).getData().equals("data"))
         {
             holder.data.setText(sample.get(position).getAddress()+"게시판");
@@ -68,6 +82,7 @@ public class RecordListAdapter extends BaseAdapter {
     }
 
     public class ViewHolder {
+        ImageView profile;
         TextView text;
         TextView day;
         TextView data;
