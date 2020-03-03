@@ -5,28 +5,47 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Service.MyService;
 import com.tester.Needs.R;
 import com.tester.Needs.Setting.MyLikeActivity;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static com.tester.Needs.Main.MainActivity.id_name;
 import static com.tester.Needs.Main.MainActivity.id_nickName;
@@ -36,6 +55,7 @@ import static com.tester.Needs.Main.SubActivity.fragmentNumber;
 //import static com.tester.Needs.Main.SubActivity.getActivity;
 import static com.tester.Needs.Main.SubActivity.point;
 import static com.tester.Needs.Main.SubActivity.pointLimit;
+import static com.tester.Needs.Main.SubActivity.sub_photoUrl;
 
 public class UserInfoActivity extends AppCompatActivity {
 
@@ -44,6 +64,8 @@ public class UserInfoActivity extends AppCompatActivity {
     int compnum = 0;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth;
+    private static final int REQ_CODE_SELECT_IMAGE = 900;
+    GoogleSignInClient googleSignInClient;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -60,6 +82,7 @@ public class UserInfoActivity extends AppCompatActivity {
         Switch foreGroundSwitch = findViewById(R.id.foreSwitch);
         foreGroundSwitch.setOnCheckedChangeListener(new foreGroundSwitchListener());
         */
+        ImageView userinfo_profile= findViewById(R.id.userInfo_profile);
         TextView userInfo_name = findViewById(R.id.userInfo_name);
         TextView userInfo_nickName = findViewById(R.id.userInfo_nickName);
         TextView userInfo_email = findViewById(R.id.userInfo_email);
@@ -81,6 +104,39 @@ public class UserInfoActivity extends AppCompatActivity {
 
         userInfo_point.setText(point);
         userInfo_limit_point.setText(pointLimit);
+
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user.getProviderData() == null || user.getProviderData().isEmpty()) {
+        } else {
+            for (UserInfo profile : user.getProviderData()) {
+                String providerId = profile.getProviderId();
+                if (GoogleAuthProvider.PROVIDER_ID.equals(providerId)) {
+                    Glide.with(this).load(sub_photoUrl).into(userinfo_profile);
+                    GoogleSignInOptions gso =
+                            new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                    .requestIdToken(getString(R.string.default_web_client_id))
+                                    .requestEmail()
+                                    .build();
+                    googleSignInClient = GoogleSignIn.getClient(UserInfoActivity.this, gso);
+                } else if (FacebookAuthProvider.PROVIDER_ID.equals(providerId)) {
+                    Glide.with(this).load(sub_photoUrl).into(userinfo_profile);
+                } else if (TwitterAuthProvider.PROVIDER_ID.equals(providerId)) {
+                } else if (EmailAuthProvider.PROVIDER_ID.equals(providerId)) {
+                  //  Glide.with(this).load(sub_photoUrl).into(userinfo_profile);
+                } else {
+                }
+            }
+        }
+        userinfo_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+            }
+        });
 
         firebaseAuth = FirebaseAuth.getInstance();
         Button password_btn = findViewById(R.id.password_btn);
@@ -229,6 +285,54 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(getBaseContext(), "resultCode : " + resultCode, Toast.LENGTH_SHORT).show();
+
+        if (requestCode == REQ_CODE_SELECT_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                try {
+                    //Uri에서 이미지 이름을 얻어온다.
+                    String name_Str = getImageNameToUri(data.getData());
+                    //이미지 데이터를 비트맵으로 받아온다.
+                    Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                    ImageView image = (ImageView) findViewById(R.id.userInfo_profile);
+                    //배치해놓은 ImageView에 set
+                    image.setImageBitmap(image_bitmap);
+                    sub_photoUrl = name_Str;
+                    Toast.makeText(getBaseContext(), "name_Str : "+name_Str , Toast.LENGTH_SHORT).show();
+                    db.collection("user").document(id_uid)
+                            .update(
+                                    "photoUrl",name_Str
+                                    );
+
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public String getImageNameToUri(Uri data)
+    {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(data, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        cursor.moveToFirst();
+
+        String imgPath = cursor.getString(column_index);
+        String imgName = imgPath.substring(imgPath.lastIndexOf("/")+1);
+
+        return imgName;
     }
     /*
     class foreGroundSwitchListener implements CompoundButton.OnCheckedChangeListener{

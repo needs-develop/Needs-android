@@ -85,6 +85,7 @@ public class SubActivity extends AppCompatActivity {
     String strict; //parent value
 
     static String address;//living value?!
+    static String sub_photoUrl;
 
     String first;//parent_value
     String second;//child_value
@@ -216,6 +217,12 @@ public class SubActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     id_name = document.getData().get("id_name").toString();
                     id_nickName = document.getData().get("id_nickName").toString();
+                    try{
+                        sub_photoUrl =  document.getData().get("photoUrl").toString();
+                    }catch(Exception e)
+                    {
+
+                    }
                 }
             }
         });
@@ -263,7 +270,6 @@ public class SubActivity extends AppCompatActivity {
                     point = document.getData().get("id_point").toString();
                     id_nickName = document.getData().get("id_nickName").toString();
                     Log.d("포인트 출력", id_nickName + point);
-
                 }
             }
         });
@@ -607,6 +613,7 @@ public class SubActivity extends AppCompatActivity {
             startService(intent);
         }
     }
+
 
 /*
     @Override

@@ -2,12 +2,16 @@ package com.tester.Needs.Main;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,13 +62,19 @@ import com.tester.Needs.Setting.PointHistoryActivity;
 import com.tester.Needs.Setting.SettingItem;
 import com.tester.Needs.Setting.SettingViewer;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 import static com.tester.Needs.Main.MainActivity.id_name;
 import static com.tester.Needs.Main.MainActivity.id_nickName;
 import static com.tester.Needs.Main.MainActivity.id_uid;
 import static com.tester.Needs.Main.MainActivity.id_value;
 import static com.tester.Needs.Main.MainActivity.photoUrl;
+import static com.tester.Needs.Main.SubActivity.sub_photoUrl;
 import static com.tester.Needs.Main.SubActivity.fragmentNumber;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
@@ -125,28 +135,12 @@ public class SettingFragment extends Fragment {
         emailtxt.setText(
                 TextUtils.isEmpty(user.getEmail()) ? "No email" : user.getEmail());
 
-        /*
-        DocumentReference docRef = db.collection("user").document(id_uid);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                        nickName =  (String)document.getData().get("id_nickName");
-                        usernametxt.setText(nickName);
-                }
-                else {
-                       usernametxt.setText(nickName);
-                }
-            }
-        });
-        */
 
         usernametxt.setText(id_nickName);
         StringBuilder providerList = new StringBuilder(100);
 
         providerList.append("Providers used: ");
+
 
         if (user.getProviderData() == null || user.getProviderData().isEmpty()) {
             providerList.append("none");
@@ -155,50 +149,20 @@ public class SettingFragment extends Fragment {
                 String providerId = profile.getProviderId();
                 if (GoogleAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Google");
-                    DocumentReference doc = db.collection("user").document(id_uid);
-                    doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @RequiresApi(api = Build.VERSION_CODES.O)
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                Log.d("사진출력", (String) document.getData().get("photoUrl"));
-                                photoUrl = (String) document.getData().get("photoUrl");
-                                Log.d("사진출력 photoUrl", photoUrl);
-                            } else {
-                            }
-                        }
-                    });
-                    Log.d("사진출력 photoUrl 두번째", photoUrl);
-                    Glide.with(this).load(photoUrl).into(iv_profile);
+                    Glide.with(this).load(sub_photoUrl).into(iv_profile);
                     GoogleSignInOptions gso =
                             new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                                     .requestIdToken(getString(R.string.default_web_client_id))
                                     .requestEmail()
                                     .build();
-
                     googleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
                 } else if (FacebookAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Facebook");
-                    DocumentReference doc = db.collection("user").document(id_uid);
-                    doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @RequiresApi(api = Build.VERSION_CODES.O)
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                Log.d("사진출력", (String) document.getData().get("photoUrl"));
-                                photoUrl = (String) document.getData().get("photoUrl");
-                                Log.d("사진출력 photoUrl", photoUrl);
-                            } else {
-                            }
-                        }
-                    });
-                    Log.d("사진출력 photoUrl 두번째", photoUrl);
-                    Glide.with(this).load(photoUrl).into(iv_profile);
+                    Glide.with(this).load(sub_photoUrl).into(iv_profile);
                 } else if (TwitterAuthProvider.PROVIDER_ID.equals(providerId)) {
                     providerList.append("Twitter");
                 } else if (EmailAuthProvider.PROVIDER_ID.equals(providerId)) {
+                   // Glide.with(this).load(sub_photoUrl).into(iv_profile);
                     providerList.append("Email");
                 } else {
                     providerList.append(providerId);
@@ -206,79 +170,7 @@ public class SettingFragment extends Fragment {
             }
         }
         userenabled.setText(providerList);
-        /*
 
-        Button user_nickName_change = rootView.findViewById(R.id.user_nickName_change);
-        user_nickName_change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                builder.setTitle("닉네임변경").setMessage("OK를 누르시면 로그인창으로 이동합니다");
-                final EditText et = new EditText(getActivity());
-                builder.setView(et);
-
-                change_nickName = et.getText().toString();
-                db.collection("user").get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                for (QueryDocumentSnapshot document : task.getResult())
-                                {
-                                    if(change_nickName.equals(document.getData().get("id_nickName").toString()))
-                                    {
-                                        boolean_nickname = true;
-                                    }
-                                }
-                            }
-                        });
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        mProgressDialog = ProgressDialog.show(getActivity(), "Loading"
-                                , "로그아웃중입니다..");
-
-                        mBackThread = new BackgroundThread();
-                        mBackThread.setRunning(true);
-                        mBackThread.start();
-
-                        if(boolean_nickname ==false)
-                        {
-                            Toast.makeText(getActivity(),"닉네임이 중복됩니다",Toast.LENGTH_SHORT).show();
-                            Log.d("닉네임이 중복되는 경우","닉네임이 중복되는 경우");
-                        }
-                        else {
-                            Toast.makeText(getActivity(),"닉네임이 변경됩니다",Toast.LENGTH_SHORT).show();
-                            Log.d("닉네임이 변경되는 경우","닉네임이 변경되는 경우");
-                            db.collection("user").document(id_uid)
-
-                                    .update(
-
-                                            "id_nickName", change_nickName
-
-                                    );
-
-                            changeNum = 1;
-
-                            signOut();
-                            mProgressDialog.dismiss();
-                        }
-                    }
-                });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-                    }
-                });
-
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
-        });
-        */
         settingAdapter = new SettingAdapter();
         settingAdapter.addItem(new SettingItem("포인트내역", R.drawable.history));
         settingAdapter.addItem(new SettingItem("포인트전환", R.drawable.money));
@@ -348,6 +240,11 @@ public class SettingFragment extends Fragment {
 
         return rootView;
     }
+
+
+
+
+
 
     private void signOut() {
         FirebaseAuth.getInstance().signOut();
