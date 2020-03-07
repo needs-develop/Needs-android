@@ -63,11 +63,12 @@ public class HomeFragment extends Fragment {
     TextView text_position;
 
     int home = 1;
-    int free= 1;
+    int free = 1;
 
     static String positionName = null;
     static boolean text_boolean = false;
     private View v;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,14 +89,14 @@ public class HomeFragment extends Fragment {
         btn_position = v.findViewById(R.id.btn_position);
 
         String path = db.collection("user").document(id_uid).collection("write").getPath();
-        Log.d("path이름",path);
+        Log.d("path이름", path);
 
-        db.collection("user").document(id_uid).collection("myRegion").document(id_value+"myRegion")
+        // Get data from 'user - myRegion' collection
+        db.collection("user").document(id_uid).collection("myRegion").document(id_value + "myRegion")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful())
-                {
+                if (task.isSuccessful()) {
                     try {
                         if (task.getResult().get("regionName").toString() != null && task.getResult().get("regionName").toString() != "") {
                             positionName = task.getResult().get("regionName").toString();
@@ -103,6 +104,7 @@ public class HomeFragment extends Fragment {
                             address = positionName;
 
                             text_position.setText(positionName);
+                            // Get top 5 visit_num from 'data - address' collection
                             db.collection("data").document("allData").collection(address).orderBy("visit_num", Query.Direction.DESCENDING).limit(5)
                                     .get()
                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -136,7 +138,7 @@ public class HomeFragment extends Fragment {
                                                     home = Integer.parseInt(number);
                                                     home++;
                                                 }
-                                                if(home==1) {
+                                                if (home == 1) {
                                                     v.findViewById(R.id.regionText_visible).setVisibility(View.VISIBLE);
                                                     v.findViewById(R.id.home_hot).setVisibility(View.GONE);
                                                 }
@@ -176,11 +178,10 @@ public class HomeFragment extends Fragment {
                                         }
                                     });
                         }
-                    }catch (Exception e)
-                    {
-                            v.findViewById(R.id.region_visible).setVisibility(View.VISIBLE);
-                            v.findViewById(R.id.home_hot).setVisibility(View.GONE);
-                            Log.d("포지션 네임 first", "널일 때에");
+                    } catch (Exception e) {
+                        v.findViewById(R.id.region_visible).setVisibility(View.VISIBLE);
+                        v.findViewById(R.id.home_hot).setVisibility(View.GONE);
+                        Log.d("포지션 네임 first", "널일 때에");
                     }
                 }
             }
@@ -289,7 +290,7 @@ public class HomeFragment extends Fragment {
                     }
                 });*/
 
-
+        // Add data to 'user - myRegion' collection
         btn_position.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -345,7 +346,6 @@ public class HomeFragment extends Fragment {
                                         );
                             }
                         }
-
                         Intent intent = new Intent(getActivity(), SubActivity.class);
                         startActivity(intent);
                     }
@@ -403,6 +403,7 @@ public class HomeFragment extends Fragment {
 
         list_itemArrayList1 = new ArrayList<FavoritesList>();
 
+        // Get top 5 visit_num from 'freeData - address' collection
         db.collection("freeData").orderBy("visit_num", Query.Direction.DESCENDING).limit(5)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -415,26 +416,26 @@ public class HomeFragment extends Fragment {
                                 String stringNum = Integer.toString(num2);
                                 int count = stringNum.length();
 
-                                String goodNum = document.getData().get("title").toString()+"     ["+num2+"]";
-                                int length =  goodNum.length();
+                                String goodNum = document.getData().get("title").toString() + "     [" + num2 + "]";
+                                int length = goodNum.length();
                                 int start = 0;
-                                if(count==1) start = length-3;
-                                else if(count==2) start = length-4;
-                                else if(count==3) start = length-5;
-                                else if(count==4) start = length-6;
+                                if (count == 1) start = length - 3;
+                                else if (count == 2) start = length - 4;
+                                else if (count == 3) start = length - 5;
+                                else if (count == 4) start = length - 6;
 
                                 SpannableStringBuilder builder = new SpannableStringBuilder(goodNum);
-                                builder.setSpan(new StyleSpan(Typeface.BOLD),start,length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")),start,length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                builder.setSpan(new StyleSpan(Typeface.BOLD), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 list_itemArrayList1.add(new FavoritesList(number, document.getData().get("title").toString(),
                                         document.getData().get("content").toString(), document.getData().get("id_nickName").toString(),
                                         document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
                                         document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
-                                ,builder));
+                                        , builder));
                                 free = Integer.parseInt(number);
                                 free++;
                             }
-                            if(free==1) {
+                            if (free == 1) {
                                 v.findViewById(R.id.homeFreeText_visible).setVisibility(View.VISIBLE);
                                 v.findViewById(R.id.home_free).setVisibility(View.GONE);
                             }
@@ -470,7 +471,7 @@ public class HomeFragment extends Fragment {
                                     startActivity(intent);
                                 }
                             });
-                       
+
 
                         } else {
                             Log.d("태그", "Error getting documents: ", task.getException());

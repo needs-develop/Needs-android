@@ -55,6 +55,7 @@ import static com.tester.Needs.Main.SubActivity.point;
 import static com.tester.Needs.Main.SubActivity.pointLimit;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
+// 홈 화면 지역게시판 게시물 편집
 public class HomeContent extends AppCompatActivity {
     TextView content_title;
     TextView content_content;
@@ -98,7 +99,7 @@ public class HomeContent extends AppCompatActivity {
 
     String second = String.valueOf(nowAsiaSeoul.getSecond());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
 
     private ProgressDialog mProgressDialog;
     private BackgroundThread mBackThread;
@@ -117,33 +118,33 @@ public class HomeContent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MultiDex.install(this);
-        stopService(new Intent(HomeContent.this,MyService.class));
+        stopService(new Intent(HomeContent.this, MyService.class));
 
         setContentView(R.layout.activity_board_content);
 
-        if(month.length() == 1){
+        if (month.length() == 1) {
             month = "0" + month;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
-        if(day1.length() ==1){
+        if (day1.length() == 1) {
             day1 = "0" + day1;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
 
         if (hour.length() == 1) {
             hour = "0" + hour;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (minute.length() == 1) {
             minute = "0" + minute;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (second.length() == 1) {
             second = "0" + second;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         Intent intent = getIntent();
@@ -187,7 +188,7 @@ public class HomeContent extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         writer_uid = document.getData().get("id_uid").toString();
-                        Log.d("writer_uid체크",writer_uid);
+                        Log.d("writer_uid체크", writer_uid);
                     }
                 }
             }
@@ -268,8 +269,6 @@ public class HomeContent extends AppCompatActivity {
                                 });
                     }
 
-
-                    user.put("goodBoolean", false);
                     content_heart.setImageResource(R.raw.bin_heart);
                     num = Integer.parseInt(goodNum);
                     num = num - 1;
@@ -361,7 +360,7 @@ public class HomeContent extends AppCompatActivity {
 
 
                     user.put("goodBoolean", true);
-                    user.put("id_uid",id_uid);
+                    user.put("id_uid", id_uid);
 
                     content_heart.setImageResource(R.raw.heart);
                     num = Integer.parseInt(goodNum);
@@ -433,9 +432,9 @@ public class HomeContent extends AppCompatActivity {
                     toUserInfo.put("document_name", documentName);
                     toUserInfo.put("address", address);
                     toUserInfo.put("day", fullDay);
-                    toUserInfo.put("writer",id_nickName);
+                    toUserInfo.put("writer", id_nickName);
 
-                    if(!writer_uid.equals(id_uid)) {
+                    if (!writer_uid.equals(id_uid)) {
                         db.collection("user").document(writer_uid).collection("action")
                                 .add(toUserInfo)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -538,7 +537,7 @@ public class HomeContent extends AppCompatActivity {
                         user.put("writerReply", id_nickName);
                         user.put("timeReply", fullDay);
                         user.put("data_doc", documentName);
-                        user.put("id_uid",id_uid);
+                        user.put("id_uid", id_uid);
 
                         Map<String, Object> toUserInfo = new HashMap<>();
                         toUserInfo.put("data", "data");
@@ -546,9 +545,9 @@ public class HomeContent extends AppCompatActivity {
                         toUserInfo.put("document_name", documentName);
                         toUserInfo.put("address", address);
                         toUserInfo.put("day", fullDay);
-                        toUserInfo.put("writer",id_nickName);
+                        toUserInfo.put("writer", id_nickName);
 
-                        if(!writer_uid.equals(id_uid)) {
+                        if (!writer_uid.equals(id_uid)) {
                             db.collection("user").document(writer_uid).collection("action")
                                     .add(toUserInfo)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -766,8 +765,8 @@ public class HomeContent extends AppCompatActivity {
         toUser.put("contentReply", content_reply);
         toUser.put("timeReply", fullDay);
         toUser.put("document_name", documentName);
-        toUser.put("data","data");
-        toUser.put("address",address);
+        toUser.put("data", "data");
+        toUser.put("address", address);
 
         userInfo.document(id_uid).collection("reply").document(r_documentName)
                 .set(toUser);

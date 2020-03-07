@@ -135,13 +135,13 @@ public class SubActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        stopService(new Intent(SubActivity.this,MyService.class));
+        stopService(new Intent(SubActivity.this, MyService.class));
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SubActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SubActivity.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 String newToken = instanceIdResult.getToken();
-                Log.e("newToken",newToken);
+                Log.e("newToken", newToken);
 
             }
         });
@@ -192,15 +192,14 @@ public class SubActivity extends AppCompatActivity {
                             }
                         }
                     });
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             record_count = 0;
         }
 
         btn_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent record_intent = new Intent(SubActivity.this,RecordActivity.class);
+                Intent record_intent = new Intent(SubActivity.this, RecordActivity.class);
                 startActivity(record_intent);
                 SubActivity.this.finish();
             }
@@ -212,15 +211,13 @@ public class SubActivity extends AppCompatActivity {
         db.collection("user").document(id_uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful())
-                {
+                if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     id_name = document.getData().get("id_name").toString();
                     id_nickName = document.getData().get("id_nickName").toString();
-                    try{
-                        sub_photoUrl =  document.getData().get("photoUrl").toString();
-                    }catch(Exception e)
-                    {
+                    try {
+                        sub_photoUrl = document.getData().get("photoUrl").toString();
+                    } catch (Exception e) {
 
                     }
                 }
@@ -346,7 +343,84 @@ public class SubActivity extends AppCompatActivity {
             }
         });
 
+        // Append data to 'user - favorites' collection
+        expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
+                int itemType = ExpandableListView.getPackedPositionType(id);
+                boolean retVal = true;
 
+                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    int childPosition = ExpandableListView.getPackedPositionChild(id);
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SubActivity.this);
+                    first = firstGroups.get(groupPosition);
+                    String childname = firstItemGroup.get(firstGroups.get(groupPosition)).get(childPosition).getCountry();
+                    Log.d("아이들 지역", childname);
+
+                    second = first + childname;
+                    third = second;
+
+                    builder.setTitle("즐겨찾기추가").setMessage("즐겨찾기 추가하시겠습니까?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            Snackbar.make(view, "즐겨찾기에 추가되었습니다", Snackbar.LENGTH_SHORT).show();
+                            Log.d("즐겨찾기목록", third);
+
+                            CollectionReference title_content = db.collection("user").document(id_uid).collection("favorites");
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("goodPlace", third);
+                            user.put("strict", first);
+                            user.put("region", second);
+
+                            title_content.document(id_value + third).set(user);
+
+                            db.collection("user").document(id_uid).collection("favorites")
+                                    .document(id_value + third)
+                                    .set(user)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            subExpAdapter1.notifyDataSetChanged();
+                                            // refresh activity
+                                            Intent intent = getIntent();
+                                            finish();
+                                            startActivity(intent);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                        }
+                                    });
+                        }
+                    });
+
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                    return retVal;
+
+                } else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    return retVal;
+
+                } else {
+                    return false;
+                }
+            }
+        });
+
+        // Delete data in 'user - favorites' collection
         expandableListView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
@@ -374,6 +448,7 @@ public class SubActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             subExpAdapter1.notifyDataSetChanged();
+                                            // refresh activity
                                             Intent intent = getIntent();
                                             finish();
                                             startActivity(intent);
@@ -393,7 +468,6 @@ public class SubActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                         }
                     });
-
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
 
@@ -403,90 +477,10 @@ public class SubActivity extends AppCompatActivity {
                     int groupPosition = ExpandableListView.getPackedPositionGroup(id);
                     return retVal;
                 } else {
-
                     return false;
                 }
             }
         });
-
-        expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
-                int itemType = ExpandableListView.getPackedPositionType(id);
-                boolean retVal = true;
-
-                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    int childPosition = ExpandableListView.getPackedPositionChild(id);
-                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SubActivity.this);
-                    first = firstGroups.get(groupPosition);
-                    String childname = firstItemGroup.get(firstGroups.get(groupPosition)).get(childPosition).getCountry();
-                    Log.d("아이들 지역", childname);
-
-                    second = first + childname;
-                    third = second;
-
-                    builder.setTitle("즐겨찾기추가").setMessage("즐겨찾기 추가하시겠습니까?");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @RequiresApi(api = Build.VERSION_CODES.O)
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            Snackbar.make(view, "즐겨찾기에 추가되었습니다", Snackbar.LENGTH_SHORT).show();
-                            Log.d("즐겨찾기목록", third);
-
-
-                            CollectionReference title_content = db.collection("user").document(id_uid).collection("favorites");
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("goodPlace", third);
-                            user.put("strict", first);
-                            user.put("region", second);
-
-                            title_content.document(id_value + third).set(user);
-
-                            db.collection("user").document(id_uid).collection("favorites")
-                                    .document(id_value + third)
-                                    .set(user)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            subExpAdapter1.notifyDataSetChanged();
-                                            Intent intent = getIntent();
-                                            finish();
-                                            startActivity(intent);
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                        }
-                                    });
-                        }
-                    });
-
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-
-                    return retVal;
-
-                } else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-
-                    return retVal;
-
-                } else {
-                    return false;
-                }
-            }
-        });
-
-
         ImageView draw_cancel = (ImageView) findViewById(R.id.draw_cancel);
         draw_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -494,7 +488,6 @@ public class SubActivity extends AppCompatActivity {
                 drawerLayout.closeDrawers();
             }
         });
-
         drawerLayout.setDrawerListener(listener);
         drawerView.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
@@ -503,9 +496,6 @@ public class SubActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
-
     }
 
     @Override
@@ -518,7 +508,6 @@ public class SubActivity extends AppCompatActivity {
             finish();
         }
     }
-
 
     public void InitializeDrawList() {
         firstGroups.add("강남구");
@@ -551,7 +540,7 @@ public class SubActivity extends AppCompatActivity {
         goodGroups.add("즐겨찾기 목록");
     }
 
-
+    // BottomNavigationView
     private BottomNavigationView.OnNavigationItemSelectedListener navListner =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -605,10 +594,9 @@ public class SubActivity extends AppCompatActivity {
 
         Intent intent = new Intent(SubActivity.this, MyService.class);
         intent.setAction("startForeground");
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(intent);
-
-        }else{
+        } else {
             startService(intent);
         }
     }

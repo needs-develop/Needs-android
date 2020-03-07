@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="479dp"
-        android:layout_marginBottom="107dp"
+        android:layout_marginBottom="90dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="7sp"
         android:text="하나하나의 아이디어가 모여\n지역사회가 발전할 수 있습니다!"

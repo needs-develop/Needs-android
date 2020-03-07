@@ -41,8 +41,8 @@ import static com.tester.Needs.Main.SubActivity.point;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)
+// 자유게시판 글쓰기
 public class FavoritesWrite extends AppCompatActivity {
-
     Button free_ok;
     Button free_cancel;
 
@@ -142,13 +142,9 @@ public class FavoritesWrite extends AppCompatActivity {
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-
-
                 }
-
             }
         });
-
         free_cancel = findViewById(R.id.free_cancel);
         free_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,8 +166,7 @@ public class FavoritesWrite extends AppCompatActivity {
         user.put("good_num", 0);
         user.put("id_nickName", id_nickName);
 
-
-        //try {
+        // Append data to the 'freeData' collection
         Log.d("docName출력 1번테스트", "docName출력 1번테스트");
         db.collection("freeData")
                 .add(user)
@@ -204,6 +199,7 @@ public class FavoritesWrite extends AppCompatActivity {
     }
 
     public void execute() {
+        // Append data to the 'user - write' collection
         Map<String, Object> toUser = new HashMap<>();
         toUser.put("data", "freedata");
         toUser.put("document_name", documentName);
@@ -216,7 +212,7 @@ public class FavoritesWrite extends AppCompatActivity {
                     }
                 });
 
-
+        // Append data to the 'user - pointHistory' collection
         Map<String, Object> member = new HashMap<>();
         member.put("day", fullDay);
         member.put("point", "-2");
@@ -253,7 +249,6 @@ public class FavoritesWrite extends AppCompatActivity {
         }
     }
      */
-
 
     public class BackgroundThread extends Thread {
         volatile boolean running = false;

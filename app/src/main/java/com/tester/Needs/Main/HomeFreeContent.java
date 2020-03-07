@@ -56,6 +56,7 @@ import static com.tester.Needs.Main.SubActivity.point;
 import static com.tester.Needs.Main.SubActivity.pointLimit;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
+// 홈 화면 자유게시판 게시물 편집
 public class HomeFreeContent extends AppCompatActivity {
     TextView content_title;
     TextView content_content;
@@ -99,7 +100,7 @@ public class HomeFreeContent extends AppCompatActivity {
 
     String second = String.valueOf(nowAsiaSeoul.getSecond());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
 
 
     private ProgressDialog mProgressDialog;
@@ -118,30 +119,30 @@ public class HomeFreeContent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         MultiDex.install(this);
         setContentView(R.layout.activity_free_content);
-        stopService(new Intent(HomeFreeContent.this,MyService.class));
-        if(month.length() == 1){
+        stopService(new Intent(HomeFreeContent.this, MyService.class));
+        if (month.length() == 1) {
             month = "0" + month;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
-        if(day1.length() ==1){
+        if (day1.length() == 1) {
             day1 = "0" + day1;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
 
         if (hour.length() == 1) {
             hour = "0" + hour;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (minute.length() == 1) {
             minute = "0" + minute;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (second.length() == 1) {
             second = "0" + second;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         Intent intent = getIntent();
@@ -182,7 +183,7 @@ public class HomeFreeContent extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         writer_uid = document.getData().get("id_uid").toString();
-                        Log.d("writer_uid체크",writer_uid);
+                        Log.d("writer_uid체크", writer_uid);
                     }
                 }
             }
@@ -353,7 +354,7 @@ public class HomeFreeContent extends AppCompatActivity {
 
 
                     user.put("goodBoolean", true);
-                    user.put("id_uid",id_uid);
+                    user.put("id_uid", id_uid);
 
                     content_heart.setImageResource(R.raw.heart);
                     num = Integer.parseInt(goodNum);
@@ -426,9 +427,9 @@ public class HomeFreeContent extends AppCompatActivity {
                     toUserInfo.put("value", "freedata");
                     toUserInfo.put("document_name", documentName);
                     toUserInfo.put("day", fullDay);
-                    toUserInfo.put("writer",id_nickName);
+                    toUserInfo.put("writer", id_nickName);
 
-                    if(!writer_uid.equals(id_uid)) {
+                    if (!writer_uid.equals(id_uid)) {
                         db.collection("user").document(writer_uid).collection("action")
                                 .add(toUserInfo)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -529,16 +530,16 @@ public class HomeFreeContent extends AppCompatActivity {
                         user.put("writerReply", id_nickName);
                         user.put("timeReply", fullDay);
                         user.put("data_doc", documentName);
-                        user.put("id_uid",id_uid);
+                        user.put("id_uid", id_uid);
 
                         Map<String, Object> toUserInfo = new HashMap<>();
                         toUserInfo.put("data", "data");
                         toUserInfo.put("value", "freedata");
                         toUserInfo.put("document_name", documentName);
                         toUserInfo.put("day", fullDay);
-                        toUserInfo.put("writer",id_nickName);
+                        toUserInfo.put("writer", id_nickName);
 
-                        if(!writer_uid.equals(id_uid)) {
+                        if (!writer_uid.equals(id_uid)) {
                             db.collection("user").document(writer_uid).collection("action")
                                     .add(toUserInfo)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -742,7 +743,7 @@ public class HomeFreeContent extends AppCompatActivity {
         toUser.put("contentReply", content_reply);
         toUser.put("timeReply", fullDay);
         toUser.put("document_name", documentName);
-        toUser.put("data","freedata");
+        toUser.put("data", "freedata");
 
         userInfo.document(id_uid).collection("reply").document(r_documentName)
                 .set(toUser);

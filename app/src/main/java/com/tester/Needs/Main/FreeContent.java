@@ -55,6 +55,7 @@ import static com.tester.Needs.Main.SubActivity.point;
 import static com.tester.Needs.Main.SubActivity.pointLimit;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
+// 자유게시판 게시물 편집
 public class FreeContent extends AppCompatActivity {
     TextView content_title;
     TextView content_content;
@@ -98,7 +99,7 @@ public class FreeContent extends AppCompatActivity {
 
     String second = String.valueOf(nowAsiaSeoul.getSecond());
 
-    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+    String fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
 
     private ProgressDialog mProgressDialog;
     private BackgroundThread mBackThread;
@@ -116,32 +117,32 @@ public class FreeContent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         MultiDex.install(this);
         setContentView(R.layout.activity_free_content);
-        stopService(new Intent(FreeContent.this,MyService.class));
+        stopService(new Intent(FreeContent.this, MyService.class));
 
-        
-        if(month.length() == 1){
+
+        if (month.length() == 1) {
             month = "0" + month;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
-        if(day1.length() ==1){
+        if (day1.length() == 1) {
             day1 = "0" + day1;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
 
         if (hour.length() == 1) {
             hour = "0" + hour;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (minute.length() == 1) {
             minute = "0" + minute;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
         if (second.length() == 1) {
             second = "0" + second;
-            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute+":"+second;
+            fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
 
@@ -183,12 +184,13 @@ public class FreeContent extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         writer_uid = document.getData().get("id_uid").toString();
-                        Log.d("writer_uid체크",writer_uid);
+                        Log.d("writer_uid체크", writer_uid);
                     }
                 }
             }
         });
 
+        // Determining the status of a heart after checking whether I liked this article
         //좋아요 버튼을 누르는것에 대한 data를 boolean을 이용해서 세팅해준다.
         final DocumentReference docRef = db.collection("freeData").document(documentName)
                 .collection("like").document(id_value + "like");
@@ -213,7 +215,7 @@ public class FreeContent extends AppCompatActivity {
         if (presentBoolean) {
             content_heart.setImageResource(R.raw.heart);
             Log.d("하트의색깔", "빨간색");
-        } else if (!presentBoolean) {
+        } else {
             content_heart.setImageResource(R.raw.bin_heart);
             Log.d("하트의색깔", "빈색");
         }
@@ -227,13 +229,15 @@ public class FreeContent extends AppCompatActivity {
                         document(documentName).collection("like");
                 Map<String, Object> user = new HashMap<>();
 
-                if (presentBoolean == true) {
+                if (presentBoolean) { // presentBoolean(heart)
                     int numCompare = Integer.parseInt(pointLimit);
                     if (numCompare > 0) {
+                        // Recover 1 point limit to cancel the heart
                         int number = Integer.parseInt(pointLimit);
                         number = number + 1;
                         pointLimit = Integer.toString(number);
 
+                        // Collect 1 point to cancel the heart
                         int number2 = Integer.parseInt(point);
                         number2 = number2 - 1;
                         point = Integer.toString(number2);
@@ -248,6 +252,7 @@ public class FreeContent extends AppCompatActivity {
                                         "id_point", point
                                 );
 
+                        // Append data to the 'user - pointHistory' collection
                         Map<String, Object> member = new HashMap<>();
                         member.put("day", fullDay);
                         member.put("point", "-1");
@@ -262,6 +267,8 @@ public class FreeContent extends AppCompatActivity {
                                     }
                                 });
                     }
+
+                    // Update to heart without clicking
                     content_heart.setImageResource(R.raw.bin_heart);
                     num = Integer.parseInt(goodNum);
                     num = num - 1;
@@ -287,6 +294,7 @@ public class FreeContent extends AppCompatActivity {
                             });
                     //////////////////////////////////data update//////////////////////////////////////////
 
+                    // Delete data in 'user - like' collection
                     db.collection("user").document(id_uid).collection("like")
                             .document(documentName)
                             .delete()
@@ -300,6 +308,7 @@ public class FreeContent extends AppCompatActivity {
                                 public void onFailure(@NonNull Exception e) {
                                 }
                             });
+                    // Delete data in 'freeData - like' collection
                     db.collection("freeData").document(documentName)
                             .collection("like").document(id_value + "like")
                             .delete()
@@ -315,7 +324,7 @@ public class FreeContent extends AppCompatActivity {
                             });
 
                     ///////////////////////////////////////data delete by user/////////////////////////////////////
-                } else {
+                } else { // !presentBoolean(bin_heart)
                     int numCompare = Integer.parseInt(pointLimit);
                     if (numCompare > 0) {
                         int number = Integer.parseInt(pointLimit);
@@ -351,9 +360,9 @@ public class FreeContent extends AppCompatActivity {
                                 });
                     }
 
-
+                    // Update to heart clicking
                     user.put("goodBoolean", true);
-                    user.put("id_uid",id_uid);
+                    user.put("id_uid", id_uid);
                     content_heart.setImageResource(R.raw.heart);
                     num = Integer.parseInt(goodNum);
                     num = num + 1;
@@ -377,6 +386,8 @@ public class FreeContent extends AppCompatActivity {
 
                                 }
                             });
+
+                    // Append data to the 'freeData - like' collection
                     goodBoolean.document(id_value + "like").set(user);
                     db.collection("freeData").document(documentName)
                             .collection("like").document(id_value + "like")
@@ -394,9 +405,9 @@ public class FreeContent extends AppCompatActivity {
 
                     ///////////////////////goodBoolean 값 세팅///////////////////////////
 
+                    // Append data to the 'user - like' collection
                     CollectionReference userInfo = db.collection("user");
                     Map<String, Object> toUser = new HashMap<>();
-
                     toUser.put("data", "freedata");
                     toUser.put("document_name", documentName);
 
@@ -419,15 +430,16 @@ public class FreeContent extends AppCompatActivity {
                                 }
                             });
 
+                    // Append data to the 'user - action' collection
                     Map<String, Object> toUserInfo = new HashMap<>();
                     toUserInfo.put("data", "data");
                     toUserInfo.put("value", "freedata");
                     toUserInfo.put("document_name", documentName);
                     toUserInfo.put("day", fullDay);
-                    toUserInfo.put("writer",id_nickName);
+                    toUserInfo.put("writer", id_nickName);
 
 
-                    if(!writer_uid.equals(id_uid)) {
+                    if (!writer_uid.equals(id_uid)) {
                         db.collection("user").document(writer_uid).collection("action")
                                 .add(toUserInfo)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -438,14 +450,10 @@ public class FreeContent extends AppCompatActivity {
                                 });
                     }
                     ///////////////user로 데이터 쏴주기/////////////////////////////////////////////
-
-
                 }
-
             }
 
         });
-
 
         final DocumentReference documentReference = db.collection("freeData")
                 .document(documentName);
@@ -465,7 +473,7 @@ public class FreeContent extends AppCompatActivity {
                     }
                 });
 
-
+        // Get data from 'freeData - reply' collection
         db.collection("freeData").document(documentName)
                 .collection("reply").orderBy("timeReply", Query.Direction.DESCENDING)
                 .get()
@@ -489,12 +497,9 @@ public class FreeContent extends AppCompatActivity {
         btn_reply = findViewById(R.id.btn_free_reply);
         edit_reply = findViewById(R.id.edit_free_reply);
 
-
-
         /*
         수정하기 버튼도 만들기 update 기능 만들기
         */
-
 
         btn_reply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -510,23 +515,15 @@ public class FreeContent extends AppCompatActivity {
                         String comment_reply = edit_reply.getText().toString().trim();
                         content_reply = comment_reply;
 
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("contentReply", comment_reply);
-                        user.put("writerReply", id_nickName);
-                        user.put("timeReply", fullDay);
-                        user.put("data_doc", documentName);
-                        user.put("id_uid",id_uid);
-
-
+                        // Append data to the 'user - action' collection
                         Map<String, Object> toUserInfo = new HashMap<>();
                         toUserInfo.put("data", "data");
                         toUserInfo.put("value", "freedata");
                         toUserInfo.put("document_name", documentName);
                         toUserInfo.put("day", fullDay);
-                        toUserInfo.put("writer",id_nickName);
+                        toUserInfo.put("writer", id_nickName);
 
-
-                        if(!writer_uid.equals(id_uid)) {
+                        if (!writer_uid.equals(id_uid)) {
                             db.collection("user").document(writer_uid).collection("action")
                                     .add(toUserInfo)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -536,7 +533,15 @@ public class FreeContent extends AppCompatActivity {
                                         }
                                     });
                         }
-                        //try {
+
+                        // Append data to the 'freeData - reply' collection
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("contentReply", comment_reply);
+                        user.put("writerReply", id_nickName);
+                        user.put("timeReply", fullDay);
+                        user.put("data_doc", documentName);
+                        user.put("id_uid", id_uid);
+
                         db.collection("freeData").document(documentName)
                                 .collection("reply")
                                 .add(user)
@@ -579,7 +584,7 @@ public class FreeContent extends AppCompatActivity {
             }
         });
 
-
+        // Delete reply
         list_reply.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -595,7 +600,7 @@ public class FreeContent extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if (r_writer.equals(id_nickName)) {
-
+                            // Delete data in 'user - reply' collection
                             db.collection("user").document(id_uid).collection("reply").document(conId + title + content)
                                     .delete()
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -604,6 +609,7 @@ public class FreeContent extends AppCompatActivity {
                                         }
                                     });
 
+                            // Delete freeData in 'data - reply' collection
                             db.collection("freeData").document(documentName)
                                     .collection("reply").document(r_docName)
                                     .delete()
@@ -624,8 +630,9 @@ public class FreeContent extends AppCompatActivity {
                                         }
                                     });
                             /////////////////////////////////////////////////////////////////////////////////////////////
+
                             ///////////////////////////////////user쪽에서 reply삭제///////////////////////////////
-                        } else {
+                        } else { // If the writer and accessor are not the same
                             Toast.makeText(getApplicationContext(), "권한이 없습니다", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -644,7 +651,7 @@ public class FreeContent extends AppCompatActivity {
         });
     }
 
-
+    // Delete post button
     public void OnClickHandler(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -654,37 +661,61 @@ public class FreeContent extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                if (id_uid.equals(writer_uid)) {
+                if (id_uid.equals(writer_uid)) { // If the writer and accessor are the same
                     Log.d("성공 id값", id_value);
                     Log.d("성공 conId값", conId);
+
                     mProgressDialog = ProgressDialog.show(FreeContent.this, "Loading"
                             , "게시물을 삭제하는 중입니다..");
+
+                    // Get data from 'freeData - reply' collection
                     db.collection("freeData").document(documentName)
                             .collection("reply").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String delete_uid = document.getData().get("id_uid").toString();
-                                db.collection("user").document(delete_uid).collection("reply").document(document.getId()).delete();
-                                db.collection("freeData").document(documentName)
-                                        .collection("reply").document(document.getId()).delete();
+                                // Delete data in 'user - reply' collection
+                                db.collection("user")
+                                        .document(delete_uid)
+                                        .collection("reply")
+                                        .document(document.getId())
+                                        .delete();
+                                // Delete data in 'freeData - reply' collection
+                                db.collection("freeData")
+                                        .document(documentName)
+                                        .collection("reply")
+                                        .document(document.getId())
+                                        .delete();
                             }
                         }
                     });
+
+                    // Get data in 'freeData - like' collection
                     db.collection("freeData").document(documentName)
                             .collection("like").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String delete_uid = document.getData().get("id_uid").toString();
-                                db.collection("user").document(delete_uid).collection("like").document(documentName).delete();
-                                db.collection("freeData").document(documentName)
-                                        .collection("like").document(document.getId()).delete();
+                                // Delete data in 'user - like' collection
+                                db.collection("user")
+                                        .document(delete_uid)
+                                        .collection("like")
+                                        .document(documentName)
+                                        .delete();
+                                // Delete data in 'freeData - like' collection
+                                db.collection("freeData")
+                                        .document(documentName)
+                                        .collection("like")
+                                        .document(document.getId())
+                                        .delete();
                             }
                         }
                     });
 
                     /////////////////////////////////////////////////////////////////////////////////////////////
+                    // Delete data in 'user - write' collection
                     db.collection("user").document(id_uid).collection("write").document(documentName)
                             .delete()
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -693,6 +724,7 @@ public class FreeContent extends AppCompatActivity {
                                 }
                             });
 
+                    // Run job after 1 second
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         public void run() {
@@ -710,8 +742,9 @@ public class FreeContent extends AppCompatActivity {
                             mProgressDialog.dismiss();
                         }
                     }, 1000);
+
                     ///////////////////////////////////user쪽에서 reply삭제///////////////////////////////
-                } else {
+                } else { // If the writer and accessor are not the same
                     Log.d("실패 id값", id_value);
                     Log.d("실패 conId값", conId);
                     Toast.makeText(getApplicationContext(), "권한이 없습니다", Toast.LENGTH_SHORT).show();
@@ -729,17 +762,18 @@ public class FreeContent extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public void execute() {
+    public void execute() { // reply
         CollectionReference userInfo = db.collection("user");
         Map<String, Object> toUser = new HashMap<>();
         toUser.put("contentReply", content_reply);
         toUser.put("timeReply", fullDay);
         toUser.put("document_name", documentName);
-        toUser.put("data","freedata");
+        toUser.put("data", "freedata");
 
         userInfo.document(id_uid).collection("reply").document(r_documentName)
                 .set(toUser);
 
+        // Append data to 'user - reply' collection
         db.collection("user").document(id_uid).collection("reply")
                 .document(r_documentName)
                 .set(toUser)

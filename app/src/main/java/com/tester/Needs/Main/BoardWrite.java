@@ -39,10 +39,10 @@ import static com.tester.Needs.Main.SubActivity.point;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)
+// 지역게시판 글쓰기
 public class BoardWrite extends AppCompatActivity {
     Button btn_ok;
     Button btn_cancel;
-
 
 
     EditText btn_content_write;
@@ -82,7 +82,6 @@ public class BoardWrite extends AppCompatActivity {
         setContentView(R.layout.activity_board_write);
 
         //getActivity = BoardWrite.class;
-
 
 
         Intent intent = getIntent();
@@ -166,8 +165,7 @@ public class BoardWrite extends AppCompatActivity {
         user.put("good_num", 0);
         user.put("id_nickName", id_nickName);
 
-
-        //try {
+        // Append data to the 'data' collection
         Log.d("docName출력 1번테스트", "docName출력 1번테스트");
         db.collection("data").document("allData").collection(address)
                 .add(user)
@@ -186,7 +184,6 @@ public class BoardWrite extends AppCompatActivity {
         mBackThread = new BackgroundThread();
         mBackThread.setRunning(true);
         mBackThread.start();
-
     }
 
     private void pointDeduction() {
@@ -206,13 +203,13 @@ public class BoardWrite extends AppCompatActivity {
                         "document_name", docName
                 );
 
+        // Append data to the 'user - write' collection
         Log.d("docName출력 4번테스트", "docName출력 4번테스트");
         Map<String, Object> toUser = new HashMap<>();
 
         toUser.put("data", "data");
-        toUser.put("address",address);
+        toUser.put("address", address);
         toUser.put("document_name", docName);
-
 
         db.collection("user").document(id_uid).collection("write").document(docName)
                 .set(toUser)
@@ -222,6 +219,7 @@ public class BoardWrite extends AppCompatActivity {
                     }
                 });
 
+        // Append data to the 'user - pointHistory' collection
         Map<String, Object> member = new HashMap<>();
         member.put("day", fullDay);
         member.put("point", "-2");
@@ -236,7 +234,6 @@ public class BoardWrite extends AppCompatActivity {
                     }
                 });
 
-
         //////////////////////////////touser///////////////////////////////////////////////
 
     }
@@ -250,9 +247,9 @@ public class BoardWrite extends AppCompatActivity {
     protected void onUserLeaveHint() {
         Intent intent = new Intent(BoardWrite.this, MyService.class);
         intent.setAction("startForeground");
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(intent);
-        }else{
+        } else {
             startService(intent);
         }
     }
@@ -298,7 +295,7 @@ public class BoardWrite extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            Toast.makeText(BoardWrite.this, " 글이작성되었습니다", Toast.LENGTH_SHORT).show();
+            Toast.makeText(BoardWrite.this, " 글이 작성되었습니다", Toast.LENGTH_SHORT).show();
 
             Intent intent_write = new Intent(BoardWrite.this, BoardActivity.class);
             BoardWrite.this.finish();
