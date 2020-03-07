@@ -15,7 +15,7 @@
             android:id="@+id/btn_position"
             android:layout_width="46dp"
             android:layout_height="28dp"
-            android:src="@raw/position"></ImageView>
+            android:src="@drawable/icons8_placemarker"/>
 
         <TextView
             android:id="@+id/text_position"
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/content"
             android:text="지역을 입력하세요"
-            android:textSize="15dp"></TextView>
+            android:textSize="15sp"/>
 
     </LinearLayout>
 

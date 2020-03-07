@@ -152,12 +152,10 @@
 
             <ImageView
                 android:id="@+id/free_write"
-                android:layout_width="40dp"
-                android:layout_height="35dp"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
                 android:layout_gravity="end"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:src="@drawable/write" />
+                android:src="@drawable/icons8_edit" />
         </LinearLayout>
     </LinearLayout>
 

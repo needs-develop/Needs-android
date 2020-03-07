@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/content"
             android:text="제목"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/content_title"
@@ -29,7 +29,7 @@
             android:background="@drawable/corner_shape"
             android:fontFamily="@font/content"
             android:text="제목입니다"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/content"
             android:text="작성자:"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/content_id"
@@ -53,7 +53,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/content"
             android:text="작성자입니다"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/content"
             android:text="내용:"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/content_content"
@@ -79,28 +79,28 @@
             android:background="@drawable/corner_shape"
             android:fontFamily="@font/content"
             android:text="내용입니다"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp">
+            android:layout_marginStart="0dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/content"
                 android:text="작성일시:"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/content_day"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/content"
                 android:text="작성일입니다"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -124,7 +124,7 @@
                 android:id="@+id/content_heart"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@raw/heart"></ImageView>
+                android:src="@raw/heart"/>
 
             <TextView
                 android:id="@+id/content_good"
@@ -132,14 +132,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:gravity="bottom"
-                android:text="갯수"></TextView>
+                android:text="개수"/>
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
-                android:src="@raw/hits"></ImageView>
+                android:layout_marginStart="10dp"
+                android:src="@drawable/icons8_search"/>
 
             <TextView
                 android:id="@+id/content_visitnum"
@@ -148,7 +148,7 @@
                 android:layout_gravity="bottom"
                 android:fontFamily="@font/content_content"
                 android:text="조회수"
-                android:textSize="15dp"></TextView>
+                android:textSize="15sp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -174,7 +174,7 @@
                 android:hint="댓글을 입력하세요"
                 android:inputType="text|textMultiLine"
                 android:minLines="1"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/btn_reply"

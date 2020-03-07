@@ -19,8 +19,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/content"
-            android:text="회원 가입"
-            android:textSize="30dp" />
+            android:text="회원가입"
+            android:textSize="30sp" />
 
     </LinearLayout>
 
@@ -34,8 +34,8 @@
             android:id="@+id/btnHelp"
             android:layout_width="100sp"
             android:layout_height="40sp"
-            android:layout_gravity="right"
-            app:srcCompat="@drawable/help" />
+            android:layout_gravity="end"
+            app:srcCompat="@drawable/icons8_help" />
 
         <EditText
             android:id="@+id/name"

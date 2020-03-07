@@ -139,8 +139,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
-                android:src="@raw/hits"></ImageView>
+                android:layout_marginStart="10dp"
+                android:src="@drawable/icons8_search"/>
 
             <TextView
                 android:id="@+id/content_homeFree_visitnum"

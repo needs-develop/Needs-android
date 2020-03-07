@@ -149,10 +149,10 @@
 
             <ImageView
                 android:id="@+id/btn_write"
-                android:layout_width="83dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
                 android:layout_gravity="end"
-                android:src="@drawable/write" />
+                android:src="@drawable/icons8_edit" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

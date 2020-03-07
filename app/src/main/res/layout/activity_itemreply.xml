@@ -53,7 +53,7 @@
                     android:id="@+id/delete_reply"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
-                    app:srcCompat="@drawable/trash" />
+                    app:srcCompat="@drawable/icons8_trash" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

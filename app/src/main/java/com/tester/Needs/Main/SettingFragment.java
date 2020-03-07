@@ -173,8 +173,8 @@ public class SettingFragment extends Fragment {
         userenabled.setText(providerList);
 
         settingAdapter = new SettingAdapter();
-        settingAdapter.addItem(new SettingItem("포인트내역", R.drawable.history));
-        settingAdapter.addItem(new SettingItem("포인트전환", R.drawable.money));
+        settingAdapter.addItem(new SettingItem("포인트내역", R.drawable.icons8_history));
+        settingAdapter.addItem(new SettingItem("포인트전환", R.drawable.icons8_money));
 
         gridView.setAdapter(settingAdapter);
 
@@ -193,9 +193,9 @@ public class SettingFragment extends Fragment {
         });
 
         settingAdapterInfo = new SettingAdapter();
-        settingAdapterInfo.addItem(new SettingItem("내가쓴글", R.drawable.write));
-        settingAdapterInfo.addItem(new SettingItem("공감한글", R.drawable.w_heart));
-        settingAdapterInfo.addItem(new SettingItem("댓글쓴글", R.drawable.comment));
+        settingAdapterInfo.addItem(new SettingItem("내가쓴글", R.drawable.icons8_edit));
+        settingAdapterInfo.addItem(new SettingItem("공감한글", R.drawable.heart));
+        settingAdapterInfo.addItem(new SettingItem("댓글쓴글", R.drawable.icons8_comment));
 
         gridViewInfo.setAdapter(settingAdapterInfo);
 
@@ -217,9 +217,9 @@ public class SettingFragment extends Fragment {
         });
 
         settingAdapterUser = new SettingAdapter();
-        settingAdapterUser.addItem(new SettingItem("로그아웃", R.drawable.logout));
-        settingAdapterUser.addItem(new SettingItem("계정삭제", R.drawable.userdelete));
-        settingAdapterUser.addItem(new SettingItem("계정설정", R.drawable.user_img));
+        settingAdapterUser.addItem(new SettingItem("로그아웃", R.drawable.icons8_logout));
+        settingAdapterUser.addItem(new SettingItem("계정삭제", R.drawable.icons8_userdelete));
+        settingAdapterUser.addItem(new SettingItem("계정설정", R.drawable.icons8_userimg));
 
         gridViewUser.setAdapter(settingAdapterUser);
 
