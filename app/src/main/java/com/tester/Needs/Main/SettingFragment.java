@@ -294,6 +294,7 @@ public class SettingFragment extends Fragment {
                         }
                     }
                 });
+        /*
         db.collection("user").document(id_uid).collection("myRegion").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -308,7 +309,7 @@ public class SettingFragment extends Fragment {
                             Log.d("태그", "Error getting documents: ", task.getException());
                         }
                     }
-                });
+                });*/
 
         db.collection("user").document(id_uid).collection("write").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

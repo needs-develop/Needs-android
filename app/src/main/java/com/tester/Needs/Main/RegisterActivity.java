@@ -82,11 +82,13 @@ public class RegisterActivity extends AppCompatActivity {
     String pw;
     String rname;
     String changeDupName;
+    String id_region;
+    String strict_register;
 
     int dupliNum = 0;
     int compnum = 2;
 
-    private EditText nameTxt, usernameTxt, emailTxt, passwordTxt;
+    private EditText nameTxt, usernameTxt, emailTxt, passwordTxt, strictTxt;
     private Button btn_duplicate;
     private ImageView btnHelp;
 
@@ -136,6 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
         usernameTxt = (EditText) findViewById(R.id.username);// 닉네임
         emailTxt = (EditText) findViewById(R.id.email);
         passwordTxt = (EditText) findViewById(R.id.password);// 비밀번호
+        strictTxt = (EditText) findViewById(R.id.strict_register); //동이름 입력
 
         btn_duplicate = findViewById(R.id.btn_duplicate);
         btn_duplicate.setOnClickListener(new View.OnClickListener() {
@@ -243,6 +246,7 @@ public class RegisterActivity extends AppCompatActivity {
         String username = usernameTxt.getText().toString();
         String email = emailTxt.getText().toString();
         String password = passwordTxt.getText().toString();
+        strict_register = strictTxt.getText().toString();
 
         if (name.isEmpty()) {
             nameTxt.setError("이름이 필요합니다");
@@ -285,6 +289,17 @@ public class RegisterActivity extends AppCompatActivity {
             passwordTxt.requestFocus();
             return;
         }
+        if(strict_register.replaceAll("[^a-zA-Zㄱ-힣]", "").length()!=6)
+        {
+            strictTxt.setError("유효한 동의형식을 입력하세요");
+            strictTxt.requestFocus();
+            return;
+        }
+        if (strict_register.isEmpty()) {
+            strictTxt.setError("동 이름이필요합니다");
+            strictTxt.requestFocus();
+            return;
+        }
         registerStart(email, name, password, username);
     }
 
@@ -298,10 +313,14 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             currentUser = mAuth.getCurrentUser();
 
+                            strict_register = strict_register.replaceAll(" ","");
+                            strict_register = strict_register.replaceAll("\\p{Z}", "");
+
                             id_value = email;
                             id_uid = mAuth.getUid();
                             id_name = name;
                             id_nickName = realname;
+                            id_region = strict_register;
 
                             Log.d("닉네임 출력", id_nickName);
 
@@ -312,6 +331,7 @@ public class RegisterActivity extends AppCompatActivity {
                             user.put("id_uid", id_uid);
                             user.put("id_name", id_name);
                             user.put("id_nickName", id_nickName);
+                            user.put("id_region",id_region);
                             user.put("id_point", point);
 
                             title_content.document(id_uid).set(user);

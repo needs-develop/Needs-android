@@ -426,7 +426,6 @@ public class SubActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
                 int itemType = ExpandableListView.getPackedPositionType(id);
                 boolean retVal = true;
-
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     final int childPosition = ExpandableListView.getPackedPositionChild(id);
                     int groupPosition = ExpandableListView.getPackedPositionGroup(id);

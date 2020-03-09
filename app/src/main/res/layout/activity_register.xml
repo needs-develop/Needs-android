@@ -93,6 +93,15 @@
             android:background="@drawable/input_field"
             android:fontFamily="@font/content"
             android:hint="Password" />
+        <EditText
+            android:id="@+id/strict_register"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/content"
+            android:hint="지역이름:ex)강남구 청담동" />
 
 
         <Button
