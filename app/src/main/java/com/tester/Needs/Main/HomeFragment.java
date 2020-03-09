@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -39,14 +40,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.FavoritesList;
 import com.tester.Needs.R;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tester.Needs.Main.MainActivity.id_nickName;
 import static com.tester.Needs.Main.MainActivity.id_uid;
 import static com.tester.Needs.Main.MainActivity.id_value;
 import static com.tester.Needs.Main.SubActivity.address;
 import static com.tester.Needs.Main.SubActivity.fragmentNumber;
+import static com.tester.Needs.Main.SubActivity.point;
+import static com.tester.Needs.Main.SubActivity.pointLimit;
 
 public class HomeFragment extends Fragment {
     ListView home_listView;
@@ -65,9 +72,18 @@ public class HomeFragment extends Fragment {
     int home = 1;
     int free = 1;
 
+    String pointDay = null;
+
     static String positionName = null;
     static boolean text_boolean = false;
     private View v;
+
+    Instant nowUtc = Instant.now();
+    ZoneId asiaSeoul = ZoneId.of("Asia/Seoul");
+    ZonedDateTime nowAsiaSeoul = ZonedDateTime.ofInstant(nowUtc, asiaSeoul);
+
+    String day1 = String.valueOf(nowAsiaSeoul.getDayOfMonth());
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +104,51 @@ public class HomeFragment extends Fragment {
         text_position = v.findViewById(R.id.text_position);
         btn_position = v.findViewById(R.id.btn_position);
 
+        /////////////포인트값 설정 임의로 이동//////////////////
+        DocumentReference doc = db.collection("user").document(id_uid)
+                .collection("pointDay").document(id_value + "pointDay");
+        doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    pointDay = document.getData().get("pointDay").toString();
+                    pointLimit = document.getData().get("pointLimit").toString();
+
+                    int pointDay1 = Integer.parseInt(pointDay);
+                    int pointDay2 = Integer.parseInt(day1);
+
+                    Log.d("point확인", pointDay + pointLimit);
+
+                    if (pointDay1 == pointDay2) {
+                        Log.d("update", "update를 하지 않습니다");
+                    } else {
+                        Log.d("update", "update를 합니다");
+                        db.collection("user").document(id_uid).collection("pointDay")
+                                .document(id_value + "pointDay")
+                                .update(
+                                        "pointDay", day1,
+                                        "pointLimit", "5"
+                                );
+                    }
+                }
+            }
+        });
+        DocumentReference docR = db.collection("user").document(id_uid);
+        docR.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    point = document.getData().get("id_point").toString();
+                    Log.d("포인트 출력", id_nickName + point);
+                }
+            }
+        });
+
+        ////////포인트값 설정 임의로 이동///////////////////////
 
         // Get data from 'user - my_Region' collection
         db.collection("user").document(id_uid)

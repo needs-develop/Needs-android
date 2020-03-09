@@ -226,6 +226,8 @@ public class SubActivity extends AppCompatActivity {
 
         //////////////////////포인트 가져오기/////////////////////////////////////////
 
+        /*임의로 homefragment로 이동
+
         DocumentReference doc = db.collection("user").document(id_uid)
                 .collection("pointDay").document(id_value + "pointDay");
         doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -268,6 +270,8 @@ public class SubActivity extends AppCompatActivity {
                 }
             }
         });
+        */
+
 
         ///////////////////포인트 가져오기////////////////////////////////////////////////
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

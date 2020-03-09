@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private Button btn2_test; //회원가입
     private String str;
 
-    static String id_value;
+    static public String id_value;
     static String id_uid;
     static String id_nickName;
     static String id_name;

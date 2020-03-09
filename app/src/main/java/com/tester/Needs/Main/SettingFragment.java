@@ -54,6 +54,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.R;
+import com.tester.Needs.Service.MyService;
 import com.tester.Needs.Setting.MyLikeActivity;
 import com.tester.Needs.Setting.MyReplyActivity;
 import com.tester.Needs.Setting.MyWriteActivity;
@@ -229,6 +230,7 @@ public class SettingFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     Toast.makeText(getApplicationContext(), "로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
+                    id_value = null;
                     signOut();
                 } else if (position == 1) {
                     deleteAccountClicked();
@@ -404,6 +406,7 @@ public class SettingFragment extends Fragment {
                                 }
                             }
                         });
+
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
 
