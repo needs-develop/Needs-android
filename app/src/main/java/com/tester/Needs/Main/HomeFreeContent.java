@@ -229,40 +229,40 @@ public class HomeFreeContent extends AppCompatActivity {
                 Map<String, Object> user = new HashMap<>();
 
                 if (presentBoolean == true) {
-                    int numCompare = Integer.parseInt(pointLimit);
-                    if (numCompare > 0) {
-                        int number = Integer.parseInt(pointLimit);
-                        number = number + 1;
-                        pointLimit = Integer.toString(number);
-
-                        int number2 = Integer.parseInt(point);
-                        number2 = number2 - 1;
-                        point = Integer.toString(number2);
-
-                        db.collection("user").document(id_uid).collection("pointDay")
-                                .document(id_value + "pointDay")
-                                .update(
-                                        "pointLimit", pointLimit
-                                );
-                        db.collection("user").document(id_uid)
-                                .update(
-                                        "id_point", point
-                                );
-
-                        Map<String, Object> member = new HashMap<>();
-                        member.put("day", fullDay);
-                        member.put("point", "-1");
-                        member.put("type", "취소");
-
-                        db.collection("user").document(id_uid).collection("pointHistory")
-                                .add(member)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-
-                                    }
-                                });
-                    }
+//                    int numCompare = Integer.parseInt(pointLimit);
+//                    if (numCompare > 0) {
+//                        int number = Integer.parseInt(pointLimit);
+//                        number = number + 1;
+//                        pointLimit = Integer.toString(number);
+//
+//                        int number2 = Integer.parseInt(point);
+//                        number2 = number2 - 1;
+//                        point = Integer.toString(number2);
+//
+//                        db.collection("user").document(id_uid).collection("pointDay")
+//                                .document(id_value + "pointDay")
+//                                .update(
+//                                        "pointLimit", pointLimit
+//                                );
+//                        db.collection("user").document(id_uid)
+//                                .update(
+//                                        "id_point", point
+//                                );
+//
+//                        Map<String, Object> member = new HashMap<>();
+//                        member.put("day", fullDay);
+//                        member.put("point", "-1");
+//                        member.put("type", "취소");
+//
+//                        db.collection("user").document(id_uid).collection("pointHistory")
+//                                .add(member)
+//                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                                    @Override
+//                                    public void onSuccess(DocumentReference documentReference) {
+//
+//                                    }
+//                                });
+//                    }
 
                     content_heart.setImageResource(R.raw.bin_heart);
                     num = Integer.parseInt(goodNum);
@@ -317,41 +317,40 @@ public class HomeFreeContent extends AppCompatActivity {
                             });
                     ///////////////////////////////////////data delete by user/////////////////////////////////////
                 } else {
-                    int numCompare = Integer.parseInt(pointLimit);
-                    if (numCompare > 0) {
-                        int number = Integer.parseInt(pointLimit);
-                        number = number - 1;
-                        pointLimit = Integer.toString(number);
-
-                        int number2 = Integer.parseInt(point);
-                        number2 = number2 + 1;
-                        point = Integer.toString(number2);
-
-                        db.collection("user").document(id_uid).collection("pointDay")
-                                .document(id_value + "pointDay")
-                                .update(
-                                        "pointLimit", pointLimit
-                                );
-                        db.collection("user").document(id_uid)
-                                .update(
-                                        "id_point", point
-                                );
-
-                        Map<String, Object> member = new HashMap<>();
-                        member.put("day", fullDay);
-                        member.put("point", "+1");
-                        member.put("type", "획득");
-
-                        db.collection("user").document(id_uid).collection("pointHistory")
-                                .add(member)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-
-                                    }
-                                });
-                    }
-
+//                    int numCompare = Integer.parseInt(pointLimit);
+//                    if (numCompare > 0) {
+//                        int number = Integer.parseInt(pointLimit);
+//                        number = number - 1;
+//                        pointLimit = Integer.toString(number);
+//
+//                        int number2 = Integer.parseInt(point);
+//                        number2 = number2 + 1;
+//                        point = Integer.toString(number2);
+//
+//                        db.collection("user").document(id_uid).collection("pointDay")
+//                                .document(id_value + "pointDay")
+//                                .update(
+//                                        "pointLimit", pointLimit
+//                                );
+//                        db.collection("user").document(id_uid)
+//                                .update(
+//                                        "id_point", point
+//                                );
+//
+//                        Map<String, Object> member = new HashMap<>();
+//                        member.put("day", fullDay);
+//                        member.put("point", "+1");
+//                        member.put("type", "획득");
+//
+//                        db.collection("user").document(id_uid).collection("pointHistory")
+//                                .add(member)
+//                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                                    @Override
+//                                    public void onSuccess(DocumentReference documentReference) {
+//
+//                                    }
+//                                });
+//                    }
 
                     user.put("goodBoolean", true);
                     user.put("id_uid", id_uid);
@@ -562,7 +561,7 @@ public class HomeFreeContent extends AppCompatActivity {
 
 
                         mProgressDialog = ProgressDialog.show(HomeFreeContent.this, "Loading"
-                                , "댓글작성중입니다..");
+                                , "댓글 작성중입니다..");
                         mBackThread = new BackgroundThread();
                         mBackThread.setRunning(true);
                         mBackThread.start();

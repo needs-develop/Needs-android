@@ -115,8 +115,8 @@ public class FavoritesWrite extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                int compareNum = Integer.parseInt(pointNum);
-                if (compareNum >= 2) {
+//                int compareNum = Integer.parseInt(pointNum);
+//                if (compareNum >= 2) {
                     free_content_write = findViewById(R.id.free_content_write);
                     free_title_write = findViewById(R.id.free_title_write);
 
@@ -129,24 +129,22 @@ public class FavoritesWrite extends AppCompatActivity {
                     } else {
                         registerStart();
                     }
-                } else {
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(FavoritesWrite.this);
-
-                    builder.setTitle("등록불가").setMessage("포인트가 부족합니다");
-
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }
+//                } else {
+//
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(FavoritesWrite.this);
+//
+//                    builder.setTitle("등록불가").setMessage("포인트가 부족합니다");
+//
+//                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int id) {
+//                        }
+//                    });
+//                    AlertDialog alertDialog = builder.create();
+//                    alertDialog.show();
+//                }
             }
         });
-
-        // finish activity
         free_cancel = findViewById(R.id.free_cancel);
         free_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +155,7 @@ public class FavoritesWrite extends AppCompatActivity {
     }
 
     private void registerStart() {
-        pointDeduction();
+//        pointDeduction();
 
         Map<String, Object> user = new HashMap<>();
         user.put("title", title);
@@ -189,16 +187,16 @@ public class FavoritesWrite extends AppCompatActivity {
         mBackThread.start();
     }
 
-    private void pointDeduction() {
-        int number2 = Integer.parseInt(pointNum);
-        number2 = number2 - 2;
-        point = Integer.toString(number2);
-
-        db.collection("user").document(id_uid)
-                .update(
-                        "id_point", point
-                );
-    }
+//    private void pointDeduction() {
+//        int number2 = Integer.parseInt(pointNum);
+//        number2 = number2 - 2;
+//        point = Integer.toString(number2);
+//
+//        db.collection("user").document(id_uid)
+//                .update(
+//                        "id_point", point
+//                );
+//    }
 
     public void execute() {
         // Append data to the 'user - write' collection
@@ -214,27 +212,26 @@ public class FavoritesWrite extends AppCompatActivity {
                     }
                 });
 
-        // Append data to the 'user - pointHistory' collection
-        Map<String, Object> member = new HashMap<>();
-        member.put("day", fullDay);
-        member.put("point", "-2");
-        member.put("type", "사용");
-
-        db.collection("user").document(id_uid).collection("pointHistory")
-                .add(member)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-
-                    }
-                });
+//        // Append data to the 'user - pointHistory' collection
+//        Map<String, Object> member = new HashMap<>();
+//        member.put("day", fullDay);
+//        member.put("point", "-2");
+//        member.put("type", "사용");
+//
+//        db.collection("user").document(id_uid).collection("pointHistory")
+//                .add(member)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//
+//                    }
+//                });
         db.collection("freeData").document(documentName)
                 .update(
                         "document_name", documentName
                 );
     }
 
-    // finish activity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
