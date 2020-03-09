@@ -775,10 +775,10 @@ public class HomeFreeContent extends AppCompatActivity {
 
     public void onBackPressed() {
         super.onBackPressed();
-        this.finish();
-//        HomeFreeContent.this.finish();
-//        Intent intent = new Intent(HomeFreeContent.this, SubActivity.class);
-//        startActivity(intent);
+        //this.finish();
+        HomeFreeContent.this.finish();
+       Intent intent = new Intent(HomeFreeContent.this, SubActivity.class);
+       startActivity(intent);
     }
 
     public class BackgroundThread extends Thread {

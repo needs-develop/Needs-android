@@ -518,22 +518,21 @@ public class SubActivity extends AppCompatActivity {
         firstGroups.add("강북구");
         firstGroups.add("강서구");
 
+        gangone.add(new SubList("논현동"));
+        gangone.add(new SubList("신사동"));
         gangone.add(new SubList("청담동"));
-        gangone.add(new SubList("xx동"));
-        gangone.add(new SubList("yy동"));
-        gangone.add(new SubList("zz동"));
 
-        gangtwo.add(new SubList("11동"));
-        gangtwo.add(new SubList("22동"));
-        gangtwo.add(new SubList("33동"));
+        gangtwo.add(new SubList("둔촌동"));
+        gangtwo.add(new SubList("상일동"));
+        gangtwo.add(new SubList("천호동"));
 
-        gangthree.add(new SubList("ㅋㅋ동"));
-        gangthree.add(new SubList("ㅌㅌ동"));
-        gangthree.add(new SubList("ㅊㅊ동"));
+        gangthree.add(new SubList("미아동"));
+        gangthree.add(new SubList("수유동"));
+        gangthree.add(new SubList("우이동"));
 
-        gangfour.add(new SubList("aa동"));
-        gangfour.add(new SubList("bb동"));
-        gangfour.add(new SubList("cc동"));
+        gangfour.add(new SubList("가양동"));
+        gangfour.add(new SubList("등촌동"));
+        gangfour.add(new SubList("방화동"));
 
         firstItemGroup.put(firstGroups.get(0), gangone);
         firstItemGroup.put(firstGroups.get(1), gangtwo);

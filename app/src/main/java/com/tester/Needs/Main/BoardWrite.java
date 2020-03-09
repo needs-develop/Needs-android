@@ -245,17 +245,6 @@ public class BoardWrite extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    @Override
-    protected void onUserLeaveHint() {
-        Intent intent = new Intent(BoardWrite.this, MyService.class);
-        intent.setAction("startForeground");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent);
-        } else {
-            startService(intent);
-        }
-    }
-
     public class BackgroundThread extends Thread {
         volatile boolean running = false;
         int cnt;
