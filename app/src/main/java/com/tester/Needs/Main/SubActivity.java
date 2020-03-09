@@ -318,7 +318,7 @@ public class SubActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 String childname = firstItemGroup.get(firstGroups.get(groupPosition)).get(childPosition).getCountry();
                 Log.d("아이들 지역", childname);
-                address = strict + childname;
+                address = strict +" " +childname;
                 Snackbar.make(v, address + "게시판으로 이동합니다.", Snackbar.LENGTH_SHORT).show();
 
                 finish();
@@ -363,7 +363,7 @@ public class SubActivity extends AppCompatActivity {
                     String childname = firstItemGroup.get(firstGroups.get(groupPosition)).get(childPosition).getCountry();
                     Log.d("아이들 지역", childname);
 
-                    second = first + childname;
+                    second = first + " "+ childname;
                     third = second;
 
                     builder.setTitle("즐겨찾기추가").setMessage("즐겨찾기 추가하시겠습니까?");

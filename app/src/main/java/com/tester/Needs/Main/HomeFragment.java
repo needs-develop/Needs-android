@@ -251,7 +251,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                builder.setTitle("지역등록").setMessage("ex)강남구xx동, 띄어쓰기사용x");
+                builder.setTitle("지역등록").setMessage("ex)강남구 신사동, 띄어쓰기 사용");
                 final EditText et = new EditText(getActivity());
                 builder.setView(et);
 
@@ -270,8 +270,8 @@ public class HomeFragment extends Fragment {
                                 return;
                             }
                             */
-                            test_positionName = test_positionName.replaceAll(" ","");
-                            test_positionName = test_positionName.replaceAll("\\p{Z}", "");
+                            // test_positionName = test_positionName.replaceAll(" ","");
+                            //test_positionName = test_positionName.replaceAll("\\p{Z}", "");
 
                             positionName = test_positionName;
                             text_position.setText(positionName);
@@ -297,8 +297,8 @@ public class HomeFragment extends Fragment {
                                 return;
                             }*/
 
-                            test_positionName = test_positionName.replaceAll(" ","");
-                            test_positionName = test_positionName.replaceAll("\\p{Z}", "");
+                            //test_positionName = test_positionName.replaceAll(" ","");
+                            //test_positionName = test_positionName.replaceAll("\\p{Z}", "");
 
                             positionName = test_positionName;
                             text_position.setText(positionName);

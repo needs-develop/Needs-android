@@ -295,6 +295,12 @@ public class RegisterActivity extends AppCompatActivity {
             strictTxt.requestFocus();
             return;
         }
+        if(strict_register.length()==6)
+        {
+            strictTxt.setError("띄어쓰기를 안했다면 띄어쓰기를해주세요");
+            strictTxt.requestFocus();
+            return;
+        }
         if (strict_register.isEmpty()) {
             strictTxt.setError("동 이름이필요합니다");
             strictTxt.requestFocus();
@@ -313,8 +319,8 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             currentUser = mAuth.getCurrentUser();
 
-                            strict_register = strict_register.replaceAll(" ","");
-                            strict_register = strict_register.replaceAll("\\p{Z}", "");
+                            //strict_register = strict_register.replaceAll(" ","");
+                            //strict_register = strict_register.replaceAll("\\p{Z}", "");
 
                             id_value = email;
                             id_uid = mAuth.getUid();
