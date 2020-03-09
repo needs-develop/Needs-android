@@ -144,6 +144,7 @@ public class BoardWrite extends AppCompatActivity {
             }
         });
 
+        // finish activity
         btn_cancel = findViewById(R.id.btn_cancel);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,6 +239,7 @@ public class BoardWrite extends AppCompatActivity {
 
     }
 
+    // finish activity
     public void onBackPressed() {
         BoardWrite.this.finish();
         super.onBackPressed();

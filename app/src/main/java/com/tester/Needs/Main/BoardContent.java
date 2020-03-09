@@ -809,10 +809,11 @@ public class BoardContent extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        BoardContent.this.finish();
-
-        Intent intent = new Intent(BoardContent.this, BoardActivity.class);
-        startActivity(intent);
+        super.onBackPressed();
+        this.finish();
+//        BoardContent.this.finish();
+//        Intent intent = new Intent(BoardContent.this, BoardActivity.class);
+//        startActivity(intent);
     }
 
     public class BackgroundThread extends Thread {

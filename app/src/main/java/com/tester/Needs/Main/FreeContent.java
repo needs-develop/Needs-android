@@ -803,9 +803,11 @@ public class FreeContent extends AppCompatActivity {
 
     public void onBackPressed() {
         fragmentNumber = 1;
-        FreeContent.this.finish();
-        Intent intent = new Intent(FreeContent.this, SubActivity.class);
-        startActivity(intent);
+        super.onBackPressed();
+        this.finish();
+//        FreeContent.this.finish();
+//        Intent intent = new Intent(FreeContent.this, SubActivity.class);
+//        startActivity(intent);
     }
 
     public class BackgroundThread extends Thread {
