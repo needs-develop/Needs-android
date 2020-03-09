@@ -205,9 +205,12 @@ public class SubActivity extends AppCompatActivity {
             }
         });
 
+        try {
+            id_uid = mAuth.getCurrentUser().getUid();
+            id_value = mAuth.getCurrentUser().getEmail();
+        }catch(Exception e){
 
-        id_uid = mAuth.getCurrentUser().getUid();
-        id_value = mAuth.getCurrentUser().getEmail();
+        }
         db.collection("user").document(id_uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

@@ -253,7 +253,9 @@ public class SettingFragment extends Fragment {
         FirebaseAuth.getInstance().signOut();
         Intent i = new Intent(getContext(), MainActivity.class);
         address = null;
+        getActivity().finish();
         startActivity(i);
+
     }
 
     private void deleteAccountClicked() {
