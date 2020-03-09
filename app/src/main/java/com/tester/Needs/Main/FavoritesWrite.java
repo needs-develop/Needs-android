@@ -145,6 +145,8 @@ public class FavoritesWrite extends AppCompatActivity {
                 }
             }
         });
+
+        // finish activity
         free_cancel = findViewById(R.id.free_cancel);
         free_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,6 +234,7 @@ public class FavoritesWrite extends AppCompatActivity {
                 );
     }
 
+    // finish activity
     @Override
     public void onBackPressed() {
         super.onBackPressed();

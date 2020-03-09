@@ -48,8 +48,8 @@ public class RecordActivity extends AppCompatActivity {
     String goodNum;
     String visitString;
     String documentName;
-    ListView listView ;
-    RecordListAdapter recordListAdapter ;
+    ListView listView;
+    RecordListAdapter recordListAdapter;
     String profile_url = "no";
 
     @Override
@@ -62,138 +62,115 @@ public class RecordActivity extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-
-                try{
+                try { // Get data from 'user - action' collection
                     db.collection("user").document(uid).collection("action").
                             orderBy("day", Query.Direction.DESCENDING).get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    for (QueryDocumentSnapshot document : task.getResult())
-                                    {
-                                        if(document.getData().get("value").toString().equals("data"))
-                                        {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        if (document.getData().get("value").toString().equals("data")) {
                                             findViewById(R.id.record_no_list).setVisibility(View.GONE);
                                             recordList.add(new RecordList(profile_url, document.getData().get("value").toString(),
-                                                    document.getData().get("address").toString(),document.getData().get("document_name").toString(),
-                                                    document.getData().get("writer").toString(),document.getData().get("day").toString()));
-                                            Log.d("test",document.getData().get("day").toString());
+                                                    document.getData().get("address").toString(), document.getData().get("document_name").toString(),
+                                                    document.getData().get("writer").toString(), document.getData().get("day").toString()));
+                                            Log.d("test", document.getData().get("day").toString());
                                             profile_url = "no";
-                                        }
-                                        else if(document.getData().get("value").toString().equals("freedata"))
-                                        {
+                                        } else if (document.getData().get("value").toString().equals("freedata")) {
                                             findViewById(R.id.record_no_list).setVisibility(View.GONE);
                                             recordList.add(new RecordList(profile_url, document.getData().get("value").toString(),
-                                                    "",document.getData().get("document_name").toString(),
-                                                    document.getData().get("writer").toString(),document.getData().get("day").toString()));
-                                            Log.d("test",document.getData().get("day").toString());
+                                                    "", document.getData().get("document_name").toString(),
+                                                    document.getData().get("writer").toString(), document.getData().get("day").toString()));
+                                            Log.d("test", document.getData().get("day").toString());
                                         }
                                         Log.d("사이즈 테스트", String.valueOf(recordList.size()));
                                         profile_url = "no";
                                     }
 
                                     listView = findViewById(R.id.record_listview);
-                                    recordListAdapter = new RecordListAdapter(RecordActivity.this,recordList);
+                                    recordListAdapter = new RecordListAdapter(RecordActivity.this, recordList);
                                     listView.setAdapter(recordListAdapter);
 
-                                    //recordListAdapter.notifyDataSetChanged();
-                                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    // elements do not exist
+                                    if (recordList.size() == 0) {
+                                        findViewById(R.id.record_no_list).setVisibility(View.VISIBLE);
+                                    } else {
+                                        //recordListAdapter.notifyDataSetChanged();
+                                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                // if data equals "data"
+                                                if (recordList.get(position).getData().equals("data")) {
+                                                    db.collection("data").document("allData")
+                                                            .collection(recordList.get(position).getAddress()).document(recordList.get(position).getDocument_name())
+                                                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Intent intent = new Intent(RecordActivity.this, HomeContent.class);
+                                                                DocumentSnapshot document = task.getResult();
+                                                                title = document.getData().get("title").toString();
+                                                                content = document.getData().get("content").toString();
+                                                                day = document.getData().get("day").toString();
+                                                                documentName = document.getData().get("document_name").toString();
+                                                                goodNum = document.getData().get("good_num").toString();
+                                                                visitString = document.getData().get("visit_num").toString();
+                                                                conId = document.getData().get("id_nickName").toString();
 
-                                            if(recordList.get(position).getData().equals("data"))
-                                            {
-                                                db.collection("data").document("allData")
-                                                        .collection(recordList.get(position).getAddress()).document(recordList.get(position).getDocument_name())
-                                                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if(task.isSuccessful())
-                                                        {
-                                                            Intent intent = new Intent(RecordActivity.this,HomeContent.class);
-                                                            DocumentSnapshot document = task.getResult();
-                                                            title = document.getData().get("title").toString();
-                                                            content =  document.getData().get("content").toString();
-                                                            day =  document.getData().get("day").toString();
-                                                            documentName =  document.getData().get("document_name").toString();
-                                                            goodNum =  document.getData().get("good_num").toString();
-                                                            visitString =  document.getData().get("visit_num").toString();
-                                                            conId =  document.getData().get("id_nickName").toString();
-
-                                                            int visitInt = Integer.parseInt(visitString);
-                                                            visitInt = visitInt + 1;
-                                                            visitString = Integer.toString(visitInt);
-
-                                                            intent.putExtra("title", title);
-                                                            intent.putExtra("content", content);
-                                                            intent.putExtra("day", day);
-                                                            intent.putExtra("id", conId);
-                                                            intent.putExtra("good", goodNum);
-                                                            intent.putExtra("visitnum", visitString);
-                                                            intent.putExtra("documentName", documentName);
-                                                            startActivity(intent);
+                                                                intent.putExtra("title", title);
+                                                                intent.putExtra("content", content);
+                                                                intent.putExtra("day", day);
+                                                                intent.putExtra("id", conId);
+                                                                intent.putExtra("good", goodNum);
+                                                                intent.putExtra("visitnum", visitString);
+                                                                intent.putExtra("documentName", documentName);
+                                                                startActivity(intent);
+                                                            }
                                                         }
-                                                    }
-                                                });
-                                            }
-                                            else if(recordList.get(position).getData().equals("freedata"))
-                                            {
-                                                db.collection("freeData").document(recordList.get(position).getDocument_name())
-                                                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if(task.isSuccessful())
-                                                        {
-                                                            Intent intent = new Intent(RecordActivity.this,HomeFreeContent.class);
-                                                            DocumentSnapshot document = task.getResult();
-                                                            title = document.getData().get("title").toString();
-                                                            content =  document.getData().get("content").toString();
-                                                            day =  document.getData().get("day").toString();
-                                                            documentName =  document.getData().get("document_name").toString();
-                                                            goodNum =  document.getData().get("good_num").toString();
-                                                            visitString =  document.getData().get("visit_num").toString();
-                                                            conId =  document.getData().get("id_nickName").toString();
+                                                    });
+                                                }
+                                                // if data equals "freedata"
+                                                else if (recordList.get(position).getData().equals("freedata")) {
+                                                    db.collection("freeData").document(recordList.get(position).getDocument_name())
+                                                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Intent intent = new Intent(RecordActivity.this, HomeFreeContent.class);
+                                                                DocumentSnapshot document = task.getResult();
+                                                                title = document.getData().get("title").toString();
+                                                                content = document.getData().get("content").toString();
+                                                                day = document.getData().get("day").toString();
+                                                                documentName = document.getData().get("document_name").toString();
+                                                                goodNum = document.getData().get("good_num").toString();
+                                                                visitString = document.getData().get("visit_num").toString();
 
-                                                            int visitInt = Integer.parseInt(visitString);
-                                                            visitInt = visitInt + 1;
-                                                            visitString = Integer.toString(visitInt);
-
-                                                            intent.putExtra("title", title);
-                                                            intent.putExtra("content", content);
-                                                            intent.putExtra("day", day);
-                                                            intent.putExtra("id", conId);
-                                                            intent.putExtra("good", goodNum);
-                                                            intent.putExtra("visitnum", visitString);
-                                                            intent.putExtra("documentName", documentName);
-                                                            startActivity(intent);
+                                                                intent.putExtra("title", title);
+                                                                intent.putExtra("content", content);
+                                                                intent.putExtra("day", day);
+                                                                intent.putExtra("id", conId);
+                                                                intent.putExtra("good", goodNum);
+                                                                intent.putExtra("visitnum", visitString);
+                                                                intent.putExtra("documentName", documentName);
+                                                                startActivity(intent);
+                                                            }
                                                         }
-                                                    }
-                                                });
-
+                                                    });
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             });
-
-                }catch (Exception e){
+                } catch (Exception e) {
                 }
             }
-
         }, 500);
-
-        if(recordList.size()==0)
-        {
-            findViewById(R.id.record_no_list).setVisibility(View.VISIBLE);
-        }
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(RecordActivity.this,SubActivity.class);
-        startActivity(intent);
         this.finish();
     }
 }

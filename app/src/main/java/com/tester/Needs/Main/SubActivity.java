@@ -201,7 +201,7 @@ public class SubActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent record_intent = new Intent(SubActivity.this, RecordActivity.class);
                 startActivity(record_intent);
-                SubActivity.this.finish();
+                // SubActivity.this.finish();
             }
         });
 

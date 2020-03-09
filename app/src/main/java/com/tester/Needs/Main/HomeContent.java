@@ -798,9 +798,11 @@ public class HomeContent extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        HomeContent.this.finish();
-        Intent intent = new Intent(HomeContent.this, SubActivity.class);
-        startActivity(intent);
+        super.onBackPressed();
+        this.finish();
+//        HomeContent.this.finish();
+//        Intent intent = new Intent(HomeContent.this, SubActivity.class);
+//        startActivity(intent);
     }
 
     public class BackgroundThread extends Thread {

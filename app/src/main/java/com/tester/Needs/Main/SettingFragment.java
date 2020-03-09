@@ -173,8 +173,8 @@ public class SettingFragment extends Fragment {
         userenabled.setText(providerList);
 
         settingAdapter = new SettingAdapter();
-        settingAdapter.addItem(new SettingItem("포인트내역", R.drawable.icons8_history));
-        settingAdapter.addItem(new SettingItem("포인트전환", R.drawable.icons8_money));
+        settingAdapter.addItem(new SettingItem("포인트 내역", R.drawable.icons8_history));
+        settingAdapter.addItem(new SettingItem("포인트 전환", R.drawable.icons8_money));
 
         gridView.setAdapter(settingAdapter);
 
@@ -193,9 +193,9 @@ public class SettingFragment extends Fragment {
         });
 
         settingAdapterInfo = new SettingAdapter();
-        settingAdapterInfo.addItem(new SettingItem("내가쓴글", R.drawable.icons8_edit));
-        settingAdapterInfo.addItem(new SettingItem("공감한글", R.drawable.heart));
-        settingAdapterInfo.addItem(new SettingItem("댓글쓴글", R.drawable.icons8_comment));
+        settingAdapterInfo.addItem(new SettingItem("내가 쓴 글", R.drawable.icons8_edit));
+        settingAdapterInfo.addItem(new SettingItem("공감한 글", R.drawable.heart));
+        settingAdapterInfo.addItem(new SettingItem("댓글 남긴 글", R.drawable.icons8_comment));
 
         gridViewInfo.setAdapter(settingAdapterInfo);
 

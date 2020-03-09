@@ -4,24 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main.RecordActivity"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    tools:context=".Main.RecordActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/content"
+        android:text="알림"
+        android:textSize="20sp" />
+
     <TextView
         android:id="@+id/record_no_list"
-        android:textSize="30dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:fontFamily="@font/cookierunbold"
-        android:textColor="#A7D2F3"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="게시물을 가져오는중입니다"
-        >
-    </TextView>
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/cookierunbold"
+        android:gravity="center"
+        android:text="알림이 없습니다"
+        android:textSize="15sp"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/record_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
