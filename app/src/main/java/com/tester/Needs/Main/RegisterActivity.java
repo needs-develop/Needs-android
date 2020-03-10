@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -83,7 +86,6 @@ public class RegisterActivity extends AppCompatActivity {
     String rname;
     String changeDupName;
     String id_region;
-    String strict_register;
 
     int dupliNum = 0;
     int compnum = 2;
@@ -99,6 +101,19 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // AutoCompleteTextView
+        String[] items = {"강남구 논현동", "강남구 신사동", "강남구 청담동", "강동구 둔촌동", "강동구 상일동", "강동구 천호동", "강북구 미아동",
+                "강북구 수유동", "강북구 우이동", "강서구 가양동", "강서구 등촌동", "강서구 방화동"};
+
+        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+
+        autoCompleteTextView.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, items));
+
+        // Avoid screen obstruction by lowering the keyboard
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        // Admob
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -117,7 +132,6 @@ public class RegisterActivity extends AppCompatActivity {
             fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
-
         if (hour.length() == 1) {
             hour = "0" + hour;
             fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
@@ -133,12 +147,11 @@ public class RegisterActivity extends AppCompatActivity {
             fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
         mAuth = FirebaseAuth.getInstance();
-
         nameTxt = (EditText) findViewById(R.id.name);
         usernameTxt = (EditText) findViewById(R.id.username);// 닉네임
         emailTxt = (EditText) findViewById(R.id.email);
         passwordTxt = (EditText) findViewById(R.id.password);// 비밀번호
-        strictTxt = (EditText) findViewById(R.id.strict_register); //동이름 입력
+        strictTxt = autoCompleteTextView; // 동 이름 입력
 
         btn_duplicate = findViewById(R.id.btn_duplicate);
         btn_duplicate.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +208,7 @@ public class RegisterActivity extends AppCompatActivity {
                         compnum = 2;
                         usernameTxt.requestFocus();
                     }
-                } catch (Exception e) {
+                } catch (Exception ignored) {
 
                 }
                 if (compnum == 2) {
@@ -246,8 +259,9 @@ public class RegisterActivity extends AppCompatActivity {
         String username = usernameTxt.getText().toString();
         String email = emailTxt.getText().toString();
         String password = passwordTxt.getText().toString();
-        strict_register = strictTxt.getText().toString();
+        String strict = strictTxt.getText().toString();
 
+        // Regex
         if (name.isEmpty()) {
             nameTxt.setError("이름이 필요합니다");
             nameTxt.requestFocus();
@@ -289,27 +303,25 @@ public class RegisterActivity extends AppCompatActivity {
             passwordTxt.requestFocus();
             return;
         }
-        if(strict_register.replaceAll("[^a-zA-Zㄱ-힣]", "").length()!=6)
-        {
-            strictTxt.setError("유효한 동의형식을 입력하세요");
+        if (strict.replaceAll("[^a-zA-Zㄱ-힣]", "").length() != 6) {
+            strictTxt.setError("유효한 동의 형식을 입력하세요");
             strictTxt.requestFocus();
             return;
         }
-        if(strict_register.length()==6)
-        {
-            strictTxt.setError("띄어쓰기를 안했다면 띄어쓰기를해주세요");
+        if (strict.length() == 6) {
+            strictTxt.setError("띄어쓰기를 안했다면 띄어쓰기를 해주세요");
             strictTxt.requestFocus();
             return;
         }
-        if (strict_register.isEmpty()) {
-            strictTxt.setError("동 이름이필요합니다");
+        if (strict.isEmpty()) {
+            strictTxt.setError("동 이름이 필요합니다");
             strictTxt.requestFocus();
             return;
         }
-        registerStart(email, name, password, username);
+        registerStart(email, name, password, username, strict);
     }
 
-    private void registerStart(final String email, final String name, String password, final String realname) {
+    private void registerStart(final String email, final String name, String password, final String realname, final String strict) {
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -326,7 +338,7 @@ public class RegisterActivity extends AppCompatActivity {
                             id_uid = mAuth.getUid();
                             id_name = name;
                             id_nickName = realname;
-                            id_region = strict_register;
+                            id_region = strict;
 
                             Log.d("닉네임 출력", id_nickName);
 
@@ -337,7 +349,7 @@ public class RegisterActivity extends AppCompatActivity {
                             user.put("id_uid", id_uid);
                             user.put("id_name", id_name);
                             user.put("id_nickName", id_nickName);
-                            user.put("id_region",id_region);
+                            user.put("id_region", id_region);
                             user.put("id_point", point);
 
                             title_content.document(id_uid).set(user);

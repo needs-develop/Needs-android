@@ -48,6 +48,18 @@
             android:hint="이름"
             android:inputType="textPersonName" />
 
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/input_field"
+            android:completionHint="검색어를 입력하세요."
+            android:completionThreshold="2"
+            android:fontFamily="@font/content"
+            android:hint="지역 이름 ex)강남구 청담동" />
+
         <EditText
             android:id="@+id/username"
             android:layout_width="310dp"
@@ -93,15 +105,6 @@
             android:background="@drawable/input_field"
             android:fontFamily="@font/content"
             android:hint="Password" />
-        <EditText
-            android:id="@+id/strict_register"
-            android:layout_width="310dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/input_field"
-            android:fontFamily="@font/content"
-            android:hint="지역이름:ex)강남구 청담동" />
 
 
         <Button
