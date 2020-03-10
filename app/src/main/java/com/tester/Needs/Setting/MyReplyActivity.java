@@ -248,7 +248,7 @@ public class MyReplyActivity extends AppCompatActivity {
                     });
                 }
             }
-        }, 1000);
+        }, 2000);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
