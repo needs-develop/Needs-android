@@ -221,6 +221,7 @@ public class BoardActivity extends AppCompatActivity {
                                     intent2.putExtra("good", goodNum);
                                     intent2.putExtra("visitnum", visitString);
                                     intent2.putExtra("documentName", document_name);
+                                    BoardActivity.this.finish();
                                     startActivity(intent2);
                                 }
                             });
@@ -253,6 +254,7 @@ public class BoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BoardActivity.this, BoardWrite.class);
+                BoardActivity.this.finish();
                 startActivity(intent);
             }
         });

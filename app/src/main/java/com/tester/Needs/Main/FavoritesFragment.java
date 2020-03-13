@@ -227,6 +227,7 @@ public class FavoritesFragment extends Fragment {
                                     intent.putExtra("good", goodNum);
                                     intent.putExtra("visitnum", visitString);
                                     intent.putExtra("documentName", documentName);
+                                    getActivity().finish();
                                     startActivity(intent);
                                 }
                             });
