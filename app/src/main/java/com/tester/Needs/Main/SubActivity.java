@@ -295,7 +295,7 @@ public class SubActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                goodone.add(new SubList(document.getData().get("goodPlace").toString()));
+                                goodone.add(new SubList(document.getData().get("region").toString()));
                             }
                             goodItemGroup.put(goodGroups.get(0), goodone);
                             expandableListView1.setAdapter(subExpAdapter1);
@@ -379,8 +379,6 @@ public class SubActivity extends AppCompatActivity {
 
                             CollectionReference title_content = db.collection("user").document(id_uid).collection("favorites");
                             Map<String, Object> user = new HashMap<>();
-                            user.put("goodPlace", third);
-                            user.put("strict", first);
                             user.put("region", second);
 
                             title_content.document(id_value + third).set(user);
@@ -435,7 +433,7 @@ public class SubActivity extends AppCompatActivity {
                 boolean retVal = true;
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     final int childPosition = ExpandableListView.getPackedPositionChild(id);
-                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    final int groupPosition = ExpandableListView.getPackedPositionGroup(id);
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(SubActivity.this);
 
@@ -453,8 +451,9 @@ public class SubActivity extends AppCompatActivity {
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
+                                            //goodItemGroup.remove(subExpAdapter1.getChild(groupPosition,childPosition));
                                             subExpAdapter1.notifyDataSetChanged();
-                                            // refresh activity
+                                            //refresh activity
                                             Intent intent = getIntent();
                                             finish();
                                             startActivity(intent);

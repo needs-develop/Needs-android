@@ -135,6 +135,7 @@ public class BoardWrite extends AppCompatActivity {
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
                         }
                     });
                     AlertDialog alertDialog = builder.create();
@@ -149,7 +150,9 @@ public class BoardWrite extends AppCompatActivity {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(BoardWrite.this,BoardActivity.class);
                 finish();
+                startActivity(intent);
             }
         });
     }
@@ -167,15 +170,12 @@ public class BoardWrite extends AppCompatActivity {
         user.put("id_nickName", id_nickName);
 
         // Append data to the 'data' collection
-        Log.d("docName출력 1번테스트", "docName출력 1번테스트");
         db.collection("data").document("allData").collection(address)
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d("docName출력 2번테스트", "docName출력 2번테스트");
                         docName = documentReference.getId();
-                        Log.d("docName출력 5번테스트", "docName출력 5번테스트" + docName);
                         execute();
                     }
                 });
@@ -241,7 +241,9 @@ public class BoardWrite extends AppCompatActivity {
 
     // finish activity
     public void onBackPressed() {
-        BoardWrite.this.finish();
+        Intent intent = new Intent(BoardWrite.this,BoardActivity.class);
+        finish();
+        startActivity(intent);
         super.onBackPressed();
     }
 
