@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="10dp"
+    android:gravity="center"
+    android:padding="9dp"
     android:weightSum="7">
 
     <TextView
@@ -13,22 +14,28 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:fontFamily="@font/librarystyle"
+        android:layout_gravity="center"
         android:gravity="center"
         android:text="1" />
 
     <TextView
+        android:ellipsize="middle"
+        android:singleLine="true"
         android:id="@+id/btn_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_weight="2.8"
         android:fontFamily="@font/librarystyle"
         android:text="제목" />
 
     <TextView
+        android:maxLines="2"
         android:id="@+id/btn_writer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.6"
+        android:layout_gravity="center"
         android:fontFamily="@font/librarystyle"
         android:gravity="center"
         android:text="id" />
@@ -39,10 +46,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.6"
         android:fontFamily="@font/librarystyle"
+        android:layout_gravity="center"
         android:gravity="center"
         android:text="day" />
 
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/btn_visitnum"
         android:layout_width="20dp"
         android:layout_height="wrap_content"
