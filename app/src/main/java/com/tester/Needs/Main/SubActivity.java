@@ -130,6 +130,8 @@ public class SubActivity extends AppCompatActivity {
     public static int record_count = 0;
 
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,6 +297,7 @@ public class SubActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+
                                 goodone.add(new SubList(document.getData().get("region").toString()));
                             }
                             goodItemGroup.put(goodGroups.get(0), goodone);
@@ -374,8 +377,15 @@ public class SubActivity extends AppCompatActivity {
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            Snackbar.make(view, "즐겨찾기에 추가되었습니다", Snackbar.LENGTH_SHORT).show();
-                            Log.d("즐겨찾기목록", third);
+                            for(int i=0; i<goodone.size();i++)
+                            {
+                                if(  goodone.get(i).getCountry().equals(second))
+                                {
+                                    Snackbar.make(view, "즐겨찾기에 이미 존재합니다", Snackbar.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
+
 
                             CollectionReference title_content = db.collection("user").document(id_uid).collection("favorites");
                             Map<String, Object> user = new HashMap<>();
@@ -389,11 +399,15 @@ public class SubActivity extends AppCompatActivity {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
+                                            Snackbar.make(view, "즐겨찾기에 추가되었습니다", Snackbar.LENGTH_SHORT).show();
+                                            goodone.add(new SubList(second));
+                                            goodItemGroup.put(goodGroups.get(0), goodone);
+                                            expandableListView1.setAdapter(subExpAdapter1);
                                             subExpAdapter1.notifyDataSetChanged();
                                             // refresh activity
-                                            Intent intent = getIntent();
-                                            finish();
-                                            startActivity(intent);
+                                            //Intent intent = getIntent();
+                                            //finish();
+                                            //startActivity(intent);
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -451,12 +465,15 @@ public class SubActivity extends AppCompatActivity {
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            //goodItemGroup.remove(subExpAdapter1.getChild(groupPosition,childPosition));
+
+                                            goodItemGroup.remove(subExpAdapter1.getChild(0,childPosition));
+                                            goodone.remove(childPosition);
+                                            expandableListView1.setAdapter(subExpAdapter1);
                                             subExpAdapter1.notifyDataSetChanged();
                                             //refresh activity
-                                            Intent intent = getIntent();
-                                            finish();
-                                            startActivity(intent);
+                                            //Intent intent = getIntent();
+                                            //finish();
+                                            //startActivity(intent);
                                         }
                                     })
 
