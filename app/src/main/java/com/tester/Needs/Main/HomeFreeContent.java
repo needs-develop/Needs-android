@@ -589,7 +589,7 @@ public class HomeFreeContent extends AppCompatActivity {
 
         list_reply.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 r_writer = list_replyArrayList.get(position).getWriter_reply();
                 r_docName = list_replyArrayList.get(position).getR_doc_reply();
 
@@ -618,16 +618,9 @@ public class HomeFreeContent extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(HomeFreeContent.this, HomeFreeContent.class);
-                                            HomeFreeContent.this.finish();
-                                            intent.putExtra("title", title);
-                                            intent.putExtra("content", content);
-                                            intent.putExtra("day", day);
-                                            intent.putExtra("id", conId);
-                                            intent.putExtra("visitnum", visitNum);
-                                            intent.putExtra("good", goodNum);
-                                            intent.putExtra("documentName", documentName);
-                                            startActivity(intent);
+                                            list_replyArrayList.remove(position);
+                                            list_reply.setAdapter(replyListAdapter);
+                                            replyListAdapter.notifyDataSetChanged();
                                         }
                                     });
                             /////////////////////////////////////////////////////////////////////////////////////////////
@@ -771,6 +764,10 @@ public class HomeFreeContent extends AppCompatActivity {
                 .update(
                         "reply_doc", r_documentName
                 );
+        edit_reply.setText(null);
+        list_replyArrayList.add(new ReplyList(content_reply,id_nickName,fullDay,documentName,r_documentName));
+        list_reply.setAdapter(replyListAdapter);
+        replyListAdapter.notifyDataSetChanged();
     }
 
     public void onBackPressed() {
@@ -823,6 +820,7 @@ public class HomeFreeContent extends AppCompatActivity {
                 }
             }
             Toast.makeText(getApplicationContext(), "댓글이 등록되었습니다", Toast.LENGTH_SHORT).show();
+            /*
             HomeFreeContent.this.finish();
             Intent intent2 = new Intent(HomeFreeContent.this, HomeFreeContent.class);
             intent2.putExtra("title", title);
@@ -833,6 +831,8 @@ public class HomeFreeContent extends AppCompatActivity {
             intent2.putExtra("good", goodNum);
             intent2.putExtra("documentName", documentName);
             startActivity(intent2);
+
+             */
         }
 
     };
