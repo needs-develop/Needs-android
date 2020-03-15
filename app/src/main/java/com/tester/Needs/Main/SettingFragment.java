@@ -178,7 +178,7 @@ public class SettingFragment extends Fragment {
         settingAdapter.addItem(new SettingItem("포인트 전환", R.drawable.icons8_money));
 
         gridView.setAdapter(settingAdapter);
-
+        gridView.setBackgroundResource(R.drawable.corner_no);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
@@ -199,7 +199,7 @@ public class SettingFragment extends Fragment {
         settingAdapterInfo.addItem(new SettingItem("댓글 남긴 글", R.drawable.icons8_comment));
 
         gridViewInfo.setAdapter(settingAdapterInfo);
-
+        gridViewInfo.setBackgroundResource(R.drawable.corner_no);
         gridViewInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
@@ -223,7 +223,7 @@ public class SettingFragment extends Fragment {
         settingAdapterUser.addItem(new SettingItem("계정설정", R.drawable.icons8_userimg));
 
         gridViewUser.setAdapter(settingAdapterUser);
-
+        gridViewUser.setBackgroundResource(R.drawable.corner_no);
         gridViewUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
