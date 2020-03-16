@@ -231,7 +231,7 @@ public class BoardContent extends AppCompatActivity {
 
                 if (presentBoolean) { // presentBoolean(heart)
                     int numCompare = Integer.parseInt(pointLimit);
-                    if (numCompare > 0) {
+                    if (numCompare < 5) { // maximum pointLimit 5
                         // Recover 1 point limit to cancel the heart
                         int number = Integer.parseInt(pointLimit);
                         number = number + 1;
@@ -326,7 +326,7 @@ public class BoardContent extends AppCompatActivity {
                     ///////////////////////////////////////data delete by user/////////////////////////////////////
                 } else { // !presentBoolean(bin_heart)
                     int numCompare = Integer.parseInt(pointLimit);
-                    if (numCompare > 0) {
+                    if (numCompare > 0) { // minimum pointLimit 0
                         int number = Integer.parseInt(pointLimit);
                         number = number - 1;
                         pointLimit = Integer.toString(number);
@@ -358,7 +358,6 @@ public class BoardContent extends AppCompatActivity {
 
                                     }
                                 });
-
                     }
 
                     // Update to heart clicking
@@ -801,7 +800,7 @@ public class BoardContent extends AppCompatActivity {
                         "reply_doc", r_documentName
                 );
         edit_reply.setText(null);
-        list_replyArrayList.add(new ReplyList(content_reply,id_nickName,fullDay,documentName,r_documentName));
+        list_replyArrayList.add(new ReplyList(content_reply, id_nickName, fullDay, documentName, r_documentName));
         list_reply.setAdapter(replyListAdapter);
         replyListAdapter.notifyDataSetChanged();
     }
