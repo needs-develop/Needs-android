@@ -430,7 +430,7 @@ public class FreeContent extends AppCompatActivity {
                                 }
                             });
 
-                    // Append data to the 'user - action' collection
+                    // Append data to the 'user - action' collection only when an account exists
                     Map<String, Object> toUserInfo = new HashMap<>();
                     toUserInfo.put("data", "data");
                     toUserInfo.put("value", "freedata");
@@ -439,7 +439,7 @@ public class FreeContent extends AppCompatActivity {
                     toUserInfo.put("writer", id_nickName);
 
 
-                    if (!writer_uid.equals(id_uid)) {
+                    if (writer_uid != null && !writer_uid.equals(id_uid)) { // only when an writer's account exists
                         db.collection("user").document(writer_uid).collection("action")
                                 .add(toUserInfo)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -792,7 +792,7 @@ public class FreeContent extends AppCompatActivity {
                         "reply_doc", r_documentName
                 );
         edit_reply.setText(null);
-        list_replyArrayList.add(new ReplyList(content_reply,id_nickName,fullDay,documentName,r_documentName));
+        list_replyArrayList.add(new ReplyList(content_reply, id_nickName, fullDay, documentName, r_documentName));
         list_reply.setAdapter(replyListAdapter);
         replyListAdapter.notifyDataSetChanged();
 
@@ -801,10 +801,10 @@ public class FreeContent extends AppCompatActivity {
     public void onBackPressed() {
         fragmentNumber = 1;
         super.onBackPressed();
- //       this.finish();
-       FreeContent.this.finish();
-       Intent intent = new Intent(FreeContent.this, SubActivity.class);
-       startActivity(intent);
+        //       this.finish();
+        FreeContent.this.finish();
+        Intent intent = new Intent(FreeContent.this, SubActivity.class);
+        startActivity(intent);
     }
 
     public class BackgroundThread extends Thread {

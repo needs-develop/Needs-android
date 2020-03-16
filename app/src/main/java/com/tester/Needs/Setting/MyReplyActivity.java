@@ -128,7 +128,7 @@ public class MyReplyActivity extends AppCompatActivity {
                                             }
                                         });
                             }
-                            // if data equals "data"
+                            // if data equals "freedata"
                             else if (document.getData().get("data").toString().equals("freedata")) {
                                 db.collection("freeData").document(document.getData().get("document_name").toString()).
                                         get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

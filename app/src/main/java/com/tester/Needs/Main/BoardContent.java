@@ -45,6 +45,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.tester.Needs.Main.MainActivity.id_nickName;
 import static com.tester.Needs.Main.MainActivity.id_uid;
@@ -180,8 +181,8 @@ public class BoardContent extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        writer_uid = document.getData().get("id_uid").toString();
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        writer_uid = Objects.requireNonNull(document.getData().get("id_uid")).toString();
                         Log.d("writer_uid체크", writer_uid);
                     }
                 }
@@ -429,7 +430,7 @@ public class BoardContent extends AppCompatActivity {
                                 }
                             });
 
-                    // Append data to the 'user - action' collection
+                    // Append data to the 'user - action' collection only when an account exists
                     Map<String, Object> toUserInfo = new HashMap<>();
                     toUserInfo.put("data", "data");
                     toUserInfo.put("value", "data");
@@ -438,7 +439,7 @@ public class BoardContent extends AppCompatActivity {
                     toUserInfo.put("day", fullDay);
                     toUserInfo.put("writer", id_nickName);
 
-                    if (!writer_uid.equals(id_uid)) {
+                    if (writer_uid != null && !writer_uid.equals(id_uid)) { // only when an writer's account exists
                         db.collection("user").document(writer_uid).collection("action")
                                 .add(toUserInfo)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

@@ -421,6 +421,7 @@ public class HomeFreeContent extends AppCompatActivity {
                                 }
                             });
 
+                    // Append data to the 'user - action' collection only when an account exists
                     Map<String, Object> toUserInfo = new HashMap<>();
                     toUserInfo.put("data", "data");
                     toUserInfo.put("value", "freedata");
@@ -428,7 +429,7 @@ public class HomeFreeContent extends AppCompatActivity {
                     toUserInfo.put("day", fullDay);
                     toUserInfo.put("writer", id_nickName);
 
-                    if (!writer_uid.equals(id_uid)) {
+                    if (writer_uid != null && !writer_uid.equals(id_uid)) { // only when an writer's account exists
                         db.collection("user").document(writer_uid).collection("action")
                                 .add(toUserInfo)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
