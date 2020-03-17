@@ -126,12 +126,16 @@ public class BoardActivity extends AppCompatActivity {
                     BoardActivity.this.finish();
                     Intent intent2 = new Intent(BoardActivity.this, BoardActivity.class);
                     startActivity(intent2);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
                 } else if (position == 2) {
                     spinnerText = "visit_num";
                     spinnerCmpNum = 2;
                     BoardActivity.this.finish();
                     Intent intent = new Intent(BoardActivity.this, BoardActivity.class);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
                 }
                 else if(position == 3)
                 {
@@ -140,6 +144,8 @@ public class BoardActivity extends AppCompatActivity {
                     BoardActivity.this.finish();
                     Intent intent = new Intent(BoardActivity.this, BoardActivity.class);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
                 }
             }
 
