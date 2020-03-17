@@ -731,6 +731,7 @@ public class BoardContent extends AppCompatActivity {
                                             // activity refresh
                                             Intent intent = new Intent(BoardContent.this, BoardActivity.class);
                                             BoardContent.this.finish();
+                                            overridePendingTransition(R.anim.not_move_activity, R.anim.rightout_activity);
                                             startActivity(intent);
                                         }
                                     })
@@ -809,8 +810,9 @@ public class BoardContent extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         //this.finish();
-        BoardContent.this.finish();
         Intent intent = new Intent(BoardContent.this, BoardActivity.class);
+        BoardContent.this.finish();
+        overridePendingTransition(R.anim.not_move_activity, R.anim.rightout_activity);
         startActivity(intent);
     }
 

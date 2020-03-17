@@ -279,6 +279,7 @@ public class SubActivity extends AppCompatActivity {
                 Snackbar.make(v, address + "게시판으로 이동합니다.", Snackbar.LENGTH_SHORT).show();
 
                 finish();
+                overridePendingTransition(R.anim.rightin_activity, R.anim.not_move_activity);
                 startActivity(new Intent(SubActivity.this, BoardActivity.class));
                 return false;
             }
@@ -298,6 +299,7 @@ public class SubActivity extends AppCompatActivity {
                 address = fourth;
 
                 finish();
+                overridePendingTransition(R.anim.rightin_activity, R.anim.not_move_activity);
                 startActivity(new Intent(SubActivity.this, BoardActivity.class));
 
                 return false;

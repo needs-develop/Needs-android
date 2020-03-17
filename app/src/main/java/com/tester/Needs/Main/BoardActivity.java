@@ -40,6 +40,7 @@ import java.util.ArrayList;
 
 import static com.tester.Needs.Main.SubActivity.address;
 //import static com.tester.Needs.Main.SubActivity.getActivity;
+import static com.tester.Needs.Main.SubActivity.fragmentNumber;
 
 public class BoardActivity extends AppCompatActivity {
 
@@ -82,6 +83,8 @@ public class BoardActivity extends AppCompatActivity {
         //getActivity = BoardActivity.class;
 
         final Intent intent = getIntent();
+
+        fragmentNumber = 0;
 
         spinner = findViewById(R.id.spinner);
         spinnerView = findViewById(R.id.spinner_text);
@@ -228,6 +231,7 @@ public class BoardActivity extends AppCompatActivity {
                                     intent2.putExtra("visitnum", visitString);
                                     intent2.putExtra("documentName", document_name);
                                     BoardActivity.this.finish();
+                                    overridePendingTransition(R.anim.rightin_activity, R.anim.not_move_activity);
                                     startActivity(intent2);
                                 }
                             });
@@ -261,7 +265,9 @@ public class BoardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(BoardActivity.this, BoardWrite.class);
                 BoardActivity.this.finish();
+                overridePendingTransition(R.anim.rightin_activity, R.anim.not_move_activity);
                 startActivity(intent);
+
             }
         });
         Intent intent1 = getIntent();
@@ -289,8 +295,9 @@ public class BoardActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        BoardActivity.this.finish();
         Intent intent = new Intent(BoardActivity.this, SubActivity.class);
+        BoardActivity.this.finish();
+        overridePendingTransition(R.anim.not_move_activity, R.anim.rightout_activity);
         startActivity(intent);
     }
 

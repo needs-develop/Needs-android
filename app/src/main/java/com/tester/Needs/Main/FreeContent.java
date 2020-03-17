@@ -120,6 +120,8 @@ public class FreeContent extends AppCompatActivity {
         stopService(new Intent(FreeContent.this, MyService.class));
 
 
+        fragmentNumber = 1;
+
         if (month.length() == 1) {
             month = "0" + month;
             fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
@@ -654,7 +656,6 @@ public class FreeContent extends AppCompatActivity {
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            fragmentNumber = 1;
                                             Toast.makeText(getApplicationContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(FreeContent.this, SubActivity.class);
                                             startActivity(intent);
@@ -727,7 +728,6 @@ public class FreeContent extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        fragmentNumber = 1;
         super.onBackPressed();
         //       this.finish();
         FreeContent.this.finish();

@@ -152,6 +152,7 @@ public class BoardWrite extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(BoardWrite.this,BoardActivity.class);
                 finish();
+                overridePendingTransition(R.anim.not_move_activity, R.anim.rightout_activity);
                 startActivity(intent);
             }
         });
@@ -241,10 +242,11 @@ public class BoardWrite extends AppCompatActivity {
 
     // finish activity
     public void onBackPressed() {
+        super.onBackPressed();
         Intent intent = new Intent(BoardWrite.this,BoardActivity.class);
         finish();
+        overridePendingTransition(R.anim.not_move_activity, R.anim.rightout_activity);
         startActivity(intent);
-        super.onBackPressed();
     }
 
     public class BackgroundThread extends Thread {
@@ -292,6 +294,7 @@ public class BoardWrite extends AppCompatActivity {
 
             Intent intent_write = new Intent(BoardWrite.this, BoardActivity.class);
             BoardWrite.this.finish();
+            overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             startActivity(intent_write);
         }
 
