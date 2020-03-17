@@ -330,6 +330,21 @@ public class SettingFragment extends Fragment {
                         }
                     }
                 });
+        db.collection("user").document(id_uid).collection("action").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("user").document(id_uid).collection("action")
+                                        .document(document.getId()).delete();
+                            }
+
+                        } else {
+                            Log.d("태그", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
         db.collection("user").document(id_uid).collection("like").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
