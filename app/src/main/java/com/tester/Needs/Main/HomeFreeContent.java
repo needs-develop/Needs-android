@@ -64,6 +64,7 @@ public class HomeFreeContent extends AppCompatActivity {
     TextView content_Id;
     TextView content_day;
     TextView content_visitnum;
+    TextView content_count;
 
     ImageView content_heart;
 
@@ -112,13 +113,15 @@ public class HomeFreeContent extends AppCompatActivity {
     int num = 0;
     int num2 = 0;
 
+    int reply_count = 0;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MultiDex.install(this);
-        setContentView(R.layout.activity_free_content);
+        setContentView(R.layout.activity_home_free_content);
         stopService(new Intent(HomeFreeContent.this, MyService.class));
         if (month.length() == 1) {
             month = "0" + month;
@@ -157,13 +160,14 @@ public class HomeFreeContent extends AppCompatActivity {
         documentName = intent.getStringExtra("documentName");
 
 
-        content_title = findViewById(R.id.content_free_title);
-        content_content = findViewById(R.id.content_free_content);
-        content_day = findViewById(R.id.content_free_day);
-        content_good = findViewById(R.id.content_free_good);
-        content_Id = findViewById(R.id.content_free_id);
-        content_visitnum = findViewById(R.id.content_free_visitnum);
-        content_heart = findViewById(R.id.content_free_heart);
+        content_title = findViewById(R.id.content_homeFree_title);
+        content_content = findViewById(R.id.content_homeFree_content);
+        content_day = findViewById(R.id.content_homeFree_day);
+        content_good = findViewById(R.id.content_homeFree_good);
+        content_Id = findViewById(R.id.content_homeFree_id);
+        content_visitnum = findViewById(R.id.content_homeFree_visitnum);
+        content_heart = findViewById(R.id.content_homeFree_heart);
+        content_count = findViewById(R.id.homefreecontent_count);
 
         content_title.setText(title);
         content_content.setText(content);
@@ -173,7 +177,7 @@ public class HomeFreeContent extends AppCompatActivity {
         content_visitnum.setText(visitNum);
 
 
-        list_reply = (ListView) findViewById(R.id.list_free_reply);
+        list_reply = (ListView) findViewById(R.id.list_homeFree_reply);
         list_replyArrayList = new ArrayList<ReplyList>();
 
         db.collection("user").whereEqualTo("id_nickName", conId)
@@ -410,9 +414,11 @@ public class HomeFreeContent extends AppCompatActivity {
                                 list_replyArrayList.add(new ReplyList(document.getData().get("contentReply").toString(),
                                         document.getData().get("writerReply").toString(), document.getData().get("timeReply").toString()
                                         , document.getData().get("data_doc").toString(), document.getData().get("reply_doc").toString()));
+                                reply_count++;
                             }
                             replyListAdapter = new ReplyListAdapter(HomeFreeContent.this, list_replyArrayList);
                             list_reply.setAdapter(replyListAdapter);
+                            content_count.setText(reply_count+" 개");
                             /*
                             list_reply.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
@@ -434,8 +440,8 @@ public class HomeFreeContent extends AppCompatActivity {
                     }
                 });
 
-        btn_reply = findViewById(R.id.btn_free_reply);
-        edit_reply = findViewById(R.id.edit_free_reply);
+        btn_reply = findViewById(R.id.btn_homeFree_reply);
+        edit_reply = findViewById(R.id.edit_homeFree_reply);
 
         /*
         수정하기 버튼도 만들기 update 기능 만들기
@@ -490,7 +496,8 @@ public class HomeFreeContent extends AppCompatActivity {
                                         execute();
                                     }
                                 });
-
+                        reply_count ++;
+                        content_count.setText(reply_count+" 개");
 
                         mProgressDialog = ProgressDialog.show(HomeFreeContent.this, "Loading"
                                 , "댓글 작성중입니다..");
@@ -543,6 +550,8 @@ public class HomeFreeContent extends AppCompatActivity {
                                         }
                                     });
 
+                            reply_count --;
+                            content_count.setText(reply_count+" 개");
                             db.collection("freeData").document(documentName)
                                     .collection("reply").document(r_docName)
                                     .delete()

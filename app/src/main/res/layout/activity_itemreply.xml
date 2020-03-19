@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:id="@+id/writer_reply"
-            android:layout_width="50dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/content"
             android:text="writer" />

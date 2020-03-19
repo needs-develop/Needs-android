@@ -206,7 +206,7 @@ public class FavoritesFragment extends Fragment {
                             free_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Intent intent = new Intent(getActivity(), HomeFreeContent.class);
+                                    Intent intent = new Intent(getActivity(), FreeContent.class);
 
                                     String title = list_itemArrayList.get(position).getBtn_title();
                                     String content = list_itemArrayList.get(position).getContent();

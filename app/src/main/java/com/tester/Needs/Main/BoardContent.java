@@ -64,6 +64,7 @@ public class BoardContent extends AppCompatActivity {
     TextView content_Id;
     TextView content_day;
     TextView content_visitnum;
+    TextView content_count;
 
     ImageView content_heart;
 
@@ -110,6 +111,7 @@ public class BoardContent extends AppCompatActivity {
     int num = 0;
     int num2 = 0;
 
+    int reply_count = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("ResourceType")
@@ -161,6 +163,7 @@ public class BoardContent extends AppCompatActivity {
         content_Id = findViewById(R.id.content_id);
         content_visitnum = findViewById(R.id.content_visitnum);
         content_heart = findViewById(R.id.content_heart);
+        content_count = findViewById(R.id.content_count);
 
         content_title.setText(title);
         content_content.setText(content);
@@ -487,15 +490,16 @@ public class BoardContent extends AppCompatActivity {
                                 list_replyArrayList.add(new ReplyList(document.getData().get("contentReply").toString(),
                                         document.getData().get("writerReply").toString(), document.getData().get("timeReply").toString()
                                         , document.getData().get("data_doc").toString(), document.getData().get("reply_doc").toString()));
+                                reply_count++;
                             }
                             replyListAdapter = new ReplyListAdapter(BoardContent.this, list_replyArrayList);
                             list_reply.setAdapter(replyListAdapter);
+                            content_count.setText(reply_count+" 개");
                         } else {
                             Log.d("태그", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
         btn_reply = findViewById(R.id.btn_reply);
         edit_reply = findViewById(R.id.edit_reply);
 
@@ -556,7 +560,8 @@ public class BoardContent extends AppCompatActivity {
                                         execute();
                                     }
                                 });
-
+                        reply_count ++;
+                        content_count.setText(reply_count+" 개");
                         mProgressDialog = ProgressDialog.show(BoardContent.this, "Loading"
                                 , "댓글작성중입니다..");
 
@@ -608,6 +613,8 @@ public class BoardContent extends AppCompatActivity {
                                         }
                                     });
 
+                            reply_count --;
+                            content_count.setText(reply_count+" 개");
                             // Delete data in 'data - reply' collection
                             db.collection("data").document("allData").collection(address).document(documentName)
                                     .collection("reply").document(r_docName)

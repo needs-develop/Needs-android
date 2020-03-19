@@ -63,6 +63,7 @@ public class HomeContent extends AppCompatActivity {
     TextView content_Id;
     TextView content_day;
     TextView content_visitnum;
+    TextView content_count;
 
     ImageView content_heart;
 
@@ -111,6 +112,7 @@ public class HomeContent extends AppCompatActivity {
     int num = 0;
     int num2 = 0;
 
+    int reply_count = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("ResourceType")
@@ -120,7 +122,7 @@ public class HomeContent extends AppCompatActivity {
         MultiDex.install(this);
         stopService(new Intent(HomeContent.this, MyService.class));
 
-        setContentView(R.layout.activity_board_content);
+        setContentView(R.layout.activity_home_content);
 
         if (month.length() == 1) {
             month = "0" + month;
@@ -159,13 +161,14 @@ public class HomeContent extends AppCompatActivity {
         documentName = intent.getStringExtra("documentName");
 
 
-        content_title = findViewById(R.id.content_title);
-        content_content = findViewById(R.id.content_content);
-        content_day = findViewById(R.id.content_day);
-        content_good = findViewById(R.id.content_good);
-        content_Id = findViewById(R.id.content_id);
-        content_visitnum = findViewById(R.id.content_visitnum);
-        content_heart = findViewById(R.id.content_heart);
+        content_title = findViewById(R.id.content_home_title);
+        content_content = findViewById(R.id.content_home_content);
+        content_day = findViewById(R.id.content_home_day);
+        content_good = findViewById(R.id.content_home_good);
+        content_Id = findViewById(R.id.content_home_id);
+        content_visitnum = findViewById(R.id.content_home_visitnum);
+        content_heart = findViewById(R.id.content_home_heart);
+        content_count = findViewById(R.id.homecontent_count);
 
         content_title.setText(title);
         content_content.setText(content);
@@ -175,7 +178,7 @@ public class HomeContent extends AppCompatActivity {
         content_visitnum.setText(visitNum);
 
 
-        list_reply = (ListView) findViewById(R.id.list_reply);
+        list_reply = (ListView) findViewById(R.id.list_home_reply);
         list_replyArrayList = new ArrayList<ReplyList>();
 
         Intent intent2 = getIntent();
@@ -485,9 +488,11 @@ public class HomeContent extends AppCompatActivity {
                                 list_replyArrayList.add(new ReplyList(document.getData().get("contentReply").toString(),
                                         document.getData().get("writerReply").toString(), document.getData().get("timeReply").toString()
                                         , document.getData().get("data_doc").toString(), document.getData().get("reply_doc").toString()));
+                                reply_count++;
                             }
                             replyListAdapter = new ReplyListAdapter(HomeContent.this, list_replyArrayList);
                             list_reply.setAdapter(replyListAdapter);
+                            content_count.setText(reply_count+" 개");
                             /*
                             list_reply.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
@@ -508,9 +513,8 @@ public class HomeContent extends AppCompatActivity {
                         }
                     }
                 });
-
-        btn_reply = findViewById(R.id.btn_reply);
-        edit_reply = findViewById(R.id.edit_reply);
+        btn_reply = findViewById(R.id.btn_home_reply);
+        edit_reply = findViewById(R.id.edit_home_reply);
 
 
 
@@ -571,7 +575,8 @@ public class HomeContent extends AppCompatActivity {
                                         execute();
                                     }
                                 });
-
+                        reply_count ++;
+                        content_count.setText(reply_count+" 개");
                         mProgressDialog = ProgressDialog.show(HomeContent.this, "Loading"
                                 , "댓글작성중입니다..");
                         mBackThread = new BackgroundThread();
@@ -625,7 +630,8 @@ public class HomeContent extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                         }
                                     });
-
+                            reply_count --;
+                            content_count.setText(reply_count+" 개");
                             db.collection("data").document("allData").collection(address).document(documentName)
                                     .collection("reply").document(r_docName)
                                     .delete()

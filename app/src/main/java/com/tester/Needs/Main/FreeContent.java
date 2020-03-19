@@ -63,6 +63,7 @@ public class FreeContent extends AppCompatActivity {
     TextView content_Id;
     TextView content_day;
     TextView content_visitnum;
+    TextView content_count;
 
     ImageView content_heart;
 
@@ -109,6 +110,8 @@ public class FreeContent extends AppCompatActivity {
 
     int num = 0;
     int num2 = 0;
+
+    int reply_count = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("ResourceType")
@@ -167,6 +170,7 @@ public class FreeContent extends AppCompatActivity {
         content_Id = findViewById(R.id.content_free_id);
         content_visitnum = findViewById(R.id.content_free_visitnum);
         content_heart = findViewById(R.id.content_free_heart);
+        content_count = findViewById(R.id.freecontent_count);
 
         content_title.setText(title);
         content_content.setText(content);
@@ -415,15 +419,16 @@ public class FreeContent extends AppCompatActivity {
                                 list_replyArrayList.add(new ReplyList(document.getData().get("contentReply").toString(),
                                         document.getData().get("writerReply").toString(), document.getData().get("timeReply").toString()
                                         , document.getData().get("data_doc").toString(), document.getData().get("reply_doc").toString()));
+                                reply_count++;
                             }
                             replyListAdapter = new ReplyListAdapter(FreeContent.this, list_replyArrayList);
                             list_reply.setAdapter(replyListAdapter);
+                            content_count.setText(reply_count+" 개");
                         } else {
                             Log.d("태그", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
         btn_reply = findViewById(R.id.btn_free_reply);
         edit_reply = findViewById(R.id.edit_free_reply);
 
@@ -482,7 +487,8 @@ public class FreeContent extends AppCompatActivity {
                                         execute();
                                     }
                                 });
-
+                        reply_count ++;
+                        content_count.setText(reply_count+" 개");
                         mProgressDialog = ProgressDialog.show(FreeContent.this, "Loading"
                                 , "댓글작성중입니다..");
 
@@ -538,7 +544,8 @@ public class FreeContent extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                         }
                                     });
-
+                            reply_count --;
+                            content_count.setText(reply_count+" 개");
                             // Delete freeData in 'data - reply' collection
                             db.collection("freeData").document(documentName)
                                     .collection("reply").document(r_docName)
