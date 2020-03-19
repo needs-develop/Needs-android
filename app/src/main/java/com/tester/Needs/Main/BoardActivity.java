@@ -72,6 +72,7 @@ public class BoardActivity extends AppCompatActivity {
     String top_spinnerValue;
     Spinner top_spinner;
     TextView top_spinnerView;
+    TextView region_header;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -83,6 +84,9 @@ public class BoardActivity extends AppCompatActivity {
         //getActivity = BoardActivity.class;
 
         final Intent intent = getIntent();
+
+        region_header = findViewById(R.id.region_header);
+        region_header.setText((address));
 
         fragmentNumber = 0;
 
