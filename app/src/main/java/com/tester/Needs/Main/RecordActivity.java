@@ -83,7 +83,7 @@ public class RecordActivity extends AppCompatActivity {
                                                     document.getData().get("writer").toString(), document.getData().get("day").toString()));
                                             Log.d("test", document.getData().get("day").toString());
                                         }
-                                        Log.d("사이즈 테스트", String.valueOf(recordList.size()));
+
                                         profile_url = "no";
                                     }
 

@@ -183,6 +183,13 @@ public class SubActivity extends AppCompatActivity {
         btn_notification = findViewById(R.id.btn_notification);
 
         try {
+            id_uid = mAuth.getCurrentUser().getUid();
+            id_value = mAuth.getCurrentUser().getEmail();
+        }catch(Exception e){
+
+        }
+
+        try {
             db.collection("user").document(id_uid).collection("action").get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -190,7 +197,6 @@ public class SubActivity extends AppCompatActivity {
                             record_count = 0;
                             for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                 record_count++;
-                                Log.d("record count", String.valueOf(record_count));
                             }
                         }
                     });
@@ -207,12 +213,6 @@ public class SubActivity extends AppCompatActivity {
             }
         });
 
-        try {
-            id_uid = mAuth.getCurrentUser().getUid();
-            id_value = mAuth.getCurrentUser().getEmail();
-        }catch(Exception e){
-
-        }
         db.collection("user").document(id_uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

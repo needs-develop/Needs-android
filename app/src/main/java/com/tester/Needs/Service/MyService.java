@@ -105,6 +105,7 @@ public class MyService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startForegroundService() {
         uid = user.getUid();
+        Log.d("서비스 실행","서비스 실행");
         /*
         int badgeCount = 1;
         Intent intent_badge = new Intent("android.intent.action.BADGE_COUNT_UPDATE");
@@ -115,7 +116,6 @@ public class MyService extends Service {
         intent_badge.putExtra("badge_count_class_name", "com.tester.Needs.Main.SubActivity");
         sendBroadcast(intent_badge);
         */
-        Log.d("서비스실행", "서비스실행");
 
             timer = new Timer(true);
         final Handler handler = new Handler();
@@ -127,43 +127,14 @@ public class MyService extends Service {
 
                     public void run() {
                         try {
-                            DocumentReference docRef = db.collection("user").document(uid)
-                                    .collection("action").document("write");
-                            Log.d("임의의실행", "성공일떄의");
                             db.collection("user").document(uid).collection("action")
                                     .whereEqualTo("data", "data").addSnapshotListener(new EventListener<QuerySnapshot>() {
                                 @Override
                                 public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                                    if (e != null) {
-                                        Log.w("에러일때", "listen:error", e);
-                                        NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
-                                                .setAutoCancel(true);
-                                        builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
-                                        builder.setSmallIcon(R.drawable.appicon);
-                                        builder.setContentTitle("Needs");
-                                        builder.setContentText("Needs Application이 실행중입니다.");
-                                        builder.setDefaults(Notification.DEFAULT_ALL);
-                                        builder.setWhen(System.currentTimeMillis());
-                                        builder.setAutoCancel(true);
-
-                                        //Class name = getActivity;
-
-                                        Intent notificationIntent = new Intent(MyService.this, SubActivity.class);
-                                        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
-                                        builder.setContentIntent(pendingIntent);
-
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                            manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
-                                        }
-                                        startForeground(1, builder.build());
-                                        builder.setAutoCancel(true);
-                                    }
                                     int count = 0;
 
                                     String document_name = null;
-                                    String data = null;
+                                    String data = "NONE";
                                     String address = null;
 
                                     try {
@@ -171,20 +142,18 @@ public class MyService extends Service {
                                             switch (dc.getType()) {
                                                 case ADDED: {
                                                     count++;
+                                                    Log.d("added 이벤트",count+" "+record_count);
                                                     if (count > record_count) {
+                                                        Log.d("값",count+" "+record_count);
                                                         value = dc.getDocument().getData().get("writer").toString();
                                                         document_name = dc.getDocument().getData().get("document_name").toString();
                                                         data = dc.getDocument().getData().get("value").toString();
+                                                        notification = true;
                                                         try {
                                                             address = dc.getDocument().getData().get("address").toString();
                                                         } catch (Exception errorCase) {
-
                                                         }
-                                                        Log.d("test", value + document_name + data + address);
-
                                                     }
-                                                    Log.d("에러가안난다면", String.valueOf(count));
-                                                    notification = true;
                                                     break;
                                                 }
                                             }
@@ -194,8 +163,8 @@ public class MyService extends Service {
                                     }
 
                                     if (notification == true && record_count < count) {
-
                                         if (data.equals("data")) {
+                                            Log.d("data test","data");
                                             DocumentReference docR = db.collection("data").document("allData")
                                                     .collection(address).document(document_name);
                                             docR.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -255,6 +224,7 @@ public class MyService extends Service {
                                                 }
                                             });
                                         } else if (data.equals("freedata")) {
+                                            Log.d("data test","freedata");
                                             DocumentReference docR = db.collection("freeData").document(document_name);
                                             docR.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                 @Override
@@ -311,8 +281,9 @@ public class MyService extends Service {
                                                 }
                                             });
                                         }
-                                    } else {
-
+                                    }
+                                    else
+                                    {
                                         NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
                                                 .setAutoCancel(true);
                                         builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
@@ -340,30 +311,6 @@ public class MyService extends Service {
                                 }
                             });
                         } catch (Exception e) {
-                            Log.d("임의의실행", "실패일떄의" + uid);
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(MyService.this, "default")
-                                    .setAutoCancel(true);
-                            builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
-                            builder.setSmallIcon(R.drawable.appicon);
-                            builder.setContentTitle("Needs");
-                            builder.setContentText("Needs Application이 실행중입니다.");
-                            builder.setDefaults(Notification.DEFAULT_ALL);
-                            builder.setWhen(System.currentTimeMillis());
-                            builder.setAutoCancel(true);
-
-                            //Class name = getActivity;
-
-                            Intent notificationIntent = new Intent(MyService.this, SubActivity.class);
-                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
-                            builder.setContentIntent(pendingIntent);
-
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
-                            }
-                            startForeground(1, builder.build());
-                            builder.setAutoCancel(true);
                         }
                     }//
                 });
