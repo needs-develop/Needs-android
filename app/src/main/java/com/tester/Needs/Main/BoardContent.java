@@ -73,6 +73,7 @@ public class BoardContent extends AppCompatActivity {
     String day;
     String conId;
     String goodNum;
+    String goodNum_m;
     String visitNum;
     String documentName;
     String r_documentName;
@@ -110,6 +111,7 @@ public class BoardContent extends AppCompatActivity {
 
     int num = 0;
     int num2 = 0;
+    int num_m ;
 
     int reply_count = 0;
 
@@ -216,6 +218,14 @@ public class BoardContent extends AppCompatActivity {
             }
         });
 
+        db.collection("data").document("allData").collection(address).document(documentName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                goodNum_m = documentSnapshot.getData().get("good_num_m").toString();
+            }
+        });
+
         if (presentBoolean) {
             content_heart.setImageResource(R.raw.heart);
             Log.d("하트의색깔", "빨간색");
@@ -279,6 +289,9 @@ public class BoardContent extends AppCompatActivity {
                     goodNum = Integer.toString(num);
                     content_good.setText(goodNum);
                     presentBoolean = false;
+                    num_m = Integer.parseInt(goodNum_m);
+                    num_m = num_m-1;
+                    goodNum_m = Integer.toString(num_m);
                     DocumentReference documentReference = db.collection("data").document("allData")
                             .collection(address).document(documentName);
 
@@ -289,10 +302,12 @@ public class BoardContent extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
 
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
+                            });
+                    documentReference
+                            .update("good_num_m", num_m)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
+                                public void onSuccess(Void aVoid) {
 
                                 }
                             });
@@ -374,6 +389,9 @@ public class BoardContent extends AppCompatActivity {
                     goodNum = Integer.toString(num);
                     content_good.setText(goodNum);
                     presentBoolean = true;
+                    num_m = Integer.parseInt(goodNum_m);
+                    num_m = num_m+1;
+                    goodNum_m = Integer.toString(num_m);
                     DocumentReference documentReference = db.collection("data").document("allData")
                             .collection(address).document(documentName);
 
@@ -384,10 +402,12 @@ public class BoardContent extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
 
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
+                            });
+                    documentReference
+                            .update("good_num_m", num_m)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
+                                public void onSuccess(Void aVoid) {
 
                                 }
                             });
