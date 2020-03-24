@@ -77,6 +77,7 @@ public class HomeContent extends AppCompatActivity {
     String r_documentName;
     String writer_uid;
     String content_reply;
+    String goodNum_m;
 
     ListView list_reply;
     ReplyListAdapter replyListAdapter;
@@ -111,7 +112,7 @@ public class HomeContent extends AppCompatActivity {
 
     int num = 0;
     int num2 = 0;
-
+    int num_m;
     int reply_count = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -196,6 +197,13 @@ public class HomeContent extends AppCompatActivity {
                 }
             }
         });
+        db.collection("data").document("allData").collection(address).document(documentName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                goodNum_m = documentSnapshot.getData().get("good_num_m").toString();
+            }
+        });
 
         //좋아요 버튼을 누르는것에 대한 data를 boolean을 이용해서 세팅해준다.
         DocumentReference docRef = db.collection("data").document("allData").collection(address)
@@ -278,6 +286,9 @@ public class HomeContent extends AppCompatActivity {
                     goodNum = Integer.toString(num);
                     content_good.setText(goodNum);
                     presentBoolean = false;
+                    num_m = Integer.parseInt(goodNum_m);
+                    num_m = num_m-1;
+                    goodNum_m = Integer.toString(num_m);
                     DocumentReference documentReference = db.collection("data").document("allData")
                             .collection(address).document(documentName);
 
@@ -288,10 +299,12 @@ public class HomeContent extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
 
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
+                            });
+                    documentReference
+                            .update("good_num_m", num_m)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
+                                public void onSuccess(Void aVoid) {
 
                                 }
                             });
@@ -371,6 +384,9 @@ public class HomeContent extends AppCompatActivity {
                     goodNum = Integer.toString(num);
                     content_good.setText(goodNum);
                     presentBoolean = true;
+                    num_m = Integer.parseInt(goodNum_m);
+                    num_m = num_m+1;
+                    goodNum_m = Integer.toString(num_m);
                     DocumentReference documentReference = db.collection("data").document("allData")
                             .collection(address).document(documentName);
 
@@ -381,10 +397,12 @@ public class HomeContent extends AppCompatActivity {
                                 public void onSuccess(Void aVoid) {
 
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
+                            });
+                    documentReference
+                            .update("good_num_m", num_m)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
+                                public void onSuccess(Void aVoid) {
 
                                 }
                             });
