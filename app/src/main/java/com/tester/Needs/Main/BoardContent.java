@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +34,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -193,6 +198,47 @@ public class BoardContent extends AppCompatActivity {
                 }
             }
         });
+
+
+
+        /////////////////update like and visit number  /////////////////////////
+        db.collection("data").document("allData").collection(address)
+                .whereEqualTo("document_name", documentName)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        db.collection("data").document("allData").collection(address)
+                                .document(documentName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                goodNum = documentSnapshot.getData().get("good_num").toString();
+                                content_good.setText(goodNum);
+                            }
+                        });
+                    }
+                });
+        /////////////////update like and visit number  /////////////////////////
+        /////////////////update like and visit number  /////////////////////////
+        db.collection("data").document("allData").collection(address)
+                .whereEqualTo("document_name", documentName)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        db.collection("data").document("allData").collection(address)
+                                .document(documentName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                visitNum = documentSnapshot.getData().get("visit_num").toString();
+                                content_visitnum.setText(visitNum);
+                            }
+                        });
+                    }
+                });
+        /////////////////update like and visit number  /////////////////////////
 
 
         // Determining the status of a heart after checking whether I liked this article

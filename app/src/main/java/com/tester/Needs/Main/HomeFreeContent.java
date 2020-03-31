@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -192,6 +195,46 @@ public class HomeFreeContent extends AppCompatActivity {
                 }
             }
         });
+
+
+        /////////////////update like and visit number  /////////////////////////
+        db.collection("freeData")
+                .whereEqualTo("document_name", documentName)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        db.collection("freeData").document(documentName)
+                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                goodNum = documentSnapshot.getData().get("good_num").toString();
+                                content_good.setText(goodNum);
+                            }
+                        });
+                    }
+                });
+        /////////////////update like and visit number  /////////////////////////
+        /////////////////update like and visit number  /////////////////////////
+        db.collection("freeData")
+                .whereEqualTo("document_name", documentName)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        db.collection("freeData").document(documentName)
+                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                visitNum = documentSnapshot.getData().get("visit_num").toString();
+                                content_visitnum.setText(visitNum);
+                            }
+                        });
+                    }
+                });
+        /////////////////update like and visit number  /////////////////////////
 
 
         //좋아요 버튼을 누르는것에 대한 data를 boolean을 이용해서 세팅해준다.
