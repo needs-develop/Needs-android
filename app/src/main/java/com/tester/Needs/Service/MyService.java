@@ -53,6 +53,7 @@ import java.net.URLConnection;
 import java.util.Objects;
 import java.util.Timer;
 
+import static com.tester.Needs.Main.SubActivity.login_state;
 import static com.tester.Needs.Main.SubActivity.record_count;
 
 
@@ -79,7 +80,7 @@ public class MyService extends Service {
 
     String document_name ;
     String data ;
-    String address ;
+    String address_sub ;
 
 
     public MyService() {
@@ -96,12 +97,11 @@ public class MyService extends Service {
             mThread = new Thread("My Thread"){
                 @Override
                 public void run() {
-
                 }
             };
             mThread.start();
         }
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     @Override
@@ -127,6 +127,7 @@ public class MyService extends Service {
         Log.d("서비스 실행","서비스 실행"+ uid);
 
         data = "NONE";
+        login_state = false;
 
         db.collection("user").document(uid).collection("action")
                 .whereEqualTo("data", "data")
@@ -142,7 +143,7 @@ public class MyService extends Service {
 
                         notification = false;
                         document_name = null;
-                        address = null;
+                        address_sub = null;
                         url = "url";
                         writer = null;
                         for (QueryDocumentSnapshot doc : value) {
@@ -202,7 +203,7 @@ public class MyService extends Service {
                                                     }
                                                 });
                                                 try {
-                                                    address = document.getData().get("address").toString();
+                                                    address_sub = document.getData().get("address").toString();
                                                 } catch (Exception errorCase) {
                                                 }
                                                 break;
@@ -219,7 +220,7 @@ public class MyService extends Service {
                         if (data.equals("data")) {
                             Log.d("data test","data");
                             DocumentReference docR = db.collection("data").document("allData")
-                                    .collection(address).document(document_name);
+                                    .collection(address_sub).document(document_name);
                             docR.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
                                 @Override
@@ -272,6 +273,7 @@ public class MyService extends Service {
                                         notificationIntent.putExtra("good", good_num);
                                         notificationIntent.putExtra("visitnum", visit_num);
                                         notificationIntent.putExtra("documentName", documentName);
+                                        notificationIntent.putExtra("address",address_sub);
 
                                         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);

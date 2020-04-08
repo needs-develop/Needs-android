@@ -55,7 +55,7 @@ public class MyWriteActivity extends AppCompatActivity {
     ArrayList<BoardListSub> list_itemArrayList = null;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String uid = user.getUid();
+
 
     int board_count = 1;
 
@@ -66,7 +66,7 @@ public class MyWriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mywrite);
         stopService(new Intent(MyWriteActivity.this, MyService.class));
         //getActivity = MyLikeActivity.class;FreeContent
-
+        String uid = user.getUid();
         //fragmentNumber = 0;
         list_itemArrayList = new ArrayList<BoardListSub>();
 

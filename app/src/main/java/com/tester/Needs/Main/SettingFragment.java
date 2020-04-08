@@ -76,6 +76,7 @@ import static com.tester.Needs.Main.MainActivity.id_uid;
 import static com.tester.Needs.Main.MainActivity.id_value;
 import static com.tester.Needs.Main.SubActivity.address;
 import static com.tester.Needs.Main.MainActivity.photoUrl;
+import static com.tester.Needs.Main.SubActivity.login_state;
 import static com.tester.Needs.Main.SubActivity.sub_photoUrl;
 import static com.tester.Needs.Main.SubActivity.fragmentNumber;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
@@ -253,6 +254,7 @@ public class SettingFragment extends Fragment {
         FirebaseAuth.getInstance().signOut();
         Intent i = new Intent(getContext(), MainActivity.class);
         address = null;
+        login_state = false;
         getActivity().finish();
         startActivity(i);
 
@@ -266,6 +268,7 @@ public class SettingFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         deleteAccount();
+                        login_state = false;
                         address = null;
                     }
                 })

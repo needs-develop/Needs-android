@@ -32,6 +32,8 @@ import com.tester.Needs.R;
 
 import java.util.ArrayList;
 
+import static com.tester.Needs.Main.MainActivity.id_uid;
+
 
 public class RecordActivity extends AppCompatActivity {
 
@@ -39,7 +41,6 @@ public class RecordActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();//firestore객체
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String uid = user.getUid();
 
     String title;
     String content;
@@ -48,6 +49,7 @@ public class RecordActivity extends AppCompatActivity {
     String goodNum;
     String visitString;
     String documentName;
+    String address_value;
     ListView listView;
     RecordListAdapter recordListAdapter;
     String profile_url = "no";
@@ -56,14 +58,13 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-
         recordList = new ArrayList<RecordList>();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
                 try { // Get data from 'user - action' collection
-                    db.collection("user").document(uid).collection("action").
+                    db.collection("user").document(id_uid).collection("action").
                             orderBy("day", Query.Direction.DESCENDING).get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
@@ -71,16 +72,20 @@ public class RecordActivity extends AppCompatActivity {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         if (document.getData().get("value").toString().equals("data")) {
                                             findViewById(R.id.record_no_list).setVisibility(View.GONE);
-                                            recordList.add(new RecordList(profile_url, document.getData().get("value").toString(),
-                                                    document.getData().get("address").toString(), document.getData().get("document_name").toString(),
-                                                    document.getData().get("writer").toString(), document.getData().get("day").toString()));
+                                            try {
+                                                recordList.add(new RecordList(profile_url, document.getData().get("value").toString(),
+                                                        document.getData().get("address").toString(), document.getData().get("document_name").toString(),
+                                                        document.getData().get("writer").toString(), document.getData().get("day").toString()));
+                                            }catch(Exception e){}
                                             Log.d("test", document.getData().get("day").toString());
                                             profile_url = "no";
                                         } else if (document.getData().get("value").toString().equals("freedata")) {
                                             findViewById(R.id.record_no_list).setVisibility(View.GONE);
-                                            recordList.add(new RecordList(profile_url, document.getData().get("value").toString(),
-                                                    "", document.getData().get("document_name").toString(),
-                                                    document.getData().get("writer").toString(), document.getData().get("day").toString()));
+                                            try {
+                                                recordList.add(new RecordList(profile_url, document.getData().get("value").toString(),
+                                                        "", document.getData().get("document_name").toString(),
+                                                        document.getData().get("writer").toString(), document.getData().get("day").toString()));
+                                            }catch (Exception e){}
                                             Log.d("test", document.getData().get("day").toString());
                                         }
 
@@ -98,7 +103,7 @@ public class RecordActivity extends AppCompatActivity {
                                         //recordListAdapter.notifyDataSetChanged();
                                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
-                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                                                 // if data equals "data"
                                                 if (recordList.get(position).getData().equals("data")) {
                                                     db.collection("data").document("allData")
@@ -116,6 +121,7 @@ public class RecordActivity extends AppCompatActivity {
                                                                 goodNum = document.getData().get("good_num").toString();
                                                                 visitString = document.getData().get("visit_num").toString();
                                                                 conId = document.getData().get("id_nickName").toString();
+                                                                address_value = recordList.get(position).getAddress();
 
                                                                 intent.putExtra("title", title);
                                                                 intent.putExtra("content", content);
@@ -124,6 +130,7 @@ public class RecordActivity extends AppCompatActivity {
                                                                 intent.putExtra("good", goodNum);
                                                                 intent.putExtra("visitnum", visitString);
                                                                 intent.putExtra("documentName", documentName);
+                                                                intent.putExtra("address",address_value);
                                                                 startActivity(intent);
                                                             }
                                                         }
@@ -171,6 +178,9 @@ public class RecordActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        Intent intent = new Intent(this,SubActivity.class);
+        startActivity(intent);
         this.finish();
     }
 }

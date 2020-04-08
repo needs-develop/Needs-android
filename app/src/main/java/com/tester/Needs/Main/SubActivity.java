@@ -63,6 +63,7 @@ import static com.tester.Needs.Main.MainActivity.id_name;
 import static com.tester.Needs.Main.MainActivity.id_nickName;
 import static com.tester.Needs.Main.MainActivity.id_uid;
 import static com.tester.Needs.Main.MainActivity.id_value;
+import static java.lang.Boolean.FALSE;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -103,6 +104,8 @@ public class SubActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private TextView mTextMessage;
 
+    public static  boolean login_state = true;
+
 
     ListView home_listView;
     Favorites_Adapter favorites_adapter;
@@ -131,7 +134,7 @@ public class SubActivity extends AppCompatActivity {
     static String pointLimit = null;
     static String point = null;
     public static int record_count = 0;
-
+    int sub_count = 0;
 
 
 
@@ -140,8 +143,9 @@ public class SubActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        stopService(new Intent(SubActivity.this, MyService.class));
 
+        stopService(new Intent(SubActivity.this, MyService.class));
+        login_state = true;
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SubActivity.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
@@ -199,22 +203,49 @@ public class SubActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             record_count = 0;
                             for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                Log.d("record count값",record_count+ " ");
                                 record_count++;
                             }
                         }
                     });
+
         } catch (Exception e) {
+            Log.d("catch",record_count+"   "+sub_count);
             record_count = 0;
         }
+
+        db.collection("user").document(id_uid).collection("action")
+                .whereEqualTo("data", "data")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if(login_state == true)
+                        {
+                            for (QueryDocumentSnapshot doc : value) sub_count++;
+                            if (sub_count > record_count && record_count != 0) {
+                                Log.d("count값", record_count + "   " + sub_count);
+                                ImageView imageView = findViewById(R.id.btn_signal);
+                                imageView.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                });
+
+        ///////////////////////add signal///////////////////////////
+
+        //////////////add signal//////////////////////////////////////////
 
         btn_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                record_count = sub_count;
                 Intent record_intent = new Intent(SubActivity.this, RecordActivity.class);
                 startActivity(record_intent);
                 // SubActivity.this.finish();
             }
         });
+
 
         db.collection("user").document(id_uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
