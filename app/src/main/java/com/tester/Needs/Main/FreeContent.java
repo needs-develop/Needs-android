@@ -199,6 +199,7 @@ public class FreeContent extends AppCompatActivity {
             }
         });
 
+        /*
         /////////////////update like and visit number  /////////////////////////
         db.collection("freeData")
                 .whereEqualTo("document_name", documentName)
@@ -237,7 +238,7 @@ public class FreeContent extends AppCompatActivity {
                     }
                 });
         /////////////////update like and visit number  /////////////////////////
-
+        */
 
         // Determining the status of a heart after checking whether I liked this article
         //좋아요 버튼을 누르는것에 대한 data를 boolean을 이용해서 세팅해준다.

@@ -274,7 +274,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         id_nickName = task.getResult().get("id_nickName").toString();
                                         photoUrl = task.getResult().get("photoUrl").toString();
 
-                                        Log.d("compare false", value);
                                         compareBoolean = false;
 
                                         Intent intent = new Intent(MainActivity.this, SubActivity.class);
@@ -501,12 +500,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         if (task.isSuccessful()) {
                                             Log.d("compare false", "compare false");
                                             try {
+                                                Log.d("1", "1");
                                                 id_value = task.getResult().get("id_email").toString();
+                                                Log.d("2", id_value);
                                                 id_uid = task.getResult().get("id_uid").toString();
+                                                Log.d("3", id_uid);
                                                 id_name = task.getResult().get("id_name").toString();
+                                                Log.d("4", id_name);
                                                 id_nickName = task.getResult().get("id_nickName").toString();
+                                                Log.d("5", id_nickName);
                                                 photoUrl = task.getResult().get("photoUrl").toString();
-                                                Log.d("compare false", value);
+                                                Log.d("6", photoUrl);
+
                                                 compareBoolean = false;
                                                 Intent intent = new Intent(getApplicationContext(), SubActivity.class);
                                                 startActivity(intent);

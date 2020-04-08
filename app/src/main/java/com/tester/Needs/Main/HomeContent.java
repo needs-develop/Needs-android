@@ -208,7 +208,7 @@ public class HomeContent extends AppCompatActivity {
             }
         });
 
-
+        /*
         /////////////////update like and visit number  /////////////////////////
         db.collection("data").document("allData").collection(address)
                 .whereEqualTo("document_name", documentName)
@@ -247,7 +247,7 @@ public class HomeContent extends AppCompatActivity {
                     }
                 });
         /////////////////update like and visit number  /////////////////////////
-
+            */
 
 
 

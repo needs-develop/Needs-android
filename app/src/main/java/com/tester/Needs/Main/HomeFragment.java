@@ -273,20 +273,10 @@ public class HomeFragment extends Fragment {
                             // test_positionName = test_positionName.replaceAll(" ","");
                             //test_positionName = test_positionName.replaceAll("\\p{Z}", "");
 
-                            positionName = test_positionName;
-                            text_position.setText(positionName);
-
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("id_region", positionName);
-
                             db.collection("user").document(id_uid)
-                                    .set(user)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                        }
-                                    });
-
+                                    .update(
+                                            "id_region", test_positionName
+                                    );
                         } else {
                             String test_positionName = et.getText().toString();
                             /*
