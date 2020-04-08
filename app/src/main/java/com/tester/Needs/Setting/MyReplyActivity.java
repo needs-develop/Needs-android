@@ -35,8 +35,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.BoardList;
 import com.tester.Needs.Common.BoardListSetting;
+import com.tester.Needs.Common.BoardListSub;
 import com.tester.Needs.Main.BoardListAdapter;
 import com.tester.Needs.Main.BoardListSettingAdapter;
+import com.tester.Needs.Main.BoardListSubAdapter;
 import com.tester.Needs.Main.HomeContent;
 import com.tester.Needs.Main.HomeFreeContent;
 import com.tester.Needs.Main.SubActivity;
@@ -51,8 +53,8 @@ import static com.tester.Needs.Main.SubActivity.fragmentNumber;
 
 public class MyReplyActivity extends AppCompatActivity {
     ListView listViewReply;
-    BoardListSettingAdapter boardListAdapter;
-    ArrayList<BoardListSetting> list_itemArrayList = null;
+    BoardListSubAdapter boardListAdapter;
+    ArrayList<BoardListSub> list_itemArrayList = null;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String uid = user.getUid();
@@ -68,7 +70,7 @@ public class MyReplyActivity extends AppCompatActivity {
         //getActivity = MyLikeActivity.class;FreeContent
 
         //fragmentNumber = 0;
-        list_itemArrayList = new ArrayList<BoardListSetting>();
+        list_itemArrayList = new ArrayList<BoardListSub>();
 
         CollectionReference colRef = db.collection("user").document(uid).collection("reply");
         colRef.get()
@@ -76,12 +78,13 @@ public class MyReplyActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                             // if data equals "data"
-                            if (document.getData().get("data").toString().equals("data")) {
+                            if (documentSnapshot.getData().get("data").toString().equals("data")) {
+                                final String address_value = documentSnapshot.getData().get("address").toString();
                                 db.collection("data").document("allData").
-                                        collection(document.getData().get("address").toString()).
-                                        document(document.getData().get("document_name").toString()).get().
+                                        collection(address_value).
+                                        document(documentSnapshot.getData().get("document_name").toString()).get().
                                         addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -90,7 +93,8 @@ public class MyReplyActivity extends AppCompatActivity {
                                                     DocumentSnapshot document = task.getResult();
 
                                                     String number = Integer.toString(board_count);
-                                                    int num2 = Integer.parseInt(document.getData().get("good_num").toString());
+                                                    try {
+                                                        int num2 = Integer.parseInt(document.getData().get("good_num").toString());
                                                     String stringNum = Integer.toString(num2);
                                                     int count = stringNum.length();
 
@@ -110,12 +114,13 @@ public class MyReplyActivity extends AppCompatActivity {
                                                     builder.setSpan(new StyleSpan(Typeface.BOLD), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                                     builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                                                    list_itemArrayList.add(new BoardListSetting(number, document.getData().get("title").toString(),
+                                                    list_itemArrayList.add(new BoardListSub(number, document.getData().get("title").toString(),
                                                             document.getData().get("content").toString(), document.getData().get("id_nickName").toString(),
                                                             //write 수정
                                                             document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
-                                                            document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
-                                                            , builder, "data"));
+                                                            document.getData().get("good_num").toString(), document.getData().get("good_num_m").toString(),
+                                                            document.getData().get("document_name").toString()
+                                                            , builder, "data",address_value));
                                                     Log.d("테스트", number + document.getData().get("title").toString() +
                                                             document.getData().get("content").toString() + document.getData().get("id_nickName").toString() +
                                                             document.getData().get("day").toString() + document.getData().get("visit_num").toString() +
@@ -124,13 +129,16 @@ public class MyReplyActivity extends AppCompatActivity {
                                                     Log.d("사이즈 테스트", String.valueOf(list_itemArrayList.size()));
                                                     board_count = Integer.parseInt(number);
                                                     board_count++;
+                                                    }catch(Exception e)
+                                                    {
+                                                    }
                                                 }
                                             }
                                         });
                             }
                             // if data equals "freedata"
-                            else if (document.getData().get("data").toString().equals("freedata")) {
-                                db.collection("freeData").document(document.getData().get("document_name").toString()).
+                            else if (documentSnapshot.getData().get("data").toString().equals("freedata")) {
+                                db.collection("freeData").document(documentSnapshot.getData().get("document_name").toString()).
                                         get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -138,6 +146,7 @@ public class MyReplyActivity extends AppCompatActivity {
                                             DocumentSnapshot document = task.getResult();
 
                                             String number = Integer.toString(board_count);
+                                            try{
                                             int num2 = Integer.parseInt(document.getData().get("good_num").toString());
                                             String stringNum = Integer.toString(num2);
                                             int count = stringNum.length();
@@ -158,12 +167,13 @@ public class MyReplyActivity extends AppCompatActivity {
                                             builder.setSpan(new StyleSpan(Typeface.BOLD), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                             builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                                            list_itemArrayList.add(new BoardListSetting(number, document.getData().get("title").toString(),
+                                            list_itemArrayList.add(new BoardListSub(number, document.getData().get("title").toString(),
                                                     document.getData().get("content").toString(), document.getData().get("id_nickName").toString(),
                                                     //write 수정
                                                     document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
-                                                    document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
-                                                    , builder, "freedata"));
+                                                    document.getData().get("good_num").toString(), document.getData().get("good_num").toString(),
+                                                    document.getData().get("document_name").toString()
+                                                    , builder, "freedata"," "));
                                             Log.d("테스트", number + document.getData().get("title").toString() +
                                                     document.getData().get("content").toString() + document.getData().get("id_nickName").toString() +
                                                     document.getData().get("day").toString() + document.getData().get("visit_num").toString() +
@@ -172,6 +182,9 @@ public class MyReplyActivity extends AppCompatActivity {
                                             Log.d("사이즈 테스트", String.valueOf(list_itemArrayList.size()));
                                             board_count = Integer.parseInt(number);
                                             board_count++;
+                                            }catch(Exception e)
+                                            {
+                                            }
                                         }
                                     }
                                 });
@@ -190,7 +203,7 @@ public class MyReplyActivity extends AppCompatActivity {
 
             public void run() {
                 listViewReply = findViewById(R.id.myreply_list);
-                boardListAdapter = new BoardListSettingAdapter(MyReplyActivity.this, list_itemArrayList);
+                boardListAdapter = new BoardListSubAdapter(MyReplyActivity.this, list_itemArrayList);
                 listViewReply.setAdapter(boardListAdapter);
 
                 // elements do not exist
@@ -213,6 +226,7 @@ public class MyReplyActivity extends AppCompatActivity {
                                 String goodNum = list_itemArrayList.get(position).getContent_good();
                                 String visitString = list_itemArrayList.get(position).getBtn_visitnum();
                                 String document_name = list_itemArrayList.get(position).getDocument_name();
+                                String address_value = list_itemArrayList.get(position).getAddress();
 
                                 intent2.putExtra("title", title);
                                 intent2.putExtra("content", content);
@@ -221,6 +235,7 @@ public class MyReplyActivity extends AppCompatActivity {
                                 intent2.putExtra("good", goodNum);
                                 intent2.putExtra("visitnum", visitString);
                                 intent2.putExtra("documentName", document_name);
+                                intent2.putExtra("address",address_value);
                                 startActivity(intent2);
                             }
                             // if data equals "freedata"

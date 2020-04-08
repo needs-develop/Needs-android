@@ -153,7 +153,7 @@ public class HomeContent extends AppCompatActivity {
             fullDay = year + "/" + month + "/" + day1 + " " + hour + ":" + minute + ":" + second;
         }
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         title = intent.getStringExtra("title");
         content = intent.getStringExtra("content");
         day = intent.getStringExtra("day");
@@ -187,7 +187,24 @@ public class HomeContent extends AppCompatActivity {
 
         Intent intent2 = getIntent();
         boolean forbtn;
+            try{
+                String sub_address = address;
+                address = intent.getStringExtra("address");
+                if (address ==null)
+                {
+                    address = sub_address;
+                    Log.d("MY CASE","MY CASE");
+                }
+            }catch (Exception e){
+            }
 
+        db.collection("data").document("allData").collection(address).document(documentName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                goodNum_m = documentSnapshot.getData().get("good_num_m").toString();
+            }
+        });
         db.collection("user").whereEqualTo("id_nickName", conId)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -198,13 +215,6 @@ public class HomeContent extends AppCompatActivity {
                         Log.d("writer_uid체크", writer_uid);
                     }
                 }
-            }
-        });
-        db.collection("data").document("allData").collection(address).document(documentName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot documentSnapshot = task.getResult();
-                goodNum_m = documentSnapshot.getData().get("good_num_m").toString();
             }
         });
 

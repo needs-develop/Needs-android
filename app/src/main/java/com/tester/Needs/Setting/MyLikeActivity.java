@@ -35,10 +35,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tester.Needs.Common.BoardList;
 import com.tester.Needs.Common.BoardListSetting;
+import com.tester.Needs.Common.BoardListSub;
 import com.tester.Needs.Main.BoardActivity;
 import com.tester.Needs.Main.BoardContent;
 import com.tester.Needs.Main.BoardListAdapter;
 import com.tester.Needs.Main.BoardListSettingAdapter;
+import com.tester.Needs.Main.BoardListSubAdapter;
 import com.tester.Needs.Main.FreeContent;
 import com.tester.Needs.Main.HomeContent;
 import com.tester.Needs.Main.HomeFreeContent;
@@ -55,8 +57,8 @@ import static com.tester.Needs.Main.SubActivity.fragmentNumber;
 
 public class MyLikeActivity extends AppCompatActivity {
     ListView listViewLike;
-    BoardListSettingAdapter boardListAdapter;
-    ArrayList<BoardListSetting> list_itemArrayList = null;
+    BoardListSubAdapter boardListAdapter;
+    ArrayList<BoardListSub> list_itemArrayList = null;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String uid = user.getUid();
@@ -72,7 +74,7 @@ public class MyLikeActivity extends AppCompatActivity {
         //getActivity = MyLikeActivity.class;FreeContent
 
         //fragmentNumber = 0;
-        list_itemArrayList = new ArrayList<BoardListSetting>();
+        list_itemArrayList = new ArrayList<BoardListSub>();
 
         CollectionReference colRef = db.collection("user").document(uid).collection("like");
         colRef.get()
@@ -80,12 +82,13 @@ public class MyLikeActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                             // if data equals "data"
-                            if (document.getData().get("data").toString().equals("data")) {
+                            if (documentSnapshot.getData().get("data").toString().equals("data")) {
+                                final String address_value = documentSnapshot.getData().get("address").toString();
                                 db.collection("data").document("allData").
-                                        collection(document.getData().get("address").toString()).
-                                        document(document.getData().get("document_name").toString()).get().
+                                        collection(address_value).
+                                        document(documentSnapshot.getData().get("document_name").toString()).get().
                                         addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -94,6 +97,7 @@ public class MyLikeActivity extends AppCompatActivity {
                                                     DocumentSnapshot document = task.getResult();
 
                                                     String number = Integer.toString(board_count);
+                                                    try{
                                                     int num2 = Integer.parseInt(document.getData().get("good_num").toString());
                                                     String stringNum = Integer.toString(num2);
                                                     int count = stringNum.length();
@@ -114,12 +118,12 @@ public class MyLikeActivity extends AppCompatActivity {
                                                     builder.setSpan(new StyleSpan(Typeface.BOLD), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                                     builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                                                    list_itemArrayList.add(new BoardListSetting(number, document.getData().get("title").toString(),
+                                                    list_itemArrayList.add(new BoardListSub(number, document.getData().get("title").toString(),
                                                             document.getData().get("content").toString(), document.getData().get("id_nickName").toString(),
                                                             //write 수정
                                                             document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
-                                                            document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
-                                                            , builder, "data"));
+                                                            document.getData().get("good_num").toString(),document.getData().get("good_num_m").toString(),
+                                                            document.getData().get("document_name").toString(), builder, "data",address_value));
                                                     Log.d("테스트", number + document.getData().get("title").toString() +
                                                             document.getData().get("content").toString() + document.getData().get("id_nickName").toString() +
                                                             document.getData().get("day").toString() + document.getData().get("visit_num").toString() +
@@ -127,15 +131,18 @@ public class MyLikeActivity extends AppCompatActivity {
                                                             + builder + "data");
                                                     Log.d("사이즈 테스트", String.valueOf(list_itemArrayList.size()));
                                                     board_count = Integer.parseInt(number);
-                                                    board_count++;
+                                                    board_count++; }
+                                                    catch(Exception e)
+                                                    {
+                                                    }
                                                 }
                                             }
                                         });
                             }
                             // if data equals "freedata"
-                            else if (document.getData().get("data").toString().equals("freedata")) {
+                            else if (documentSnapshot.getData().get("data").toString().equals("freedata")) {
 
-                                db.collection("freeData").document(document.getData().get("document_name").toString()).
+                                db.collection("freeData").document(documentSnapshot.getData().get("document_name").toString()).
                                         get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -143,40 +150,44 @@ public class MyLikeActivity extends AppCompatActivity {
                                             DocumentSnapshot document = task.getResult();
 
                                             String number = Integer.toString(board_count);
-                                            int num2 = Integer.parseInt(document.getData().get("good_num").toString());
-                                            String stringNum = Integer.toString(num2);
-                                            int count = stringNum.length();
+                                            try {
+                                                int num2 = Integer.parseInt(document.getData().get("good_num").toString());
+                                                String stringNum = Integer.toString(num2);
+                                                int count = stringNum.length();
 
-                                            String goodNum = document.getData().get("title").toString() + "     [" + num2 + "]";
-                                            int length = goodNum.length();
-                                            int start = 0;
-                                            if (count == 1)
-                                                start = length - 3;
-                                            else if (count == 2)
-                                                start = length - 4;
-                                            else if (count == 3)
-                                                start = length - 5;
-                                            else if (count == 4)
-                                                start = length - 6;
+                                                String goodNum = document.getData().get("title").toString() + "     [" + num2 + "]";
+                                                int length = goodNum.length();
+                                                int start = 0;
+                                                if (count == 1)
+                                                    start = length - 3;
+                                                else if (count == 2)
+                                                    start = length - 4;
+                                                else if (count == 3)
+                                                    start = length - 5;
+                                                else if (count == 4)
+                                                    start = length - 6;
 
-                                            SpannableStringBuilder builder = new SpannableStringBuilder(goodNum);
-                                            builder.setSpan(new StyleSpan(Typeface.BOLD), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                            builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                                SpannableStringBuilder builder = new SpannableStringBuilder(goodNum);
+                                                builder.setSpan(new StyleSpan(Typeface.BOLD), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                                builder.setSpan(new ForegroundColorSpan(Color.parseColor("#ff0000")), start, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                                            list_itemArrayList.add(new BoardListSetting(number, document.getData().get("title").toString(),
-                                                    document.getData().get("content").toString(), document.getData().get("id_nickName").toString(),
-                                                    //write 수정
-                                                    document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
-                                                    document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
-                                                    , builder, "freedata"));
-                                            Log.d("테스트", number + document.getData().get("title").toString() +
-                                                    document.getData().get("content").toString() + document.getData().get("id_nickName").toString() +
-                                                    document.getData().get("day").toString() + document.getData().get("visit_num").toString() +
-                                                    document.getData().get("good_num").toString() + document.getData().get("document_name").toString()
-                                                    + builder + "freedata");
-                                            Log.d("사이즈 테스트", String.valueOf(list_itemArrayList.size()));
-                                            board_count = Integer.parseInt(number);
-                                            board_count++;
+                                                list_itemArrayList.add(new BoardListSub(number, document.getData().get("title").toString(),
+                                                        document.getData().get("content").toString(), document.getData().get("id_nickName").toString(),
+                                                        //write 수정
+                                                        document.getData().get("day").toString(), document.getData().get("visit_num").toString(),
+                                                        document.getData().get("good_num").toString(), document.getData().get("good_num").toString(), document.getData().get("document_name").toString()
+                                                        , builder, "freedata", " "));
+                                                Log.d("테스트", number + document.getData().get("title").toString() +
+                                                        document.getData().get("content").toString() + document.getData().get("id_nickName").toString() +
+                                                        document.getData().get("day").toString() + document.getData().get("visit_num").toString() +
+                                                        document.getData().get("good_num").toString() + document.getData().get("document_name").toString()
+                                                        + builder + "freedata");
+                                                Log.d("사이즈 테스트", String.valueOf(list_itemArrayList.size()));
+                                                board_count = Integer.parseInt(number);
+                                                board_count++;
+                                            }
+                                            catch(Exception e)
+                                        {}
                                         }
                                     }
                                 });
@@ -195,7 +206,7 @@ public class MyLikeActivity extends AppCompatActivity {
 
             public void run() {
                 listViewLike = findViewById(R.id.mylike_list);
-                boardListAdapter = new BoardListSettingAdapter(MyLikeActivity.this, list_itemArrayList);
+                boardListAdapter = new BoardListSubAdapter(MyLikeActivity.this, list_itemArrayList);
                 listViewLike.setAdapter(boardListAdapter);
 
                 if (list_itemArrayList.size() == 0) { // elements do not exist
@@ -215,14 +226,18 @@ public class MyLikeActivity extends AppCompatActivity {
                                 String day = list_itemArrayList.get(position).getBtn_date();
                                 String conId = list_itemArrayList.get(position).getBtn_writer();
                                 String goodNum = list_itemArrayList.get(position).getContent_good();
+                                String goodNum_m = list_itemArrayList.get(position).getContent_good_m();
                                 String visitString = list_itemArrayList.get(position).getBtn_visitnum();
                                 String document_name = list_itemArrayList.get(position).getDocument_name();
+                                String address_value = list_itemArrayList.get(position).getAddress();
 
+                                intent2.putExtra("address",address_value);
                                 intent2.putExtra("title", title);
                                 intent2.putExtra("content", content);
                                 intent2.putExtra("day", day);
                                 intent2.putExtra("id", conId);
                                 intent2.putExtra("good", goodNum);
+                                intent2.putExtra("good_m",goodNum_m);
                                 intent2.putExtra("visitnum", visitString);
                                 intent2.putExtra("documentName", document_name);
                                 startActivity(intent2);
