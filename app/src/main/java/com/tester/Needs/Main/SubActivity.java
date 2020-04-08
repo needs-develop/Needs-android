@@ -496,6 +496,7 @@ public class SubActivity extends AppCompatActivity {
         gangone.add(new SubList("논현동"));
         gangone.add(new SubList("신사동"));
         gangone.add(new SubList("청담동"));
+        gangone.add(new SubList("압구정동"));
 
         gangtwo.add(new SubList("둔촌동"));
         gangtwo.add(new SubList("상일동"));
