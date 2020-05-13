@@ -102,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         // AutoCompleteTextView
-        String[] items = {"강남구 논현동", "강남구 신사동", "강남구 청담동", "강동구 둔촌동", "강동구 상일동", "강동구 천호동", "강북구 미아동",
+        String[] items = {"강남구 논현동", "강남구 신사동", "강남구 청담동","강남구 압구정동", "강동구 둔촌동", "강동구 상일동", "강동구 천호동", "강북구 미아동",
                 "강북구 수유동", "강북구 우이동", "강서구 가양동", "강서구 등촌동", "강서구 방화동"};
 
         AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
