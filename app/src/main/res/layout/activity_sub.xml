@@ -34,15 +34,6 @@
             android:layout_height="40dp"
             android:layout_gravity="start"
             android:src="@drawable/icons8_notification" />
-        <ImageView
-            android:visibility="gone"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="0dp"
-            android:id="@+id/btn_signal"
-            android:layout_width="20dp"
-            android:layout_height="40dp"
-            android:layout_gravity="start"
-            android:src="@drawable/signal" />
     </LinearLayout>
 
     <RelativeLayout

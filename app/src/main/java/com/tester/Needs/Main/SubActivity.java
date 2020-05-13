@@ -186,7 +186,7 @@ public class SubActivity extends AppCompatActivity {
 
         subExpAdapter1.notifyDataSetChanged();
 
-        ImageView btn_notification;
+        final ImageView btn_notification;
         btn_notification = findViewById(R.id.btn_notification);
 
         try {
@@ -217,6 +217,7 @@ public class SubActivity extends AppCompatActivity {
         db.collection("user").document(id_uid).collection("action")
                 .whereEqualTo("data", "data")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @SuppressLint("ResourceType")
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
                                         @Nullable FirebaseFirestoreException e) {
@@ -225,9 +226,9 @@ public class SubActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot doc : value) sub_count++;
                             if (sub_count > record_count && record_count != 0) {
                                 Log.d("count값", record_count + "   " + sub_count);
-                                ImageView imageView = findViewById(R.id.btn_signal);
-                                imageView.setVisibility(View.VISIBLE);
+                                btn_notification.setImageResource(R.drawable.signalafter);
                             }
+                            else btn_notification.setImageResource(R.drawable.icons8_notification);
                         }
                     }
                 });
