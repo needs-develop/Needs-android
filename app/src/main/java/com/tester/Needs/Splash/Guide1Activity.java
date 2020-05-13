@@ -25,6 +25,7 @@ public class Guide1Activity extends AppCompatActivity {
             public void onClick(View view) {
                 finish();
                 startActivity(new Intent(Guide1Activity.this, Guide2Activity.class));
+                overridePendingTransition(R.anim.rightin_activity, R.anim.not_move_activity);
             }
         });
     }

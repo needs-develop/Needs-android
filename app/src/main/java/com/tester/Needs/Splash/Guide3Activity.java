@@ -23,6 +23,7 @@ public class Guide3Activity extends AppCompatActivity {
             public void onClick(View view) {
                 finish();
                 startActivity(new Intent(Guide3Activity.this, Guide4Activity.class));
+                overridePendingTransition(R.anim.rightin_activity, R.anim.not_move_activity);
             }
         });
     }
