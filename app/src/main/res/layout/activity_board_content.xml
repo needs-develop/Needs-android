@@ -196,13 +196,12 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/content"
-            android:text="댓글갯수: "
-            >
-        </TextView>
+            android:text="댓글 개수: "></TextView>
         <TextView
             android:id="@+id/content_count"
             android:layout_width="wrap_content"
