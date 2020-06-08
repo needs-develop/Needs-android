@@ -95,7 +95,6 @@ public class FavoritesList {
     public void setContent_good(String content_good) {
         this.content_good = content_good;
     }
-
     public FavoritesList(String btn_num, String btn_title, String content, String btn_writer, String btn_date,
                          String btn_visit, String content_good, String document_name,SpannableStringBuilder spannableStringBuilder) {
         this.btn_num = btn_num;

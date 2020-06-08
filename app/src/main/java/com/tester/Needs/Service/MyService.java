@@ -53,6 +53,8 @@ import java.net.URLConnection;
 import java.util.Objects;
 import java.util.Timer;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 import static com.tester.Needs.Main.SubActivity.login_state;
 import static com.tester.Needs.Main.SubActivity.record_count;
 
@@ -64,6 +66,7 @@ public class MyService extends Service {
 
     private Thread mThread;
     private int mCount = 0;
+    int noti_count=1;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String uid;
@@ -157,6 +160,7 @@ public class MyService extends Service {
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if(task.isSuccessful())
                                         {
+                                            noti_count++;
                                             for (QueryDocumentSnapshot document : task.getResult())
                                             {
                                                 writer = document.getData().get("writer").toString();
@@ -253,6 +257,8 @@ public class MyService extends Service {
                                         builder.setDefaults(Notification.DEFAULT_VIBRATE);
                                         builder.setWhen(System.currentTimeMillis());
                                         builder.setAutoCancel(true);
+                                        builder.setNumber(noti_count);
+
                                         if(!url.equals("url"))
                                         {
                                             builder.setLargeIcon(urlToBitmap);
@@ -281,7 +287,9 @@ public class MyService extends Service {
 
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                            manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+                                            NotificationChannel notificationChannel = new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT);
+                                            notificationChannel.setShowBadge(true);
+                                            manager.createNotificationChannel(notificationChannel);
                                         }
                                         startForeground(1, builder.build());
                                         builder.setAutoCancel(true);
@@ -317,6 +325,7 @@ public class MyService extends Service {
                                         //builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
                                         builder.setSmallIcon(R.drawable.appicon);
                                         builder.setContentTitle("Needs");
+                                        builder.setNumber(noti_count);
                                         builder.setContentText(writer + "님이 게시물에 관심을 가졌습니다");
                                         builder.setDefaults(Notification.DEFAULT_VIBRATE);
                                         builder.setWhen(System.currentTimeMillis());
@@ -348,7 +357,9 @@ public class MyService extends Service {
 
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                            manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+                                            NotificationChannel notificationChannel = new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT);
+                                            notificationChannel.setShowBadge(true);
+                                            manager.createNotificationChannel(notificationChannel);
                                         }
                                         startForeground(1, builder.build());
                                         builder.setAutoCancel(true);
@@ -371,10 +382,12 @@ public class MyService extends Service {
         builder.setColor(ContextCompat.getColor(MyService.this, R.color.fui_bgFacebook));
         builder.setSmallIcon(getNotificationIcon());
         builder.setContentTitle("Needs");
+        builder.setNumber(0);
         builder.setContentText("Needs Application이 실행중입니다.");
         builder.setDefaults(Notification.DEFAULT_VIBRATE);
         builder.setAutoCancel(true);
         builder.setOnlyAlertOnce(true);
+
         if(!url.equals("url"))
         {
             builder.setLargeIcon(urlToBitmap);
@@ -387,6 +400,7 @@ public class MyService extends Service {
 
         //Class name = getActivity;
 
+
         Intent notificationIntent = new Intent(MyService.this, SubActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(MyService.this, 0, notificationIntent, 0);
@@ -394,7 +408,9 @@ public class MyService extends Service {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            manager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT));
+            NotificationChannel notificationChannel = new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setShowBadge(true);
+            manager.createNotificationChannel(notificationChannel);
         }
         startForeground(1, builder.build());
         builder.setAutoCancel(true);
@@ -404,6 +420,7 @@ public class MyService extends Service {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
         return useWhiteIcon ? R.drawable.appicon : R.drawable.appicon;
     }
+
 
     private Bitmap GetImageFromURL(String strImageURL) {
         Bitmap imgBitmap = null;
