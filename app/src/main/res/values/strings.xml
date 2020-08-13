@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">project_basic</string>
+    <string name="app_name">Needs</string>
     <string name="title_activity_navi">NaviActivity</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
@@ -25,6 +25,13 @@
 
     <string name="facebook_application_id" translatable="false">484643372456934</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb484643372456934</string>
+
+    <string name="default_notification_channel_id">Channel ID</string>
+    <string name="default_notification_channel_name" translatable="true">Test</string>
+
+    <string name="err_name">Enter the valid name</string>
+    <string name="err_email">Enter the valid email</string>
+    <string name="password">Capital and small latter symbol number</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

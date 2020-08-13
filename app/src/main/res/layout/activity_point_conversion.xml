@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PointConversionActivity">
+    tools:context=".Setting.PointConversionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -26,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="전환 가능 포인트"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/curPoint"
@@ -35,7 +37,7 @@
                 android:layout_margin="4dp"
                 android:text="0"
                 android:textColor="#FA070707"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -55,16 +57,16 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="전환할 포인트"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/editText"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="금액을 입력해주세요"
-                android:inputType="textPersonName" />
+                android:inputType="number" />
 
         </LinearLayout>
 
@@ -72,9 +74,9 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginLeft="8dp"
             android:text="*주의 사항을 반드시 확인하시기 바랍니다." />
 
         <TextView
@@ -96,6 +98,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:background="@drawable/button"
+            android:textColor="@color/white"
             android:text="전환 하기" />
 
     </LinearLayout>

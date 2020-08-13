@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="200dp"
-    android:layout_height="732dp"
-    android:layout_gravity="start"
     android:id="@+id/drawer"
-    android:background="#EBEB68"
-    >
+    android:layout_width="200dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="#7AC7EB"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="지역"
-        android:textSize="30dp"
-        android:fontFamily="@font/jalnan"
-        android:textColor="#4092B8"
-        android:layout_gravity="center"
-        android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center"
+            android:text="지역"
+            android:textColor="#74746E"
+            android:textSize="30dp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -33,31 +34,28 @@
         </EditText>
         -->
         <ImageView
-            android:layout_gravity="right"
             android:id="@+id/draw_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_send"
-            />
+            android:layout_gravity="right"
+            android:src="@drawable/ic_menu_send" />
     </LinearLayout>
 
     <ExpandableListView
         android:id="@+id/good_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ExpandableListView>
+        android:layout_height="wrap_content" />
+
     <TextView
-        android:textSize="15dp"
-        android:fontFamily="@font/cookierunbold"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/cookierunbold"
         android:text="지역선택"
-        />
+        android:textSize="15sp" />
+
     <ExpandableListView
         android:id="@+id/draw_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp">
-    </ExpandableListView>
+        android:layout_height="match_parent" />
 </LinearLayout>

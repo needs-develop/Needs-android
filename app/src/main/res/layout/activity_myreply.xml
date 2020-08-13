@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:orientation="vertical">
 
@@ -72,21 +72,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
+        <TextView
+            android:id="@+id/myreply_no_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/cookierunbold"
+            android:gravity="center"
+            android:text="댓글 남긴 글이 없습니다"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
         <ListView
-            android:id="@android:id/list"
+            android:id="@+id/myreply_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:id="@android:id/empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="작성한 댓글이 없습니다" />
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -3,85 +3,116 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    >
+    tools:context=".Main.MainActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
-    <ImageView
-        android:layout_marginTop="60dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@raw/ne"/>
-    <EditText
-        android:layout_marginTop="20dp"
-        android:id="@+id/et_id"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:hint="아이디를 입력하세요.."/>
-    <EditText
-        android:id="@+id/pw_id"
-        android:password="true"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:hint="비밀번호를 입력하세요.."
-        />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp">
 
-        <Button
-            android:id="@+id/btn_test"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_button"
-            android:text="로그인"/>
-        <Button
-            android:layout_marginHorizontal="10dp"
-            android:id="@+id/btn2_test"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/needs2" />
+
+        <EditText
+            android:id="@+id/et_id"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/content"
+            android:hint="Email Address"
+            android:textColorHint="@color/gray" />
+
+        <EditText
+            android:id="@+id/pw_id"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColorHint="@color/gray" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_button"
-            android:text="회원가입"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            />
+            <Button
+                android:id="@+id/btn_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/button"
+                android:fontFamily="@font/content"
+                android:text="로그인"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn2_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/button"
+                android:fontFamily="@font/content"
+                android:text="회원가입"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+
+                />
+        </LinearLayout>
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btn_google"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:textSize="20sp" >
+
+        </com.google.android.gms.common.SignInButton>
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn6_test"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/pale_sky_blue"
+            android:fontFamily="@font/content"
+            android:text="Twitter ID로 로그인"
+            android:textColor="@color/gray"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn4_test"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/needs_blue"
+            android:fontFamily="@font/content"
+            android:text="Git ID로 로그인"
+            android:textColor="@color/gray"
+            android:textSize="20sp" />
     </LinearLayout>
-
-
-    <Button
-        android:layout_margin="5dp"
-        android:id="@+id/btn3_test"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Facebook ID로 로그인"
-        android:background="#ff0088ff"
-        />
-
-    <Button
-        android:layout_margin="5dp"
-        android:id="@+id/btn4_test"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Git ID로 로그인"
-        />
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/btn_google"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        />
-    <Button
-        android:layout_margin="5dp"
-        android:id="@+id/btn6_test"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Twitter ID로 로그인"
-        android:background="#B5D5F3"
-        />
-</LinearLayout>
 </ScrollView>

@@ -1,57 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.project_basic">
+    package="com.tester.Needs">
 
     <uses-permission android:name="android.permission.INTERNET " />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="androidx.multidex.MultiDexApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/appicon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Main.RecordActivity" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_application_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/appicon" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1543630224731130~6261268123" />
+
+
+        <activity android:name=".Main.UserInfoActivity" />
         <activity
-            android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:name=".Splash.SplashActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".Main.MainActivity" />
+        <activity android:name=".Main.SubActivity" />
+        <activity android:name=".Main.RegisterActivity" />
+        <activity android:name=".Main.BoardActivity" />
+        <activity android:name=".Main.BoardWrite" />
+        <activity android:name=".Common.ReplyListAdapter" />
+        <activity android:name=".Common.ReplyList" />
+        <activity android:name=".Main.BoardContent" />
+        <activity android:name=".Common.FavoritesFunc" />
+        <activity android:name=".Main.FavoritesWrite" />
+        <activity android:name=".Main.Favorites_Adapter" />
+        <activity android:name=".Common.FavoritesList" />
+        <activity android:name=".Main.FavoritesFragment" />
+        <activity android:name=".Common.SubListAdapter" />
+        <activity android:name=".Common.SubExpAdapter" />
+        <activity android:name=".Common.SubList" />
+        <activity android:name=".Main.FreeContent" />
+        <activity android:name=".Main.HomeFreeContent" />
+        <activity android:name=".Main.HomeContent" />
+        <activity android:name=".Setting.MyWriteActivity" />
+        <activity android:name=".Setting.MyLikeActivity" />
+        <activity android:name=".Setting.MyReplyActivity" />
+        <activity android:name=".Setting.PointConversionActivity" />
+        <activity android:name=".Setting.PointHistoryActivity" />
+        <activity android:name=".Splash.Guide4Activity" />
+        <activity android:name=".Splash.Guide3Activity" />
+        <activity android:name=".Splash.Guide2Activity" />
+        <activity android:name=".Splash.Guide1Activity" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+        <service
+            android:name=".Service.MyFirebaseMessagingService"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </activity>
-        <activity android:name=".SubActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".BoardActivity" />
-        <activity android:name=".BoardWrite" />
-        <activity android:name=".ReplyListAdapter" />
-        <activity android:name=".ReplyList" />
-        <activity android:name=".BoardContent" />
-        <activity android:name=".FavoritesFunc" />
-        <activity android:name=".FavoritesWrite" />
-        <activity android:name=".Favorites_Adapter" />
-        <activity android:name=".FavoritesList" />
-        <activity android:name=".FavoritesFragment" />
-        <activity android:name=".SubListAdapter" />
-        <activity android:name=".SubExpAdapter" />
-        <activity android:name=".SubList" />
-        <activity android:name=".FreeContent"></activity>
-        <activity android:name=".HomeFreeContent" />
-        <activity android:name=".HomeContent" />
-        <activity android:name=".MywriteActivity"></activity>
-        <activity android:name=".MylikeActivity" />
-        <activity android:name=".MyreplyActivity" />
-        <activity android:name=".PointConversionActivity" />
-        <activity android:name=".PointHistoryActivity" />
-        <activity android:name=".SignedInActivity" />
+        </service>
+        <service
+            android:name=".Service.MyService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
